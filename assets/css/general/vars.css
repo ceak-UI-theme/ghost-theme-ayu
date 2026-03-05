@@ -9,8 +9,9 @@
     --darker-gray-color: #1a1a1a;
     --black-color: #000;
     --animation-base: ease-in-out;
-    --font-sans: Poppins, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
+    --font-sans: 'NanumSquareRound', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
     --font-serif: Lora, Times, serif;
+    --font-mono: 'JetBrains Mono', Menlo, Consolas, Monaco, 'Liberation Mono', 'Lucida Console', monospace;
     --content-font-size: 1.6rem;
     --header-spacing: 80px;
 }
@@ -20,3 +21,15 @@
         --header-spacing: 40px;
     }
 }
+
+html.theme-dark {
+    --color-primary-text: #d2d8de;
+    --color-secondary-text: #9aa6b2;
+    --color-white: #0f141a;
+    --color-lighter-gray: #161e27;
+    --color-light-gray: #233040;
+    --color-mid-gray: #415469;
+    --color-dark-gray: #aeb9c3;
+    --color-darker-gray: #edf2f7;
+}
+

@@ -1,4 +1,31 @@
 @font-face {
+    font-family: "NanumSquareRound";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""), url("../fonts/NanumSquareRoundR.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "NanumSquareRound";
+    font-style: normal;
+    font-weight: 700;
+    src: local(""), url("../fonts/NanumSquareRoundB.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""), url("../fonts/JetBrainsMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 700;
+    src: local(""), url("../fonts/JetBrainsMono-Bold.woff2") format("woff2");
+}
+@font-face {
     font-family: Poppins;
     font-style: normal;
     font-weight: 400;
@@ -67,3 +94,5 @@
     font-weight: 700;
     src: local(""), url("../fonts/lora-v23-latin-700italic.woff2") format("woff2"), url("../fonts/lora-v23-latin-700italic.woff") format("woff");
 }
+
+
