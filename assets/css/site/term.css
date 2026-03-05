@@ -100,21 +100,6 @@
     margin-bottom: 64px;
 }
 
-.category-ad-slot {
-    border: 1px dashed var(--color-light-gray);
-    border-radius: 10px;
-    margin: 56px auto 0;
-    max-width: 840px;
-    padding: 18px;
-}
-
-.category-ad-placeholder {
-    color: var(--color-secondary-text);
-    font-size: 1.3rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
 .pagination {
     margin-top: 48px;
 }
@@ -167,3 +152,21 @@
     color: var(--color-secondary-text);
     font-size: 1.5rem;
 }
+
+.category-ad-inline {
+    align-items: center;
+    border: 1px dashed var(--color-light-gray);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    min-height: 120px;
+    padding: 18px;
+}
+
+.category-ad-inline-text {
+    color: var(--color-secondary-text);
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+

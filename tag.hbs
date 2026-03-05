@@ -14,10 +14,10 @@
         {{#match slug "readium"}}
             <section class="category-featured" aria-label="Featured posts">
                 <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3" as |featured_posts|}}
-                    {{#if featured_posts}}
+                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
+                    {{#if posts}}
                         <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach featured_posts}}
+                            {{#foreach posts}}
                                 {{> "loop"}}
                             {{/foreach}}
                         </div>
@@ -35,10 +35,10 @@
         {{else match slug "tech-docs"}}
             <section class="category-featured" aria-label="Featured posts">
                 <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3" as |featured_posts|}}
-                    {{#if featured_posts}}
+                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
+                    {{#if posts}}
                         <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach featured_posts}}
+                            {{#foreach posts}}
                                 {{> "loop"}}
                             {{/foreach}}
                         </div>
@@ -56,10 +56,10 @@
         {{else match slug "ui-ux"}}
             <section class="category-featured" aria-label="Featured posts">
                 <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3" as |featured_posts|}}
-                    {{#if featured_posts}}
+                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
+                    {{#if posts}}
                         <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach featured_posts}}
+                            {{#foreach posts}}
                                 {{> "loop"}}
                             {{/foreach}}
                         </div>
@@ -77,10 +77,10 @@
         {{else match slug "tech-gear"}}
             <section class="category-featured" aria-label="Featured posts">
                 <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3" as |featured_posts|}}
-                    {{#if featured_posts}}
+                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
+                    {{#if posts}}
                         <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach featured_posts}}
+                            {{#foreach posts}}
                                 {{> "loop"}}
                             {{/foreach}}
                         </div>
@@ -103,12 +103,13 @@
         <div class="post-feed gh-feed">
             {{#foreach posts}}
                 {{> "loop"}}
+                {{#match @number "6|12|18|24|30"}}
+                    <article class="post post-ad category-ad-inline" aria-label="Advertisement">
+                        <div class="category-ad-inline-text">Ad slot</div>
+                    </article>
+                {{/match}}
             {{/foreach}}
         </div>
-    </section>
-
-    <section class="category-ad-slot" aria-label="Advertisement">
-        <div class="category-ad-placeholder">Ad slot</div>
     </section>
 
     {{> "ayu-pagination"}}
