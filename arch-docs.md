@@ -1,779 +1,816 @@
-# Ghost Technical Blog Architecture Design
+# 기술 블로그 화면설계서 v2 (최종)
 
-## Ghost Wave Theme 기반 기술 블로그 구조 설계 문서
+```markdown
+# 기술 블로그 화면설계서 v2
 
-Version: 1.1
-Platform: Ghost CMS
-Theme: Wave
+## 0. 문서 목적
+본 문서는 Ghost CMS 기반 기술 블로그 테마 커스터마이징을 위한 **화면 구조 및 UX 규칙을 정의하는 설계 문서**이다.
 
----
+개발 착수 전 다음 항목을 명확히 하기 위한 목적을 가진다.
 
-# 1. 개요
+- 정보 구조 (Information Architecture)
+- 화면 레이아웃
+- 탐색 구조
+- 데이터 사용 규칙
+- 테마 커스터마이징 범위
 
-본 문서는 **Ghost CMS 기반 기술 블로그의 구조 및 UX 설계**를 정의한다.
-
-본 설계 문서는 다음 항목을 정의한다.
-
-* 블로그 정보 구조 (Information Architecture)
-* 콘텐츠 탐색 UX
-* Series 중심 콘텐츠 구조
-* 광고 정책
-* 검색 시스템
-* Ghost Wave 테마 커스터마이징 방향
-
-목표
-
-```
-기술 블로그에 최적화된 정보 구조
-Series 기반 콘텐츠 조직
-카테고리 중심 탐색 UX
-목차 / 검색 기능 강화
-UX를 해치지 않는 광고 구조
-```
+본 문서는 **구현 코드 수준이 아닌 설계 수준의 문서**이며,
+구현 방법은 별도의 문서인 **Ghost Wave 커스터마이징 구현 설계서**에서 정의한다.
 
 ---
 
-# 2. 개발 환경
+# 0.1 테마 기준 및 커스터마이징 원칙
 
-개발 환경
+- 기본 베이스는 Ghost **Wave 테마**를 사용한다.
+- 구현은 Wave 기본 구조를 존중하되 본 문서에서 정의한 항목만 커스터마이징한다.
+- 커스터마이징 우선순위는 아래와 같다.
 
 ```
-개발 환경: Windows 로컬
-운영 환경: VPS
-CMS: Ghost
-Theme: Wave
+
+정보구조
+→ 탐색 UX
+→ 테마 톤 일관성
+
+```
+
+또한 다음 원칙을 따른다.
+
+- Home 페이지는 Wave 기본 **Hero Cover 구조를 사용하지 않는다**
+- 대신 **Mini Intro + Latest Posts 구조**로 단순화한다.
+
+---
+
+# 0.2 테마 (다크 / 라이트) 정책
+
+테마 컬러 시스템은 다음 기준을 사용한다.
+
+```
+
+Ayu Dark
+Ayu Mirage
+
+```
+
+참고 자료
+
+- https://vscodethemes.com/e/teabyii.ayu/ayu-dark-bordered
+- https://vscodethemes.com/e/teabyii.ayu/ayu-mirage-bordered
+- https://github.com/ayu-theme/ayu-colors
+
+---
+
+# 0.3 타이포그래피 정책
+
+기본 폰트 정책
+
+| 구분 | 폰트 |
+|-----|------|
+본문 | NanumSquareRound
+코드 | JetBrains Mono
+
+폰트 위치
+
+```
+
+/assets/fonts
+
+```
+
+운영 원칙
+
+- 외부 CDN 사용하지 않음
+- self-host 우선
+
+---
+
+# 1. 용어 정의
+
+## 1.1 태그 분류
+
+### 프라이머리태그
+포스트의 **첫 번째 태그**
+
+역할
+
+```
+
+카테고리
+
 ```
 
 ---
 
-# 3. URL 구조
+### 시리즈태그
 
-블로그 주요 URL 구조
-
-```
-/                    → Homepage
-/tag/{tag}           → Category page
-/categories          → Category list
-/series              → Series list
-/series/{slug}       → Series hub
-/search              → Search page
-/search?q={query}    → Search results
-/{post-slug}         → Post
-```
-
----
-
-# 4. 카테고리 구조
-
-Ghost **Primary Tag**를 카테고리로 사용한다.
-
-Primary Categories
+형식
 
 ```
-Readium
-Tech Docs
-UI & Theme
-Tech Gear
-```
 
-Secondary Tags
+#series-{seriesid}
 
-```
-SEO 및 키워드 용도
-자유롭게 사용
-```
-
-Internal Tags
-
-Series 관리용 internal tag
-
-```
-#series-{slug}
 ```
 
 예
 
 ```
-#series-unix
-#series-readium
+
+#series-readium-devlog
+#series-ghost-theme
+
 ```
+
+특징
+
+- Ghost **internal tag**
+- UI에는 노출하지 않음
+- 시리즈 페이지는 Ghost 기본 tag 페이지 사용
 
 ---
 
-# 5. 상단 네비게이션
+### 세컨드태그
 
-Header Navigation
-
-```
-Readium | Tech Docs | UI & Theme | Tech Gear | +More | Series | 🔍 | 🌙
-```
-
----
-
-## 5.1 Primary Categories
-
-각 항목은 Tag 페이지로 이동
-
-```
-/tag/readium
-/tag/tech-docs
-/tag/ui-theme
-/tag/tech-gear
-```
-
----
-
-## 5.2 +More
-
-모든 Primary Category 목록 페이지
-
-```
-/categories
-```
-
----
-
-## 5.3 Series
-
-Series 목록 페이지
-
-```
-/series
-```
-
----
-
-## 5.4 Search
-
-검색 페이지
-
-```
-/search
-```
-
-검색 아이콘은 **돋보기 아이콘**으로 표시한다.
-
----
-
-## 5.5 Theme Toggle
-
-Header 우측에 다크/라이트 토글 버튼을 배치한다.
-
----
-
-# 6. Categories Page
-
-URL
-
-```
-/categories
-```
-
-표시 대상
-
-```
-Primary Categories only
-```
-
-표시 정보
-
-```
-Tag title
-Tag description
-Post count
-```
-
-클릭 시 이동
-
-```
-/tag/{tag-slug}
-```
-
-UI
-
-Wave 기본 카드 스타일을 재사용한다.
-
----
-
-# 7. Series 시스템
-
-Series는 Ghost **Internal Tag** 기반으로 관리한다.
-
-Internal tag 규칙
-
-```
-#series-{slug}
-```
+프라이머리 / 시리즈 태그를 제외한 나머지 태그
 
 예
 
 ```
-#series-unix
-#series-readium
+
+Ghost
+Docker
+Java
+Design System
+
+```
+
+용도
+
+```
+
+검색
+related posts
+
 ```
 
 ---
 
-## 7.1 Series URL
+## 1.2 식별자
+
+| 이름 | 설명 |
+|-----|------|
+tagid | Ghost tag slug
+seriesid | `#series-{seriesid}` 의 id
+
+---
+
+## 1.3 프라이머리태그 규칙
+
+프라이머리태그는 **포스트의 첫 번째 태그로 고정한다**
+
+카테고리 집계 및 카테고리 페이지 구성 시
 
 ```
-/series
-/series/{slug}
-```
 
-예
+프라이머리태그만 사용
 
-```
-/series/unix
-/series/readium
 ```
 
 ---
 
-## 7.2 Series 정렬 기준
+# 2. 공통 정책
 
-Series 내부 포스트 정렬
+## 2.1 페이지네이션
 
-```
-publish date (old → new)
-```
-
----
-
-## 7.3 Series 목록 페이지
-
-URL
+공통 정책
 
 ```
-/series
-```
 
-Series 카드 표시 정보
-
-```
-Series title
-Series description
-Series thumbnail
-Post count
-```
-
-데이터 소스
-
-```
-internal tag
-feature_image
-description
-```
-
-썸네일
-
-```
-tag feature_image 사용
-```
-
-없을 경우
-
-```
-placeholder image
-```
-
----
-
-## 7.4 Series 허브 페이지
-
-URL
-
-```
-/series/{slug}
-```
-
-구조
-
-```
-Series Header
-
-Post List
-```
-
-Series Header 표시 정보
-
-```
-Series title
-Series description
-Series thumbnail
-Post count
-```
-
-Post List
-
-```
-Wave 기본 post list
-```
-
-정렬
-
-```
-publish date (old → new)
-```
-
----
-
-# 8. 포스트 페이지 구조
-
-포스트 페이지 레이아웃
-
-```
-Title
-Meta
-
-AD
-
-Series Navigation
-
-TOC
-
-Content
-
-AD
-
-Series Prev / Next
-
-Related Posts
-
-Tags
-```
-
----
-
-# 9. Series Navigation
-
-포스트 상단에 **접기형 Series TOC**를 표시한다.
-
-기본 상태
-
-```
-Series Title ▼
-```
-
-클릭 시
-
-```
-Series post list
-```
-
-표시 정보
-
-```
-post title
-order number
-```
-
-현재 포스트는 강조 표시한다.
-
-정렬
-
-```
-publish date (old → new)
-```
-
----
-
-# 10. Series Prev / Next
-
-포스트 하단에 시리즈 이전/다음 글 링크를 표시한다.
-
-예
-
-```
-← Unix pipe explained
-
-Unix redirect deep dive →
-```
-
-추가 정보
-
-```
-published X days later
-```
-
----
-
-# 11. Related Posts
-
-표시 위치
-
-```
-Series Prev / Next 아래
-```
-
-표시 개수
-
-```
-4 posts
-```
-
-추천 기준
-
-```
-same primary tag
-exclude current post
-published_at DESC
-```
-
----
-
-# 12. TOC (Table of Contents)
-
-TOC 생성 방식
-
-```
-tocbot
-```
-
-대상
-
-```
-article content
-```
-
-heading
-
-```
-h2
-h3
-```
-
----
-
-## TOC UI
-
-TOC는 **floating button + overlay** 방식으로 표시한다.
-
-버튼 위치
-
-```
-bottom-right
-offset: 24px
-```
-
-버튼 특징
-
-```
-항상 화면에 표시
-스크롤 따라 이동
-드래그 이동 가능
-```
-
-클릭 시
-
-```
-TOC overlay 표시
-```
-
----
-
-# 13. Homepage Layout
-
-홈페이지 구조
-
-```
-Hero Post
-
-Grid Posts (6)
-
-AD
-
-Grid Posts (6)
-
-AD
-```
-
-Hero Post 선택 기준
-
-```
-1 featured=true post
-2 latest post (fallback)
-```
-
-Hero는 광고 카운트에서 제외한다.
-## 13.1 Pagination policy
-
-공통 리스트 페이지네이션 기준
-
-```
 posts_per_page = 10
-```
-
-리스트 광고 간격 기준
 
 ```
+
+모든 리스트 화면은 페이지네이션을 사용한다.
+
+---
+
+## 2.2 광고
+
+광고 규칙
+
+```
+
 ad_interval = 5
-```
-
-즉, 리스트 페이지 1뷰는 다음처럼 구성된다.
 
 ```
-5 posts + 1 ad + 5 posts + 1 ad
-= 10 posts + 2 ads
-```
 
----
-
-# 14. Category Page UX
-
-적용 페이지
+10개 포스트 기준
 
 ```
-/tag/{primary-tag}
+
+5 posts
+1 ad
+5 posts
+1 ad
+
 ```
 
-페이지 구조
+즉
 
 ```
-Category Header
 
-Featured Posts
+10 posts + 2 ads
 
-Post List
-
-AD
 ```
 
 ---
 
-## Featured Posts
+## 2.3 빈 데이터 처리
 
-조건
-
-```
-featured=true
-same tag
-```
-
-표시 개수
+0건일 경우
 
 ```
-2 ~ 3 posts
-```
 
-없을 경우
+nothing happened
 
 ```
-Featured section hidden
-Show Latest posts directly
+
+스타일
+
+```
+
+중앙 정렬
+이탤릭
+
 ```
 
 ---
 
-# 15. 광고 정책
+## 2.4 Post Card 표시 규칙
 
-## 리스트 광고
-
-적용 페이지
+카드 스타일
 
 ```
-homepage
-tag page
-series page
-```
 
-규칙
+Wave 기본
+image left + text right
 
 ```
-5 posts마다 광고 1개
-```
 
-카운트 제외
+표시 정보
 
 ```
-Hero post
-Featured posts
-Series header
-```
 
----
-
-## 포스트 광고
-
-위치
-
-```
-Meta 아래
-본문 하단
-```
-
-총 개수
-
-```
-2 ads
-```
-
----
-
-# 16. 검색
-
-검색 페이지
-
-```
-/search
-```
-
-검색 결과 URL
-
-```
-/search?q={query}
-```
-
-검색 방식
-
-```
-Ghost Content API
-+ Fuse.js
-```
-
-검색 대상
-
-```
+date • reading time
+primary tag
 title
 excerpt
-content
-tags
-```
-
-검색 결과 표시
 
 ```
-Wave 기본 post card
-```
 
-검색 페이지에는 광고를 삽입하지 않는다.
-
----
-
-# 17. 폰트
-
-폰트 로딩 방식
+excerpt
 
 ```
-self-host
-```
 
-위치
+2~3줄 clamp
 
-```
-/assets/fonts
-```
-
-사용 폰트
-
-본문
-
-```
-NanumSquareRound
-```
-
-코드
-
-```
-JetBrains Mono
-```
-
-폰트 형식
-
-```
-woff2
 ```
 
 ---
 
-# 18. 다크 / 라이트 테마
+# 3. Navigation 화면 설계
 
-테마 정책
-
-```
-system preference
-+ user toggle
-+ localStorage
-```
-
-토글 위치
+## 3.1 헤더 항목 순서
 
 ```
-Header
+
+Logo
+Tech Docs
+Tech Gear
+UI & UX
+Readium
+
+* more
+  Series
+  Search
+  Theme toggle
+  Sign in
+  Subscribe
+
+```
+
+---
+
+## 3.2 카테고리 메뉴
+
+프라이머리태그 4개
+
+```
+
+Tech Docs
+Tech Gear
+UI & UX
+Readium
+
 ```
 
 동작
 
 ```
-첫 방문 → OS 테마
-사용자 변경 → localStorage 저장
+
+/tag/{tagid}
+
 ```
 
-초기 렌더링 시 **theme flash 방지 스크립트**를 적용한다.
+이동
 
 ---
 
-# 19. SEO 구조
+## 3.3 +more
 
-블로그는 **Topic Cluster 구조**를 형성한다.
-
-예
+이동
 
 ```
-/series/unix
- ├ stdout-stderr
- ├ pipe
- ├ redirect
-```
 
-카테고리는 **topic hub** 역할을 한다.
+/categories
 
-```
-/tag/tech-docs
- ├ featured posts
- └ latest posts
 ```
 
 ---
 
-# 20. 개발 대상 파일
+## 3.4 Series
 
-Wave 테마 기준 수정 대상
+이동
 
 ```
-partials/navigation.hbs
+
+/series
+
+```
+
+---
+
+## 3.5 Search
+
+이동
+
+```
+
+/search
+
+```
+
+---
+
+# 4. 화면별 레이아웃
+
+---
+
+# 4.0 Home 페이지
+
+URL
+
+```
+
+/
+
+```
+
+목적
+
+- 블로그 아이덴티티 전달
+- 최신 포스트 제공
+
+---
+
+## 레이아웃
+
+```
+
+HEADER
+
+INTRO BLOCK
+
+POST LIST
+
+PAGINATION
+
+```
+
+---
+
+## Intro Block
+
+구성
+
+```
+
+site logo
+site title
+site description
+
+```
+
+정렬
+
+```
+
+중앙 정렬
+
+```
+
+높이
+
+```
+
+160~180px
+
+```
+
+Hero 이미지 사용하지 않는다.
+
+---
+
+## Post List
+
+최신 글 순
+
+```
+
+10 posts
+
+```
+
+광고 삽입
+
+```
+
+5 posts
+ad
+5 posts
+ad
+
+```
+
+---
+
+# 4.1 Tag 페이지
+
+URL
+
+```
+
+/tag/{tagid}
+
+```
+
+카테고리 페이지와 시리즈 페이지는 동일한 UI 구조를 사용한다.
+
+---
+
+## 레이아웃
+
+```
+
+tag image
+tag name
+description
+
+featured post
+
+posts
+
+pagination
+
+```
+
+---
+
+## Featured Post 규칙
+
+선정 기준
+
+```
+
+1순위 feature this post = true
+2순위 해당 tag 최신 포스트
+
+```
+
+표시 개수
+
+```
+
+1개
+
+```
+
+---
+
+# 4.2 Categories 페이지
+
+URL
+
+```
+
+/categories
+
+```
+
+---
+
+## 목적
+
+카테고리 허브
+
+---
+
+## 데이터 규칙
+
+카테고리 = 프라이머리태그
+
+---
+
+## 레이아웃
+
+```
+
+title
+
+featured category
+
+categories list
+
+```
+
+---
+
+# 4.3 Series 페이지
+
+URL
+
+```
+
+/series
+
+```
+
+---
+
+## 데이터 규칙
+
+대상 태그
+
+```
+
+#series-*
+
+```
+
+---
+
+## 레이아웃
+
+```
+
+title
+
+featured series
+
+series list
+
+```
+
+---
+
+## 이동
+
+시리즈 클릭 시
+
+```
+
+/tag/hash-series-{seriesid}
+
+```
+
+---
+
+# 4.4 Post 페이지
+
+URL
+
+```
+
+/{slug}
+
+```
+
+---
+
+## 레이아웃
+
+```
+
+POST HEADER
+
+CONTENT
+
+POST FOOTER
+
+```
+
+---
+
+## Post Header
+
+구성
+
+```
+
+primary tag
+
+title
+
+date • reading time
+
+```
+
+feature image는 **있을 때만 표시**
+
+---
+
+## TOC
+
+우측 플로팅 아이콘
+
+동작
+
+```
+
+hover → TOC 패널 확장
+
+```
+
+heading이 없으면 표시하지 않는다.
+
+---
+
+## Series Navigation
+
+조건
+
+```
+
+#series-* 태그 존재
+
+```
+
+순서 기준
+
+```
+
+published date ascending
+
+```
+
+UI
+
+```
+
+← 이전 글
+다음 글 →
+
+```
+
+---
+
+## Related Posts
+
+추천 규칙
+
+```
+
+1순위
+primary tag 1개 일치
++
+secondary tag 2개 일치
+
+2순위
+primary tag 1개
++
+secondary tag 1개
+
+3순위
+primary tag 1개
+
+```
+
+표시 개수
+
+```
+
+최대 3개
+
+```
+
+---
+
+# 5 이미지 정책
+
+## Feature Image
+
+포스트 카드에서 사용
+
+없을 경우
+
+```
+
+Wave 기본 placeholder
+
+```
+
+---
+
+## Tag Image
+
+카테고리 / 시리즈 페이지 헤더에서 사용
+
+---
+
+## Home Intro
+
+Hero 이미지 사용하지 않는다.
+
+---
+
+# 6 Template 구조
+
+Wave 테마 기준 주요 템플릿
+
+```
+
+default.hbs
+index.hbs
 post.hbs
 tag.hbs
-index.hbs
-assets/js/*
-assets/css/*
-assets/fonts/*
+page.hbs
+author.hbs
+blog.hbs
+rss.hbs
+
 ```
 
 ---
 
-# 21. 구현 우선순위
-
-권장 개발 순서
+## 주요 partial
 
 ```
-1 Navigation
-2 Category page UX
-3 Series system
-4 Post layout
-5 TOC
-6 Search
-7 Ads
-8 Dark/Light theme
-9 Font
+
+partials/loop.hbs
+partials/post-meta.hbs
+partials/feature-image.hbs
+
 ```
 
 ---
 
-# Document Version
+# 7 Routing 구조
+
+routes.yaml
 
 ```
-Version: 1.1
-Theme: Ghost Wave
-Type: Blog Architecture Design
+
+/categories
+/series
+/search
+
+```
+
+커스텀 페이지
+
+```
+
+page-categories.hbs
+page-series.hbs
+page-search.hbs
+
+```
+
+---
+
+# 문서 상태
+
+상태
+
+```
+
+Final
+
+```
+
+문서명
+
+```
+
+기술 블로그 화면설계서 v2
+
+```
 ```
