@@ -35,6 +35,10 @@
 - `tagid`: Ghost tag slug
 - `seriesid`: `#series-{seriesid}`에서 `{seriesid}` 부분
 
+### 1.3 프라이머리태그 고정 규칙
+- 프라이머리태그는 포스트의 첫 번째 태그로 고정한다.
+- 카테고리 집계/카테고리 화면 구성 시 프라이머리태그만 사용한다.
+
 ---
 
 ## 2. 공통 정책
@@ -154,9 +158,10 @@ Logo > #A > #B > #C > search button > theme toggle > sign in > subscribe
 ## 4.2 카테고리 페이지 (`/categories`)
 
 ### 데이터 규칙
+- 카테고리 집계 대상은 "프라이머리태그로 실제 사용된 태그"만 포함한다.
 - 카테고리 = 프라이머리태그
 - featured categories:
-  - 가장 최신 포스트를 가진 카테고리 1개
+  - 집계 대상 카테고리 중 최신 포스트를 가진 카테고리 1개
 - categories:
   - featured categories 제외 나머지
 
@@ -255,6 +260,7 @@ Logo > #A > #B > #C > search button > theme toggle > sign in > subscribe
 ## 문서 상태
 - 상태: 초안
 - 문서명: 기술 블로그 화면설계서 v2
+
 
 
 
