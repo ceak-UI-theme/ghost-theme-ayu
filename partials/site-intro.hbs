@@ -1,0 +1,13 @@
+﻿<section class="site-intro">
+    <div class="site-intro-inner">
+        {{#if @site.logo}}
+            <img class="site-intro-logo" src="{{@site.logo}}" alt="{{@site.title}}">
+        {{/if}}
+
+        <h1 class="site-intro-title">{{@site.title}}</h1>
+
+        {{#if @site.description}}
+            <p class="site-intro-desc">{{@site.description}}</p>
+        {{/if}}
+    </div>
+</section>

@@ -1,4 +1,4 @@
-.site {
+﻿.site {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -16,5 +16,49 @@
 @media (max-width: 767px) {
     .site-content {
         padding: 40px 0;
+    }
+}
+
+.site-intro {
+    min-height: 160px;
+    padding: 28px 0 24px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.site-intro-inner {
+    width: 100%;
+    max-width: 760px;
+}
+
+.site-intro-logo {
+    display: block;
+    max-height: 48px;
+    width: auto;
+    margin: 0 auto 12px;
+}
+
+.site-intro-title {
+    margin: 0;
+    font-size: 3.2rem;
+    line-height: 1.2;
+}
+
+.site-intro-desc {
+    margin: 10px auto 0;
+    max-width: 640px;
+    opacity: 0.75;
+}
+
+@media (max-width: 767px) {
+    .site-intro {
+        min-height: 160px;
+        padding: 24px 0;
+    }
+
+    .site-intro-title {
+        font-size: 2.6rem;
     }
 }
