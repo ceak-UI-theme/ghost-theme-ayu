@@ -1,8 +1,9 @@
-$(function () {
+﻿$(function () {
     'use strict';
     cover();
     pagination(true);
     player();
+    themeToggle();
 });
 
 function cover() {
@@ -13,6 +14,51 @@ function cover() {
 
     image.imagesLoaded(function () {
         $('.site-cover').addClass('initialized');
+    });
+}
+
+function themeToggle() {
+    'use strict';
+
+    var root = document.documentElement;
+    var toggles = document.querySelectorAll('.js-theme-toggle');
+    var storageKey = 'theme-preference';
+
+    if (!toggles.length) {
+        return;
+    }
+
+    function setTheme(theme) {
+        var isDark = theme === 'dark';
+        root.classList.toggle('theme-dark', isDark);
+
+        toggles.forEach(function (toggle) {
+            toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+            toggle.textContent = isDark ? 'Light' : 'Dark';
+            toggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+        });
+    }
+
+    var savedTheme = null;
+    try {
+        savedTheme = localStorage.getItem(storageKey);
+    } catch (error) {
+        savedTheme = null;
+    }
+
+    setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+
+    toggles.forEach(function (toggle) {
+        toggle.addEventListener('click', function () {
+            var nextTheme = root.classList.contains('theme-dark') ? 'light' : 'dark';
+            setTheme(nextTheme);
+
+            try {
+                localStorage.setItem(storageKey, nextTheme);
+            } catch (error) {
+                // Ignore storage errors in restricted environments.
+            }
+        });
     });
 }
 

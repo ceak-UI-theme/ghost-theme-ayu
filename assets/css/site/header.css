@@ -1,5 +1,23 @@
-.gh-head {
+﻿.gh-head {
     font-weight: 500;
+}
+
+.gh-theme-toggle {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+}
+
+.gh-theme-toggle:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 767px) {
+    .gh-theme-toggle {
+        font-size: 2rem;
+    }
 }
 
 /* .gh-head-btn.gh-btn {
