@@ -16,6 +16,12 @@
   - https://vscodethemes.com/e/teabyii.ayu/ayu-mirage-bordered
   - https://github.com/ayu-theme/ayu-colors
 
+## 0.3 타이포그래피 정책
+- 기본 본문 폰트: `NanumSquareRound`
+- 코드 폰트: `JetBrains Mono`
+- 폰트 파일 위치: `/assets/fonts`
+- 운영 원칙: 외부 CDN 대신 self-host 우선
+
 ---
 
 ## 1. 용어 정의
@@ -249,6 +255,7 @@ Logo > #A > #B > #C > search button > theme toggle > sign in > subscribe
 ## 문서 상태
 - 상태: 초안
 - 문서명: 기술 블로그 화면설계서 v2
+
 
 
 
