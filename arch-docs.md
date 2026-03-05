@@ -2,7 +2,7 @@
 
 ## Ghost Wave Theme 기반 기술 블로그 구조 설계 문서
 
-Version: 1.0
+Version: 1.1
 Platform: Ghost CMS
 Theme: Wave
 
@@ -496,6 +496,26 @@ Hero Post 선택 기준
 ```
 
 Hero는 광고 카운트에서 제외한다.
+## 13.1 Pagination policy
+
+공통 리스트 페이지네이션 기준
+
+```
+posts_per_page = 10
+```
+
+리스트 광고 간격 기준
+
+```
+ad_interval = 5
+```
+
+즉, 리스트 페이지 1뷰는 다음처럼 구성된다.
+
+```
+5 posts + 1 ad + 5 posts + 1 ad
+= 10 posts + 2 ads
+```
 
 ---
 
@@ -539,7 +559,8 @@ same tag
 없을 경우
 
 ```
-latest posts fallback
+Featured section hidden
+Show Latest posts directly
 ```
 
 ---
@@ -559,7 +580,7 @@ series page
 규칙
 
 ```
-6 posts마다 광고 1개
+5 posts마다 광고 1개
 ```
 
 카운트 제외
@@ -752,7 +773,7 @@ assets/fonts/*
 # Document Version
 
 ```
-Version: 1.0
+Version: 1.1
 Theme: Ghost Wave
 Type: Blog Architecture Design
 ```
