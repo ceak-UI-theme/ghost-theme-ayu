@@ -3,6 +3,19 @@
 ## 0. 문서 목적
 이 문서는 개발 착수 전 개념을 정리하고, 화면 레이아웃과 동작 규칙을 정의하기 위한 화면설계서이다.
 
+## 0.1 테마 기준 및 커스터마이징 원칙
+- 기본 베이스는 Ghost `Wave` 테마를 사용한다.
+- 구현은 Wave 기본 구조를 존중하되, 본 문서에서 정의한 항목에 한해 커스터마이징한다.
+- 커스터마이징 우선순위는 `정보구조 > 탐색 UX > 테마 톤 일관성` 순서로 적용한다.
+
+## 0.2 테마(다크/라이트) 정책
+- 테마 커스터마이징은 필수 항목이다.
+- 컬러 시스템 기준은 `Ayu Dark / Ayu Mirage`를 사용한다.
+- 참고 기준:
+  - https://vscodethemes.com/e/teabyii.ayu/ayu-dark-bordered
+  - https://vscodethemes.com/e/teabyii.ayu/ayu-mirage-bordered
+  - https://github.com/ayu-theme/ayu-colors
+
 ---
 
 ## 1. 용어 정의
@@ -236,6 +249,7 @@ Logo > #A > #B > #C > search button > theme toggle > sign in > subscribe
 ## 문서 상태
 - 상태: 초안
 - 문서명: 기술 블로그 화면설계서 v2
+
 
 
 
