@@ -1,0 +1,13 @@
+﻿{{#if pagination}}
+<nav class="ayu-pagination" aria-label="Pagination">
+    {{#if prev}}
+        <a class="ayu-page-link" href="{{page_url prev}}">Prev</a>
+    {{/if}}
+
+    <span class="ayu-page-link is-active" aria-current="page">{{pagination.page}}</span>
+
+    {{#if next}}
+        <a class="ayu-page-link" href="{{page_url next}}">Next</a>
+    {{/if}}
+</nav>
+{{/if}}
