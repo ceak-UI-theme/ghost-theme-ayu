@@ -12,6 +12,11 @@
     normalizeInternalPostTags(document);
 });
 
+var AYU_GLOBALS = {
+    PAGINATION_PAGE_SIZE: 10,
+    PROMO_INSERT_EVERY: 5
+};
+
 function buildPromoCardHtml() {
     'use strict';
 
@@ -59,7 +64,7 @@ function injectPromoSlots(root) {
 
         posts.forEach(function (postEl, index) {
             var visibleIndex = index + 1;
-            if (visibleIndex % 5 !== 0) {
+            if (visibleIndex % AYU_GLOBALS.PROMO_INSERT_EVERY !== 0) {
                 return;
             }
 
@@ -331,7 +336,7 @@ function themeToggle() {
 function renderSearchPage() {
     'use strict';
 
-    var SEARCH_PAGE_SIZE = 10;
+    var SEARCH_PAGE_SIZE = AYU_GLOBALS.PAGINATION_PAGE_SIZE;
 
     var isSearchPage = /^\/search\/?$/.test(window.location.pathname);
     if (!isSearchPage) {
@@ -1240,7 +1245,7 @@ function renderSeriesDetail() {
 
     var tagUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&filter=slug:' + encodeURIComponent(internalSlug) + '&limit=1';
     var featuredUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&filter=tag:' + encodeURIComponent(internalSlug) + '+featured:true&limit=1';
-    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&filter=tag:' + encodeURIComponent(internalSlug) + '&limit=10&page=' + String(page);
+    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&filter=tag:' + encodeURIComponent(internalSlug) + '&limit=' + String(AYU_GLOBALS.PAGINATION_PAGE_SIZE) + '&page=' + String(page);
 
     Promise.all([
         fetch(tagUrl).then(function (res) { return res.ok ? res.json() : null; }),
