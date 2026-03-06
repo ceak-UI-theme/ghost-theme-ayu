@@ -7,6 +7,7 @@
     renderPrimaryCategories();
     renderSeriesTags();
     renderSeriesDetail();
+    renderPostSeriesNavigation();
     renderSearchPage();
     injectPromoSlots(document);
     normalizeInternalPostTags(document);
@@ -1321,3 +1322,125 @@ function renderSeriesDetail() {
 
 
 
+
+
+function renderPostSeriesNavigation() {
+    'use strict';
+
+    if (!document.body.classList.contains('post-template')) {
+        return;
+    }
+
+    var navSection = document.getElementById('post-series-nav');
+    var navTitle = document.getElementById('post-series-nav-title');
+    var navList = document.getElementById('post-series-nav-list');
+
+    if (!navSection || !navTitle || !navList) {
+        return;
+    }
+
+    var articleEl = document.querySelector('article.single');
+    if (!articleEl) {
+        return;
+    }
+
+    var className = articleEl.className || '';
+    var seriesMatch = className.match(/(?:^|\s)tag-hash-series-([a-z0-9-]+)(?:\s|$)/i);
+
+    if (!seriesMatch || !seriesMatch[1]) {
+        navSection.hidden = true;
+        return;
+    }
+
+    var seriesSlug = seriesMatch[1].toLowerCase();
+    var currentSlug = (navSection.getAttribute('data-post-slug') || window.location.pathname.replace(/^\/+|\/+$/g, '')).toLowerCase();
+    var keyScript = document.querySelector('script[data-key]');
+    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+
+    if (!contentKey) {
+        navSection.hidden = true;
+        return;
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/\'/g, '&#39;');
+    }
+
+    function displaySeriesName(tag) {
+        var name = tag && tag.name ? tag.name : '';
+
+        if (name.indexOf('#series-') === 0) {
+            return name.substring('#series-'.length);
+        }
+
+        if (name.indexOf('series-') === 0) {
+            return name.substring('series-'.length);
+        }
+
+        return name || seriesSlug;
+    }
+
+    function postUrl(post) {
+        if (post.url) {
+            return post.url;
+        }
+
+        return '/' + encodeURIComponent(post.slug || '') + '/';
+    }
+
+    var internalSlug = 'hash-series-' + seriesSlug;
+    var tagUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&filter=slug:' + encodeURIComponent(internalSlug) + '&limit=1';
+    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&filter=tag:' + encodeURIComponent(internalSlug) + '&fields=id,title,slug,url,published_at&order=published_at%20asc&limit=all';
+
+    Promise.all([
+        fetch(tagUrl).then(function (res) {
+            if (!res.ok) {
+                throw new Error('Failed to fetch series tag');
+            }
+
+            return res.json();
+        }),
+        fetch(postsUrl).then(function (res) {
+            if (!res.ok) {
+                throw new Error('Failed to fetch series posts');
+            }
+
+            return res.json();
+        })
+    ])
+        .then(function (results) {
+            var tag = results[0] && results[0].tags ? results[0].tags[0] : null;
+            var posts = results[1] && results[1].posts ? results[1].posts : [];
+
+            if (!posts.length) {
+                navSection.hidden = true;
+                return;
+            }
+
+            var seriesName = displaySeriesName(tag);
+            navTitle.innerHTML = 'Series: <a href="/series/?series=' + encodeURIComponent(seriesSlug) + '">' + escapeHtml(seriesName) + '</a>';
+
+            navList.innerHTML = posts.map(function (post) {
+                var slug = (post.slug || '').toLowerCase();
+                var isCurrent = slug === currentSlug;
+                var itemClass = isCurrent ? ' class="is-active"' : '';
+                var safeTitle = escapeHtml(post.title || 'Untitled');
+
+                if (isCurrent) {
+                    return '<li' + itemClass + '><span>' + safeTitle + '</span></li>';
+                }
+
+                return '<li' + itemClass + '><a href="' + escapeHtml(postUrl(post)) + '">' + safeTitle + '</a></li>';
+            }).join('');
+
+            navSection.hidden = false;
+        })
+        .catch(function () {
+            navSection.hidden = true;
+        });
+}
