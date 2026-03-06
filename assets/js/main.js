@@ -151,7 +151,10 @@ function themeToggle() {
     }
 
     function setTheme(theme) {
-        var isDark = theme === 'dark';
+        var nextTheme = theme === 'dark' ? 'dark' : 'light';
+        var isDark = nextTheme === 'dark';
+
+        root.setAttribute('data-theme', nextTheme);
         root.classList.toggle('theme-dark', isDark);
 
         toggles.forEach(function (toggle) {
@@ -168,11 +171,12 @@ function themeToggle() {
         savedTheme = null;
     }
 
-    setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+    setTheme(savedTheme === 'dark' ? 'dark' : (root.getAttribute('data-theme') || 'light'));
+
 
     toggles.forEach(function (toggle) {
         toggle.addEventListener('click', function () {
-            var nextTheme = root.classList.contains('theme-dark') ? 'light' : 'dark';
+            var nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             setTheme(nextTheme);
 
             try {

@@ -1,19 +1,60 @@
 :root {
-    --brand-color: var(--ghost-accent-color, #fc7e0f);
-    --primary-text-color: #5a656b;
-    --secondary-text-color: #aaa;
-    --white-color: #fff;
-    --light-gray-color: #f6f6f6;
-    --mid-gray-color: #e6e6e6;
-    --dark-gray-color: #a8aab1;
-    --darker-gray-color: #1a1a1a;
-    --black-color: #000;
     --animation-base: ease-in-out;
     --font-sans: 'NanumSquareRound', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
     --font-serif: Lora, Times, serif;
     --font-mono: 'JetBrains Mono', Menlo, Consolas, Monaco, 'Liberation Mono', 'Lucida Console', monospace;
     --content-font-size: 1.6rem;
     --header-spacing: 80px;
+
+    /* Fallback to Ayu Mirage when data-theme is absent */
+    --bg-page: #1f2430;
+    --bg-surface-1: #242936;
+    --bg-surface-2: #2a3142;
+    --bg-elevated: #313a4f;
+    --bg-code: #202734;
+    --bg-overlay: rgba(11, 15, 23, 0.72);
+
+    --text-primary: #d4d7dd;
+    --text-secondary: #adb5c4;
+    --text-muted: #8f98aa;
+    --text-strong: #f3f4f6;
+
+    --border-subtle: #30384b;
+    --border-default: #3a445a;
+    --border-strong: #505d79;
+
+    --accent-primary: #ffb454;
+    --accent-link: #73d0ff;
+    --accent-hover: #8ad9ff;
+    --accent-soft: rgba(255, 180, 84, 0.16);
+
+    --state-success: #aad94c;
+    --state-warning: #ffb454;
+    --state-danger: #f28779;
+    --state-focus: #7fd7ff;
+
+    --shadow-soft: 0 6px 20px rgba(7, 10, 18, 0.32);
+    --shadow-focus: 0 0 0 3px rgba(127, 215, 255, 0.26);
+
+    /* Backward-compatible aliases used by Wave + existing custom CSS */
+    --brand-color: var(--accent-primary);
+    --primary-text-color: var(--text-primary);
+    --secondary-text-color: var(--text-secondary);
+    --white-color: var(--text-strong);
+    --light-gray-color: var(--bg-surface-1);
+    --mid-gray-color: var(--border-default);
+    --dark-gray-color: var(--text-muted);
+    --darker-gray-color: var(--text-strong);
+
+    --color-primary-text: var(--text-primary);
+    --color-secondary-text: var(--text-secondary);
+    --color-white: var(--bg-page);
+    --color-lighter-gray: var(--bg-surface-1);
+    --color-light-gray: var(--border-subtle);
+    --color-mid-gray: var(--border-default);
+    --color-dark-gray: var(--text-muted);
+    --color-darker-gray: var(--text-strong);
+    --color-black: #000;
 }
 
 @media (max-width: 767px) {
@@ -22,14 +63,67 @@
     }
 }
 
-html.theme-dark {
-    --color-primary-text: #d2d8de;
-    --color-secondary-text: #9aa6b2;
-    --color-white: #0f141a;
-    --color-lighter-gray: #161e27;
-    --color-light-gray: #233040;
-    --color-mid-gray: #415469;
-    --color-dark-gray: #aeb9c3;
-    --color-darker-gray: #edf2f7;
+html[data-theme="light"] {
+    /* Ayu Mirage */
+    --bg-page: #1f2430;
+    --bg-surface-1: #242936;
+    --bg-surface-2: #2a3142;
+    --bg-elevated: #313a4f;
+    --bg-code: #202734;
+    --bg-overlay: rgba(11, 15, 23, 0.72);
+
+    --text-primary: #d4d7dd;
+    --text-secondary: #adb5c4;
+    --text-muted: #8f98aa;
+    --text-strong: #f3f4f6;
+
+    --border-subtle: #30384b;
+    --border-default: #3a445a;
+    --border-strong: #505d79;
+
+    --accent-primary: #ffb454;
+    --accent-link: #73d0ff;
+    --accent-hover: #8ad9ff;
+    --accent-soft: rgba(255, 180, 84, 0.16);
+
+    --state-success: #aad94c;
+    --state-warning: #ffb454;
+    --state-danger: #f28779;
+    --state-focus: #7fd7ff;
+
+    --shadow-soft: 0 6px 20px rgba(7, 10, 18, 0.32);
+    --shadow-focus: 0 0 0 3px rgba(127, 215, 255, 0.26);
 }
 
+html[data-theme="dark"],
+html.theme-dark {
+    /* Ayu Dark */
+    --bg-page: #0b0f17;
+    --bg-surface-1: #111723;
+    --bg-surface-2: #151d2a;
+    --bg-elevated: #1b2535;
+    --bg-code: #0f1622;
+    --bg-overlay: rgba(2, 4, 8, 0.78);
+
+    --text-primary: #c7cbd1;
+    --text-secondary: #9aa4b2;
+    --text-muted: #7f8a99;
+    --text-strong: #f0f3f8;
+
+    --border-subtle: #1f2a3b;
+    --border-default: #283449;
+    --border-strong: #3a4a66;
+
+    --accent-primary: #e6b450;
+    --accent-link: #5ccfe6;
+    --accent-hover: #80d8eb;
+    --accent-soft: rgba(230, 180, 80, 0.16);
+
+    --state-success: #aad94c;
+    --state-warning: #f29e74;
+    --state-danger: #f07178;
+    --state-focus: #6dc8ff;
+
+    --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-focus: 0 0 0 3px rgba(109, 200, 255, 0.28);
+}
