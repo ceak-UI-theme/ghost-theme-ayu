@@ -1,4 +1,4 @@
-.term {
+﻿.term {
     max-width: 840px;
     margin: 0 auto 80px;
 }
@@ -187,7 +187,7 @@
     margin-top: 56px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
     .category-post .post-media {
         min-height: 80px;
     }
@@ -207,3 +207,4 @@
 .post-tag.is-internal-series:hover {
     color: #0b8e8d;
 }
+
