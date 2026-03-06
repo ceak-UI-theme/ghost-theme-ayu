@@ -3,11 +3,11 @@ routes:
     template: rss
     content_type: text/xml
   /categories/:
-    template: categories
+    template: page-categories
   /series/:
-    template: series
+    template: page-series
   /search/:
-    template: search
+    template: page-search
 
 collections:
   /:
