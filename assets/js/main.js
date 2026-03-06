@@ -128,13 +128,6 @@ function normalizeInternalPostTags(root) {
         tagEl.setAttribute('title', seriesSlug);
     });
 
-    var containers = scope.querySelectorAll ? scope.querySelectorAll('.post-meta-tags') : [];
-    Array.prototype.slice.call(containers).forEach(function (container) {
-        if (!container.querySelector('.post-tag')) {
-            container.remove();
-        }
-    });
-
     var posts = scope.querySelectorAll ? scope.querySelectorAll('article.post') : [];
     Array.prototype.slice.call(posts).forEach(function (postEl) {
         if (!postEl || !postEl.className) {
@@ -171,8 +164,55 @@ function normalizeInternalPostTags(root) {
         link.textContent = seriesSlug;
         tagsWrap.appendChild(link);
     });
-}
 
+    var containers = scope.querySelectorAll ? scope.querySelectorAll('.post-meta-tags') : [];
+    Array.prototype.slice.call(containers).forEach(function (container) {
+        var tagNodes = Array.prototype.slice.call(container.querySelectorAll('a.post-tag'));
+
+        if (!tagNodes.length) {
+            container.remove();
+            return;
+        }
+
+        tagNodes.forEach(function (node) {
+            node.classList.remove('is-primary-tag', 'is-series-tag', 'is-secondary-tag');
+        });
+
+        var seriesTags = tagNodes.filter(function (node) {
+            var href = node.getAttribute('href') || '';
+            return node.classList.contains('is-internal-series') || href.indexOf('/series/?series=') === 0;
+        });
+
+        var nonSeriesTags = tagNodes.filter(function (node) {
+            return seriesTags.indexOf(node) === -1;
+        });
+
+        var primaryTag = nonSeriesTags.length ? nonSeriesTags[0] : null;
+        var secondaryTags = primaryTag ? nonSeriesTags.slice(1) : [];
+
+        var ordered = [];
+        if (primaryTag) {
+            ordered.push(primaryTag);
+        }
+        ordered = ordered.concat(seriesTags, secondaryTags);
+
+        ordered.forEach(function (node, index) {
+            if (primaryTag && node === primaryTag && index === 0) {
+                node.classList.add('is-primary-tag');
+            } else if (seriesTags.indexOf(node) !== -1) {
+                node.classList.add('is-series-tag');
+            } else {
+                node.classList.add('is-secondary-tag');
+            }
+
+            container.appendChild(node);
+        });
+
+        if (!container.querySelector('.post-tag')) {
+            container.remove();
+        }
+    });
+}
 function cover() {
     'use strict';
 
@@ -1266,6 +1306,7 @@ function renderSeriesDetail() {
             paginationEl.innerHTML = '';
         });
 }
+
 
 
 

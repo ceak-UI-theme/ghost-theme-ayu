@@ -281,20 +281,50 @@ figcaption,
 /* Metadata and chips */
 .post-meta-tags .post-tag,
 .post-meta .post-tag {
-    color: var(--accent-primary);
+    color: var(--text-secondary);
 }
 
 .post-meta-tags .post-tag:hover,
 .post-meta .post-tag:hover {
+    color: var(--text-primary);
+}
+
+.post-meta-tags .post-tag + .post-tag::before,
+.post-meta .post-tag + .post-tag::before {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.post-meta-tags .post-tag.is-primary-tag,
+.post-meta .post-tag.is-primary-tag {
+    color: var(--accent-primary);
+}
+
+.post-meta-tags .post-tag.is-primary-tag:hover,
+.post-meta .post-tag.is-primary-tag:hover {
     color: var(--accent-hover);
 }
 
+.post-meta-tags .post-tag.is-series-tag,
+.post-meta .post-tag.is-series-tag,
 .post-tag.is-internal-series {
     color: #4dc4b8;
 }
 
+.post-meta-tags .post-tag.is-series-tag:hover,
+.post-meta .post-tag.is-series-tag:hover,
 .post-tag.is-internal-series:hover {
     color: #6ad0c6;
+}
+
+.post-meta-tags .post-tag.is-secondary-tag,
+.post-meta .post-tag.is-secondary-tag {
+    color: var(--text-secondary);
+}
+
+.post-meta-tags .post-tag.is-secondary-tag:hover,
+.post-meta .post-tag.is-secondary-tag:hover {
+    color: var(--text-primary);
 }
 
 /* Footer */
@@ -512,4 +542,5 @@ figcaption,
         width: 100%;
     }
 }
+
 
