@@ -310,3 +310,112 @@ figcaption,
 .gh-foot a:hover {
     color: var(--text-strong);
 }
+/* Home hero/list spacing + unified post card group */
+.home-template .site-intro {
+    margin-bottom: 28px;
+}
+
+.home-template .site-intro + .post-feed {
+    margin-top: 8px;
+}
+
+.post-feed .post {
+    align-items: stretch;
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02);
+    padding: 20px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.post-feed .post:hover {
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-1px);
+}
+
+.post-feed .post .post-wrapper {
+    min-width: 0;
+}
+
+.post-feed .post.post-promo {
+    background: var(--bg-surface-2);
+    border-style: dashed;
+}
+
+.post-feed .post.post-promo:hover {
+    transform: none;
+}
+
+.tag-featured .post-feed .post,
+.tag-post-list .post-feed .post,
+.category-featured .post-feed .post,
+.category-post-list .post-feed .post {
+    background: var(--bg-surface-1);
+}
+
+@media (max-width: 767px) {
+    .home-template .site-intro {
+        margin-bottom: 20px;
+    }
+
+    .post-feed .post {
+        border-radius: 12px;
+        padding: 14px;
+    }
+}
+/* Section polish: consistent intro spacing and transparent list wrappers */
+.site-main > .site-intro {
+    margin-bottom: 28px;
+}
+
+.site-intro {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.term {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 24px 28px;
+}
+
+.term-name {
+    margin: 0;
+}
+
+.term-description {
+    margin-top: 10px;
+}
+
+.tag-featured,
+.tag-post-list,
+.category-featured,
+.category-post-list {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+}
+
+@media (max-width: 767px) {
+    .site-main > .site-intro {
+        margin-bottom: 20px;
+    }
+
+    .site-intro {
+        border-radius: 12px;
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .term {
+        border-radius: 12px;
+        padding: 16px 14px;
+    }
+}
