@@ -1,10 +1,26 @@
 ﻿{{!< default}}
 
 <div class="gh-outer">
-<main class="site-main gh-inner">
-    <section class="term">
+<main class="site-main gh-inner search-page">
+    <section class="term search-term">
         <h1 class="term-name">Search</h1>
-        <div class="term-description">Search page placeholder.</div>
+        <div class="term-description">Find posts by title and summary.</div>
+    </section>
+
+    <section class="search-shell" aria-label="Search posts">
+        <form class="search-form" role="search" novalidate>
+            <label class="search-label" for="search-input">Query</label>
+            <div class="search-input-row">
+                <input id="search-input" class="search-input" type="search" name="q" autocomplete="off" placeholder="Search posts" />
+                <button class="search-submit gh-btn" type="submit">Search</button>
+            </div>
+            <p id="search-state" class="search-state" aria-live="polite">Enter a query and press Search.</p>
+        </form>
+    </section>
+
+    <section class="search-results-wrap" aria-label="Search results">
+        <div id="search-results" class="post-feed gh-feed js-promo-feed"></div>
+        <nav id="search-pagination" class="ayu-pagination search-pagination" aria-label="Search pagination"></nav>
     </section>
 </main>
 </div>

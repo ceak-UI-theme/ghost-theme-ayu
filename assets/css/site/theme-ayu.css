@@ -1,4 +1,4 @@
-/* Ayu semantic system overrides: Mirage(light) / Dark(dark) */
+﻿/* Ayu semantic system overrides: Mirage(light) / Dark(dark) */
 
 html,
 body {
@@ -419,3 +419,97 @@ figcaption,
         padding: 16px 14px;
     }
 }
+/* Search page */
+.search-page {
+    max-width: 960px;
+}
+
+.search-shell {
+    margin: 0 auto 36px;
+    max-width: 840px;
+}
+
+.search-form {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.search-label {
+    color: var(--text-secondary);
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.search-input {
+    width: 100%;
+    font-size: 1.7rem;
+    line-height: 1.4;
+    padding: 12px 14px;
+}
+
+.search-state {
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    margin: 10px 2px 0;
+}
+
+.search-state[data-state="loading"] {
+    color: var(--text-secondary);
+}
+
+.search-state[data-state="success"] {
+    color: var(--state-success);
+}
+
+.search-state[data-state="empty"] {
+    color: var(--state-warning);
+}
+
+.search-state[data-state="error"] {
+    color: var(--state-danger);
+}
+
+.search-results-wrap {
+    margin: 0 auto;
+    max-width: 840px;
+}
+
+.search-input-row {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+}
+
+.search-submit {
+    flex: 0 0 auto;
+    height: 48px;
+    min-width: 96px;
+}
+
+.search-pagination {
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.search-pagination .ayu-page-link {
+    cursor: pointer;
+}
+
+@media (max-width: 767px) {
+    .search-input-row {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-submit {
+        width: 100%;
+    }
+}
+
