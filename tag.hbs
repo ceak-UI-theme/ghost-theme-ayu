@@ -1,118 +1,65 @@
-{{!< default}}
+﻿{{!< default}}
 
 <div class="gh-outer">
 <main class="site-main gh-inner">
 
-    {{#tag}}
-        <section class="term">
-            <h1 class="term-name">{{name}}</h1>
-            {{#if description}}
-                <div class="term-description">{{description}}</div>
-            {{/if}}
-        </section>
-
-        {{#match slug "readium"}}
-            <section class="category-featured" aria-label="Featured posts">
-                <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
-                    {{#if posts}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach posts}}
-                                {{> "loop"}}
-                            {{/foreach}}
-                        </div>
-                    {{else}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#get "posts" filter="tag:{{slug}}" include="tags,authors" limit="3" order="published_at desc"}}
-                                {{#foreach posts}}
-                                    {{> "loop"}}
-                                {{/foreach}}
-                            {{/get}}
-                        </div>
-                    {{/if}}
-                {{/get}}
-            </section>
-        {{else match slug "tech-docs"}}
-            <section class="category-featured" aria-label="Featured posts">
-                <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
-                    {{#if posts}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach posts}}
-                                {{> "loop"}}
-                            {{/foreach}}
-                        </div>
-                    {{else}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#get "posts" filter="tag:{{slug}}" include="tags,authors" limit="3" order="published_at desc"}}
-                                {{#foreach posts}}
-                                    {{> "loop"}}
-                                {{/foreach}}
-                            {{/get}}
-                        </div>
-                    {{/if}}
-                {{/get}}
-            </section>
-        {{else match slug "ui-ux"}}
-            <section class="category-featured" aria-label="Featured posts">
-                <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
-                    {{#if posts}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach posts}}
-                                {{> "loop"}}
-                            {{/foreach}}
-                        </div>
-                    {{else}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#get "posts" filter="tag:{{slug}}" include="tags,authors" limit="3" order="published_at desc"}}
-                                {{#foreach posts}}
-                                    {{> "loop"}}
-                                {{/foreach}}
-                            {{/get}}
-                        </div>
-                    {{/if}}
-                {{/get}}
-            </section>
-        {{else match slug "tech-gear"}}
-            <section class="category-featured" aria-label="Featured posts">
-                <h2 class="category-featured-title">Featured posts</h2>
-                {{#get "posts" filter="tag:{{slug}}+featured:true" include="tags,authors" limit="3"}}
-                    {{#if posts}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#foreach posts}}
-                                {{> "loop"}}
-                            {{/foreach}}
-                        </div>
-                    {{else}}
-                        <div class="post-feed gh-feed category-featured-feed">
-                            {{#get "posts" filter="tag:{{slug}}" include="tags,authors" limit="3" order="published_at desc"}}
-                                {{#foreach posts}}
-                                    {{> "loop"}}
-                                {{/foreach}}
-                            {{/get}}
-                        </div>
-                    {{/if}}
-                {{/get}}
-            </section>
-        {{/match}}
-    {{/tag}}
-
-    <section class="category-post-list" aria-label="Post list">
-        <h2 class="category-post-list-title">Latest posts</h2>
-        <div class="post-feed gh-feed">
-            {{#foreach posts}}
-                {{> "loop"}}
-                {{#match @number "6|12|18|24|30"}}
-                    <article class="post post-ad category-ad-inline" aria-label="Advertisement">
-                        <div class="category-ad-inline-text">Ad slot</div>
-                    </article>
-                {{/match}}
-            {{/foreach}}
-        </div>
+    <section class="term term-tag-header">
+        {{#if tag.feature_image}}
+            <div class="tag-header-image-wrap">
+                <img class="tag-header-image" src="{{img_url tag.feature_image size="l"}}" alt="{{tag.name}}">
+            </div>
+        {{/if}}
+        <h1 class="term-name">{{tag.name}}</h1>
+        {{#if tag.description}}
+            <div class="term-description">{{tag.description}}</div>
+        {{/if}}
     </section>
 
-    {{> "ayu-pagination"}}
+    {{#get "posts" filter="tag:{{tag.slug}}+featured:true" include="tags,authors" limit="1"}}
+        {{#if posts}}
+            <section class="tag-featured" aria-label="Featured post">
+                <h2 class="tag-featured-title">Featured post</h2>
+                <div class="post-feed gh-feed">
+                    {{#foreach posts limit="1"}}
+                        {{> "loop"}}
+                    {{/foreach}}
+                </div>
+            </section>
+
+            <section class="tag-post-list" aria-label="Post list">
+                <h2 class="tag-post-list-title">Latest posts</h2>
+                <div class="post-feed gh-feed">
+                    {{#foreach ../posts}}
+                        {{#unless featured}}
+                            {{> "loop"}}
+                        {{/unless}}
+                    {{/foreach}}
+                </div>
+            </section>
+
+            {{pagination}}
+        {{else}}
+            <section class="tag-featured" aria-label="Featured post">
+                <h2 class="tag-featured-title">Featured post</h2>
+                <div class="post-feed gh-feed">
+                    {{#foreach ../posts limit="1"}}
+                        {{> "loop"}}
+                    {{/foreach}}
+                </div>
+            </section>
+
+            <section class="tag-post-list" aria-label="Post list">
+                <h2 class="tag-post-list-title">Latest posts</h2>
+                <div class="post-feed gh-feed">
+                    {{#foreach ../posts from="2"}}
+                        {{> "loop"}}
+                    {{/foreach}}
+                </div>
+            </section>
+
+            {{pagination}}
+        {{/if}}
+    {{/get}}
 
 </main>
 </div>

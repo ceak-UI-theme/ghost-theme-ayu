@@ -1,9 +1,10 @@
-﻿$(function () {
+$(function () {
     'use strict';
     cover();
-    pagination(true);
     player();
     themeToggle();
+    renderAyuPagination();
+    renderPrimaryCategories();
 });
 
 function cover() {
@@ -14,6 +15,60 @@ function cover() {
 
     image.imagesLoaded(function () {
         $('.site-cover').addClass('initialized');
+    });
+}
+
+function renderAyuPagination() {
+    'use strict';
+
+    var paginations = document.querySelectorAll('.js-ayu-pagination');
+
+    if (!paginations.length) {
+        return;
+    }
+
+    paginations.forEach(function (paginationEl) {
+        var currentPage = parseInt(paginationEl.getAttribute('data-current-page'), 10);
+        var totalPages = parseInt(paginationEl.getAttribute('data-total-pages'), 10);
+
+        if (!currentPage || !totalPages || totalPages < 2) {
+            paginationEl.innerHTML = '';
+            return;
+        }
+
+        var path = window.location.pathname;
+        var basePath = path.replace(/\/page\/\d+\/?$/, '/');
+        if (!basePath.endsWith('/')) {
+            basePath += '/';
+        }
+
+        function pageUrl(page) {
+            if (page === 1) {
+                return basePath;
+            }
+
+            return basePath + 'page/' + page + '/';
+        }
+
+        var html = [];
+
+        if (currentPage > 1) {
+            html.push('<a class="ayu-page-link" href="' + pageUrl(currentPage - 1) + '">&lt;</a>');
+        }
+
+        for (var page = 1; page <= totalPages; page += 1) {
+            if (page === currentPage) {
+                html.push('<span class="ayu-page-link is-active" aria-current="page">' + page + '</span>');
+            } else {
+                html.push('<a class="ayu-page-link" href="' + pageUrl(page) + '">' + page + '</a>');
+            }
+        }
+
+        if (currentPage < totalPages) {
+            html.push('<a class="ayu-page-link" href="' + pageUrl(currentPage + 1) + '">&gt;</a>');
+        }
+
+        paginationEl.innerHTML = html.join('');
     });
 }
 
@@ -150,3 +205,160 @@ function player() {
         speedButton.text(playerSpeed + 'x');
     });
 }
+
+
+
+
+function renderPrimaryCategories() {
+    'use strict';
+
+    var isCategoriesPage = /^\/categories\/?$/.test(window.location.pathname);
+    if (!isCategoriesPage) {
+        return;
+    }
+
+    var featuredGrid = document.getElementById('primary-featured-grid');
+    var listGrid = document.getElementById('primary-list-grid');
+
+    if (!featuredGrid || !listGrid) {
+        return;
+    }
+
+    var keyScript = document.querySelector('script[data-key]');
+    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+
+    if (!contentKey) {
+        featuredGrid.innerHTML = '<div class="term-empty">Failed to load categories.</div>';
+        listGrid.innerHTML = '';
+        return;
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function cardHtml(tagInfo) {
+        var desc = tagInfo.description ? escapeHtml(tagInfo.description) : 'Primary category archive';
+        var initial = escapeHtml((tagInfo.name || '?').charAt(0));
+
+        return [
+            '<article class="post category-post">',
+            '<div class="post-media">',
+            '<div class="u-placeholder square">',
+            '<a href="/tag/',
+            encodeURIComponent(tagInfo.slug),
+            '/">',
+            '<span class="letter">',
+            initial,
+            '</span>',
+            '</a>',
+            '</div>',
+            '</div>',
+            '<div class="post-wrapper">',
+            '<header class="post-header">',
+            '<div class="post-meta"><span class="post-tag">Primary</span> | ',
+            String(tagInfo.count),
+            ' posts</div>',
+            '<h3 class="post-title"><a class="post-title-link" href="/tag/',
+            encodeURIComponent(tagInfo.slug),
+            '/">',
+            escapeHtml(tagInfo.name),
+            '</a></h3>',
+            '</header>',
+            '<div class="post-excerpt">',
+            desc,
+            '</div>',
+            '</div>',
+            '</article>'
+        ].join('');
+    }
+
+    function fetchAllPrimaryTags(page, tagMap) {
+        var apiUrl = [
+            '/ghost/api/content/posts/?key=',
+            encodeURIComponent(contentKey),
+            '&include=tags&limit=100&page=',
+            String(page),
+            '&fields=id,slug,title'
+        ].join('');
+
+        return fetch(apiUrl)
+            .then(function (res) {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch posts for categories');
+                }
+                return res.json();
+            })
+            .then(function (data) {
+                (data.posts || []).forEach(function (post) {
+                    var primaryTag = post.primary_tag || (post.tags && post.tags.length ? post.tags[0] : null);
+                    if (!primaryTag || primaryTag.visibility !== 'public' || !primaryTag.slug) {
+                        return;
+                    }
+
+                    if (!tagMap[primaryTag.slug]) {
+                        tagMap[primaryTag.slug] = {
+                            slug: primaryTag.slug,
+                            name: primaryTag.name || primaryTag.slug,
+                            description: primaryTag.description || '',
+                            count: 0
+                        };
+                    }
+
+                    tagMap[primaryTag.slug].count += 1;
+                });
+
+                var pages = data.meta && data.meta.pagination ? data.meta.pagination.pages : 1;
+                if (page < pages) {
+                    return fetchAllPrimaryTags(page + 1, tagMap);
+                }
+
+                return tagMap;
+            });
+    }
+
+    fetchAllPrimaryTags(1, {})
+        .then(function (tagMap) {
+            var tags = Object.keys(tagMap).map(function (slug) {
+                return tagMap[slug];
+            });
+
+            if (!tags.length) {
+                featuredGrid.innerHTML = '<div class="term-empty">nothing happened</div>';
+                listGrid.innerHTML = '';
+                return;
+            }
+
+            tags.sort(function (a, b) {
+                return b.count - a.count;
+            });
+
+            var featuredTag = tags[0];
+            featuredGrid.innerHTML = cardHtml(featuredTag);
+
+            var listTags = tags.filter(function (tag) {
+                return tag.slug !== featuredTag.slug;
+            });
+
+            listTags.sort(function (a, b) {
+                return a.name.localeCompare(b.name);
+            });
+
+            if (!listTags.length) {
+                listGrid.innerHTML = '<div class="term-empty">No additional categories.</div>';
+                return;
+            }
+
+            listGrid.innerHTML = listTags.map(cardHtml).join('');
+        })
+        .catch(function () {
+            featuredGrid.innerHTML = '<div class="term-empty">Failed to load categories.</div>';
+            listGrid.innerHTML = '';
+        });
+}
+

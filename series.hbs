@@ -6,5 +6,43 @@
         <h1 class="term-name">Series</h1>
         <div class="term-description">Latest posts in ongoing multi-part writeups.</div>
     </section>
+
+    <section class="category-featured" aria-label="Featured series">
+        <h2 class="category-featured-title">Featured series</h2>
+        <div class="term-grid category-grid">
+            {{#get "tags" filter="slug:hash-series-readium" include="count.posts" limit="1"}}
+                {{#foreach tags}}
+                    <a class="term-card category-card" href="{{@site.url}}/tag/{{slug}}/">
+                        <div class="category-card-kicker">Series</div>
+                        <h3 class="term-card-title">{{name}}</h3>
+                        {{#if description}}
+                            <p class="term-card-description">{{description}}</p>
+                        {{else}}
+                            <p class="term-card-description">Ongoing implementation notes and iterative writeups.</p>
+                        {{/if}}
+                        <div class="term-card-meta">{{count.posts}} posts</div>
+                    </a>
+                {{/foreach}}
+            {{/get}}
+        </div>
+    </section>
+
+    <section class="category-post-list" aria-label="Series list">
+        <h2 class="category-post-list-title">All series</h2>
+        <div class="term-grid category-grid">
+            {{#get "tags" filter="slug:hash-series-readium" include="count.posts" limit="12" order="name asc"}}
+                {{#foreach tags}}
+                    <a class="term-card category-card" href="{{@site.url}}/tag/{{slug}}/">
+                        <div class="category-card-kicker">Series</div>
+                        <h3 class="term-card-title">{{name}}</h3>
+                        {{#if description}}
+                            <p class="term-card-description">{{description}}</p>
+                        {{/if}}
+                        <div class="term-card-meta">{{count.posts}} posts</div>
+                    </a>
+                {{/foreach}}
+            {{/get}}
+        </div>
+    </section>
 </main>
 </div>

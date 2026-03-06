@@ -19,7 +19,7 @@
     ],
     "docs": "https://wave.ghost.io/about/",
     "config": {
-        "posts_per_page": 5,
+        "posts_per_page": 10,
         "image_sizes": {
             "xs": {
                 "width": 150
@@ -97,3 +97,5 @@
         "pump": "3.0.4"
     }
 }
+
+
