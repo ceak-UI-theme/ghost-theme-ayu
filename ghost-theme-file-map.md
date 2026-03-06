@@ -11,7 +11,7 @@ Codex 또는 개발자가 실제 수정 위치를 빠르게 찾기 위한 목적
 # 1. Home
 
 기능
-Hero 제거 + Mini Intro
+Wave Hero 유지 + Mini Intro
 
 수정 파일
 
@@ -23,7 +23,7 @@ partials/site-intro.hbs
 
 설명
 
-Wave 기본 hero cover 제거 후
+Wave 기본 hero cover 유지 +
 site intro 블록 삽입
 
 ---

@@ -95,7 +95,7 @@ latest posts
 pagination
 ```
 
-Hero cover는 사용하지 않는다.
+Wave 기본 Hero cover를 유지한다. (cover_image 설정 시 표시)
 
 ---
 

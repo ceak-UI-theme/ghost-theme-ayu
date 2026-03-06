@@ -21,7 +21,7 @@ index.hbs
 
 작업
 
-- Wave 기본 hero cover 제거
+- Wave 기본 hero cover 유지 (default.hbs 기본 동작 사용)
 - site-intro partial 삽입
 
 목표 구조

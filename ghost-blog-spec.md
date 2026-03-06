@@ -35,8 +35,8 @@
 
 또한 다음 원칙을 따른다.
 
-- Home 페이지는 Wave 기본 **Hero Cover 구조를 사용하지 않는다**
-- 대신 **Mini Intro + Latest Posts 구조**로 단순화한다.
+- Home 페이지는 Wave 기본 **Hero Cover 구조를 사용한다**
+- Home은 **Hero Cover + Mini Intro + Latest Posts 구조**를 사용한다.
 
 ---
 
@@ -387,6 +387,8 @@ URL
 
 HEADER
 
+HERO COVER
+
 INTRO BLOCK
 
 POST LIST
@@ -425,7 +427,7 @@ site description
 
 ```
 
-Hero 이미지 사용하지 않는다.
+Hero 이미지는 Wave 기본 정책을 따른다 (cover_image 설정 시 표시).
 
 ---
 
@@ -737,7 +739,7 @@ Wave 기본 placeholder
 
 ## Home Intro
 
-Hero 이미지 사용하지 않는다.
+Hero 이미지는 Wave 기본 정책을 따른다 (cover_image 설정 시 표시).
 
 ---
 

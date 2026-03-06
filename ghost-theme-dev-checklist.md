@@ -13,7 +13,7 @@
 
 # 1. Home (index.hbs)
 
-[ ] Wave 기본 hero cover 제거
+[ ] Wave 기본 hero cover 유지 확인
 [ ] site-intro partial 삽입
 [ ] 최신 포스트 loop 정상 출력
 [ ] pagination 정상 동작
@@ -21,7 +21,7 @@
 
 검증
 
-- Home 접속 시 Hero 이미지가 보이지 않는다
+- Home 접속 시 site cover(설정된 경우)가 표시된다
 - Intro block 높이 160~180px
 - 최신 글 10개 표시
 
