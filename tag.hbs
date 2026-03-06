@@ -28,7 +28,7 @@
 
             <section class="tag-post-list" aria-label="Post list">
                 <h2 class="tag-post-list-title">Latest posts</h2>
-                <div class="post-feed gh-feed">
+                <div class="post-feed gh-feed js-promo-feed">
                     {{#foreach ../posts}}
                         {{#unless featured}}
                             {{> "loop"}}
@@ -50,7 +50,7 @@
 
             <section class="tag-post-list" aria-label="Post list">
                 <h2 class="tag-post-list-title">Latest posts</h2>
-                <div class="post-feed gh-feed">
+                <div class="post-feed gh-feed js-promo-feed">
                     {{#foreach ../posts from="2"}}
                         {{> "loop"}}
                     {{/foreach}}

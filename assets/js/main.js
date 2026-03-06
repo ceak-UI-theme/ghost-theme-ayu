@@ -7,7 +7,72 @@ $(function () {
     renderPrimaryCategories();
     renderSeriesTags();
     renderSeriesDetail();
+    injectPromoSlots(document);
 });
+
+function buildPromoCardHtml() {
+    'use strict';
+
+    return [
+        '<article class="post post-promo" aria-label="Promotion">',
+        '<div class="post-wrapper post-promo-wrapper">',
+        '<div class="post-promo-label">Promo</div>',
+        '<p class="post-promo-copy">This is a promo slot.</p>',
+        '</div>',
+        '</article>'
+    ].join('');
+}
+
+function injectPromoSlots(root) {
+    'use strict';
+
+    var scope = root || document;
+    var feeds = [];
+
+    if (scope && scope.nodeType === 1 && scope.classList && scope.classList.contains('js-promo-feed')) {
+        feeds = [scope];
+    } else if (scope && scope.querySelectorAll) {
+        feeds = Array.prototype.slice.call(scope.querySelectorAll('.js-promo-feed'));
+    }
+
+    if (!feeds.length) {
+        return;
+    }
+
+    feeds.forEach(function (feed) {
+        if (!feed || !feed.children) {
+            return;
+        }
+
+        var children = Array.prototype.slice.call(feed.children);
+        children.forEach(function (el) {
+            if (el.classList && el.classList.contains('post') && el.classList.contains('post-promo')) {
+                el.remove();
+            }
+        });
+
+        var posts = Array.prototype.slice.call(feed.children).filter(function (el) {
+            return el.classList && el.classList.contains('post') && !el.classList.contains('post-promo');
+        });
+
+        posts.forEach(function (postEl, index) {
+            var visibleIndex = index + 1;
+            if (visibleIndex % 5 !== 0) {
+                return;
+            }
+
+            var promoWrap = document.createElement('div');
+            promoWrap.innerHTML = buildPromoCardHtml();
+            var promoNode = promoWrap.firstElementChild;
+
+            if (!promoNode) {
+                return;
+            }
+
+            postEl.insertAdjacentElement('afterend', promoNode);
+        });
+    });
+}
 
 function cover() {
     'use strict';
@@ -357,6 +422,7 @@ function renderPrimaryCategories() {
             }
 
             listGrid.innerHTML = listTags.map(cardHtml).join('');
+            injectPromoSlots(listGrid);
         })
         .catch(function () {
             featuredGrid.innerHTML = '<div class="term-empty">Failed to load categories.</div>';
@@ -507,6 +573,7 @@ function renderSeriesTags() {
             }
 
             listGrid.innerHTML = listTags.map(seriesCardHtml).join('');
+            injectPromoSlots(listGrid);
         })
         .catch(function () {
             featuredGrid.innerHTML = '<div class="term-empty">Failed to load series.</div>';
@@ -768,6 +835,7 @@ function renderSeriesDetail() {
             });
 
             postFeed.innerHTML = listPosts.length ? listPosts.map(buildPostHtml).join('') : '<div class="term-empty">No additional posts.</div>';
+            injectPromoSlots(postFeed);
             renderSeriesQueryPagination(pagination.page || 1, pagination.pages || 1);
         })
         .catch(function () {
