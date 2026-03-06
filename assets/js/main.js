@@ -14,7 +14,8 @@
 
 var AYU_GLOBALS = {
     PAGINATION_PAGE_SIZE: 10,
-    PROMO_INSERT_EVERY: 5
+    PROMO_INSERT_EVERY: 5,
+    MOBILE_BREAKPOINT: 767
 };
 
 function buildPromoCardHtml() {
@@ -1311,6 +1312,7 @@ function renderSeriesDetail() {
             paginationEl.innerHTML = '';
         });
 }
+
 
 
 
