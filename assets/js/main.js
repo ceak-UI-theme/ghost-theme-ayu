@@ -9,6 +9,7 @@
     renderSeriesDetail();
     renderSearchPage();
     injectPromoSlots(document);
+    normalizeInternalPostTags(document);
 });
 
 function buildPromoCardHtml() {
@@ -72,6 +73,103 @@ function injectPromoSlots(root) {
 
             postEl.insertAdjacentElement('afterend', promoNode);
         });
+    });
+}
+
+function normalizeInternalPostTags(root) {
+    'use strict';
+
+    var scope = root || document;
+    var tags = scope.querySelectorAll ? scope.querySelectorAll('.post-meta-tags .post-tag, .post-meta .post-tag') : [];
+
+    Array.prototype.slice.call(tags).forEach(function (tagEl) {
+        if (!tagEl || !tagEl.getAttribute) {
+            return;
+        }
+
+        var href = tagEl.getAttribute('href') || '';
+        var cls = tagEl.className || '';
+        var text = (tagEl.textContent || '').trim();
+        var slugMatch = cls.match(/(?:^|\s)post-tag-([^\s]+)/);
+        var slug = slugMatch ? slugMatch[1] : '';
+
+        if (!slug && href.indexOf('/tag/') !== -1) {
+            var path = href.split('?')[0];
+            var m = path.match(/\/tag\/([^/]+)\/?$/);
+            slug = m ? decodeURIComponent(m[1]) : '';
+        }
+
+        var isInternalHash = slug.indexOf('hash-') === 0 || text.indexOf('#') === 0 || href.indexOf('/tag/hash-') !== -1;
+        var isSeriesInternal = slug.indexOf('hash-series-') === 0 || text.indexOf('#series-') === 0;
+
+        if (!isInternalHash) {
+            return;
+        }
+
+        if (!isSeriesInternal) {
+            tagEl.remove();
+            return;
+        }
+
+        var seriesSlug = '';
+        if (slug.indexOf('hash-series-') === 0) {
+            seriesSlug = slug.substring('hash-series-'.length);
+        } else if (text.indexOf('#series-') === 0) {
+            seriesSlug = text.substring('#series-'.length);
+        }
+
+        if (!seriesSlug) {
+            return;
+        }
+
+        tagEl.setAttribute('href', '/series/?series=' + encodeURIComponent(seriesSlug));
+        tagEl.classList.add('is-internal-series');
+        tagEl.textContent = seriesSlug;
+        tagEl.setAttribute('title', seriesSlug);
+    });
+
+    var containers = scope.querySelectorAll ? scope.querySelectorAll('.post-meta-tags') : [];
+    Array.prototype.slice.call(containers).forEach(function (container) {
+        if (!container.querySelector('.post-tag')) {
+            container.remove();
+        }
+    });
+
+    var posts = scope.querySelectorAll ? scope.querySelectorAll('article.post') : [];
+    Array.prototype.slice.call(posts).forEach(function (postEl) {
+        if (!postEl || !postEl.className) {
+            return;
+        }
+
+        var match = postEl.className.match(/(?:^|\s)tag-hash-series-([a-z0-9-]+)(?:\s|$)/i);
+        if (!match || !match[1]) {
+            return;
+        }
+
+        var seriesSlug = match[1].toLowerCase();
+        var metaEl = postEl.querySelector('.post-meta');
+        if (!metaEl) {
+            return;
+        }
+
+        var tagsWrap = metaEl.querySelector('.post-meta-tags');
+        if (!tagsWrap) {
+            tagsWrap = document.createElement('span');
+            tagsWrap.className = 'post-meta-item post-meta-tags';
+            metaEl.appendChild(tagsWrap);
+        }
+
+        var exists = tagsWrap.querySelector('a.post-tag.is-internal-series[href="/series/?series=' + seriesSlug + '"]');
+        if (exists) {
+            return;
+        }
+
+        var link = document.createElement('a');
+        link.className = 'post-tag post-tag-hash-series-' + seriesSlug + ' is-internal-series';
+        link.setAttribute('href', '/series/?series=' + encodeURIComponent(seriesSlug));
+        link.setAttribute('title', seriesSlug);
+        link.textContent = seriesSlug;
+        tagsWrap.appendChild(link);
     });
 }
 
@@ -248,18 +346,25 @@ function renderSearchPage() {
         var excerpt = excerptText ? '<div class="post-excerpt">' + escapeHtml(excerptText) + '</div>' : '';
         var dateIso = post.published_at ? post.published_at.substring(0, 10) : '';
         var dateText = post.published_at ? formatDate(post.published_at) : '';
-        var tagsHtml = (post.tags || []).slice(0, 3).map(function (tag) {
+        var tagsHtml = (post.tags || []).filter(function (tag) {
+            var slug = tag && tag.slug ? tag.slug : '';
+            return slug.indexOf('hash-') !== 0 || slug.indexOf('hash-series-') === 0;
+        }).slice(0, 3).map(function (tag) {
             var slug = tag && tag.slug ? tag.slug : '';
             var name = tag && tag.name ? tag.name : '';
             var href = '/tag/' + encodeURIComponent(slug) + '/';
             var cls = 'post-tag post-tag-' + escapeHtml(slug);
+            var displayName = name;
 
             if (slug.indexOf('hash-series-') === 0) {
                 href = '/series/?series=' + encodeURIComponent(slug.substring('hash-series-'.length));
                 cls += ' is-internal-series';
+                if (displayName.indexOf('#series-') === 0) {
+                    displayName = displayName.substring('#series-'.length);
+                }
             }
 
-            return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(name) + '">' + escapeHtml(name) + '</a>';
+            return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(name) + '">' + escapeHtml(displayName) + '</a>';
         }).join('');
 
         var mediaHtml;
@@ -377,6 +482,7 @@ function renderSearchPage() {
 
         resultsEl.innerHTML = pagePosts.map(buildPostHtml).join('');
         injectPromoSlots(resultsEl);
+        normalizeInternalPostTags(resultsEl);
 
         if (paginationEl) {
             paginationEl.innerHTML = buildPaginationHtml(safePage, totalPages);
@@ -994,7 +1100,10 @@ function renderSeriesDetail() {
             month: 'short',
             year: 'numeric'
         }).toUpperCase() : '';
-        var tagsHtml = (post.tags || []).map(function (tag) {
+        var tagsHtml = (post.tags || []).filter(function (tag) {
+            var tagSlug = tag && tag.slug ? tag.slug : '';
+            return tagSlug.indexOf('hash-') !== 0 || tagSlug.indexOf('hash-series-') === 0;
+        }).map(function (tag) {
             var tagSlug = tag && tag.slug ? tag.slug : '';
             var tagName = tag && tag.name ? tag.name : '';
             var href = '/tag/' + encodeURIComponent(tagSlug) + '/';
@@ -1145,6 +1254,8 @@ function renderSeriesDetail() {
 
             postFeed.innerHTML = listPosts.length ? listPosts.map(buildPostHtml).join('') : '<div class="term-empty">No additional posts.</div>';
             injectPromoSlots(postFeed);
+            normalizeInternalPostTags(featuredFeed);
+            normalizeInternalPostTags(postFeed);
             renderSeriesQueryPagination(pagination.page || 1, pagination.pages || 1);
         })
         .catch(function () {
@@ -1155,6 +1266,10 @@ function renderSeriesDetail() {
             paginationEl.innerHTML = '';
         });
 }
+
+
+
+
 
 
 
