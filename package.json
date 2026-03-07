@@ -1,23 +1,27 @@
 {
     "name": "signal-wave-ayu",
-    "description": "A Ghost theme",
+    "description": "Signal Wave Ayu Ghost theme",
     "version": "1.0.0",
     "private": true,
     "engines": {
         "ghost": ">=5.0.0"
     },
     "license": "MIT",
-        "author": {
-            "name": "Ghost Foundation",
-            "email": "hello@ghost.org",
-            "url": "https://ghost.org"
-        },
+    "author": {
+        "name": "ceak",
+        "email": "ceak@example.com",
+        "url": "https://github.com/ceak-UI-theme"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ceak-UI-theme/ghost-theme-ayu.git"
+    },
     "keywords": [
         "ghost",
         "theme",
         "ghost-theme"
     ],
-    "docs": "https://wave.ghost.io/about/",
+    "docs": "https://github.com/ceak-UI-theme/ghost-theme-ayu",
     "config": {
         "posts_per_page": 10,
         "image_sizes": {
