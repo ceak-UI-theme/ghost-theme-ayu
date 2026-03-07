@@ -956,6 +956,15 @@ function renderSeriesTags() {
         var desc = tagInfo.description ? escapeHtml(tagInfo.description) : 'Series archive';
         var initial = escapeHtml((title || '?').charAt(0));
         var detailSlug = seriesSlugFromTagSlug(tagInfo.slug);
+        var mediaHtml = '';
+
+        var cardImage = tagInfo.feature_image || tagInfo.fallback_feature_image || '';
+
+        if (cardImage) {
+            mediaHtml = '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(cardImage) + '" alt="' + escapeHtml(title) + '">';
+        } else {
+            mediaHtml = '<span class="letter">' + initial + '</span>';
+        }
 
         return [
             '<article class="post category-post">',
@@ -964,9 +973,7 @@ function renderSeriesTags() {
             '<a href="/series/?series=',
             encodeURIComponent(detailSlug),
             '">',
-            '<span class="letter">',
-            initial,
-            '</span>',
+            mediaHtml,
             '</a>',
             '</div>',
             '</div>',
@@ -996,14 +1003,30 @@ function renderSeriesTags() {
             }
             return res.json();
         })
-        .then(function (data) {
-            var tags = (data.tags || []).filter(function (tag) {
+        .then(function (data) {            var allTags = data.tags || [];
+            var publicTagImageBySlug = {};
+
+            allTags.forEach(function (tag) {
+                if (!tag || !tag.slug || tag.slug.indexOf('hash-') === 0) {
+                    return;
+                }
+
+                if (tag.feature_image) {
+                    publicTagImageBySlug[tag.slug] = tag.feature_image;
+                }
+            });
+
+            var tags = allTags.filter(function (tag) {
                 return tag && tag.slug && tag.slug.indexOf('hash-series-') === 0;
             }).map(function (tag) {
+                var seriesSlug = seriesSlugFromTagSlug(tag.slug);
+
                 return {
                     slug: tag.slug,
                     name: tag.name || '',
                     description: tag.description || '',
+                    feature_image: tag.feature_image || '',
+                    fallback_feature_image: publicTagImageBySlug[seriesSlug] || '',
                     count: tag.count && tag.count.posts ? tag.count.posts : 0
                 };
             });
@@ -1070,13 +1093,14 @@ function renderSeriesDetail() {
     var headerEl = document.getElementById('series-detail-header');
     var nameEl = document.getElementById('series-detail-name');
     var descEl = document.getElementById('series-detail-description');
+    var countEl = document.getElementById('series-detail-count');
     var featuredSection = document.getElementById('series-detail-featured-section');
     var featuredFeed = document.getElementById('series-detail-featured-feed');
     var listSection = document.getElementById('series-detail-list-section');
     var postFeed = document.getElementById('series-detail-post-feed');
     var paginationEl = document.getElementById('series-detail-pagination');
 
-    if (!headerEl || !nameEl || !descEl || !featuredSection || !featuredFeed || !listSection || !postFeed || !paginationEl) {
+    if (!headerEl || !nameEl || !descEl || !countEl || !featuredSection || !featuredFeed || !listSection || !postFeed || !paginationEl) {
         return;
     }
 
@@ -1099,6 +1123,7 @@ function renderSeriesDetail() {
     var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
 
     if (!contentKey) {
+        countEl.textContent = '';
         featuredFeed.innerHTML = '<div class="term-empty">Failed to load series.</div>';
         postFeed.innerHTML = '';
         paginationEl.innerHTML = '';
@@ -1246,23 +1271,27 @@ function renderSeriesDetail() {
     }
 
     var tagUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&filter=slug:' + encodeURIComponent(internalSlug) + '&limit=1';
+    var publicTagUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&filter=slug:' + encodeURIComponent(detailSlug) + '&limit=1';
     var featuredUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&filter=tag:' + encodeURIComponent(internalSlug) + '+featured:true&limit=1';
-    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&filter=tag:' + encodeURIComponent(internalSlug) + '&limit=' + String(AYU_GLOBALS.PAGINATION_PAGE_SIZE) + '&page=' + String(page);
+    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&filter=tag:' + encodeURIComponent(internalSlug) + '&order=published_at%20desc&limit=' + String(AYU_GLOBALS.PAGINATION_PAGE_SIZE) + '&page=' + String(page);
 
     Promise.all([
         fetch(tagUrl).then(function (res) { return res.ok ? res.json() : null; }),
+        fetch(publicTagUrl).then(function (res) { return res.ok ? res.json() : null; }),
         fetch(featuredUrl).then(function (res) { return res.ok ? res.json() : null; }),
         fetch(postsUrl).then(function (res) { return res.ok ? res.json() : null; })
     ])
         .then(function (results) {
             var tagData = results[0] && results[0].tags ? results[0].tags[0] : null;
-            var featuredPosts = results[1] && results[1].posts ? results[1].posts : [];
-            var postData = results[2] && results[2].posts ? results[2].posts : [];
-            var pagination = results[2] && results[2].meta && results[2].meta.pagination ? results[2].meta.pagination : { page: 1, pages: 1 };
+            var publicTagData = results[1] && results[1].tags ? results[1].tags[0] : null;
+            var featuredPosts = results[2] && results[2].posts ? results[2].posts : [];
+            var postData = results[3] && results[3].posts ? results[3].posts : [];
+            var pagination = results[3] && results[3].meta && results[3].meta.pagination ? results[3].meta.pagination : { page: 1, pages: 1 };
 
             if (!tagData) {
                 nameEl.textContent = 'Series not found';
                 descEl.textContent = '';
+                countEl.textContent = '';
                 featuredFeed.innerHTML = '<div class="term-empty">Series not found.</div>';
                 postFeed.innerHTML = '';
                 paginationEl.innerHTML = '';
@@ -1271,14 +1300,19 @@ function renderSeriesDetail() {
 
             nameEl.textContent = toDisplayName(tagData);
             descEl.textContent = tagData.description || '';
+            countEl.textContent = String(pagination.total || postData.length || 0) + ' posts';
             if (!tagData.description) {
                 descEl.style.display = 'none';
+            } else {
+                descEl.style.display = '';
             }
 
-            if (tagData.feature_image && !headerEl.querySelector('.tag-header-image-wrap')) {
+            var headerImage = tagData.feature_image || (publicTagData && publicTagData.feature_image ? publicTagData.feature_image : '');
+
+            if (headerImage && !headerEl.querySelector('.tag-header-image-wrap')) {
                 var imgWrap = document.createElement('div');
                 imgWrap.className = 'tag-header-image-wrap';
-                imgWrap.innerHTML = '<img class="tag-header-image" src="' + escapeHtml(tagData.feature_image) + '" alt="' + escapeHtml(nameEl.textContent) + '">';
+                imgWrap.innerHTML = '<img class="tag-header-image" src="' + escapeHtml(headerImage) + '" alt="' + escapeHtml(nameEl.textContent) + '">';
                 headerEl.insertBefore(imgWrap, nameEl);
             }
 
@@ -1308,6 +1342,7 @@ function renderSeriesDetail() {
         .catch(function () {
             nameEl.textContent = 'Series';
             descEl.textContent = '';
+            countEl.textContent = '';
             featuredFeed.innerHTML = '<div class="term-empty">Failed to load series.</div>';
             postFeed.innerHTML = '';
             paginationEl.innerHTML = '';
@@ -1444,3 +1479,22 @@ function renderPostSeriesNavigation() {
             navSection.hidden = true;
         });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
