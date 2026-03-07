@@ -28,7 +28,7 @@
         <itunes:image href="{{img_url @site.icon absolute="true"}}" />
         <itunes:category text="Technology"></itunes:category>
 
-        {{#get "posts" filter="tag:-blog" include="tags,authors" as |episode|}}
+        {{#get "posts" include="tags,authors" as |episode|}}
             {{#foreach episode}}
                 <item>
                     <title>{{title}}</title>

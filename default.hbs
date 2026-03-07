@@ -4,12 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {{^is "blog"}}
-        <title>{{meta_title}}</title>
-    {{else}}
-        <title>{{block "title"}}</title>
-        {{{block "description"}}}
-    {{/is}}
+    <title>{{meta_title}}</title>
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">
 
     {{ghost_head}}
