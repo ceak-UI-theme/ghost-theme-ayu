@@ -1,6 +1,6 @@
 param(
     [string]$GhostDevPath = "D:\workspace\02.works\ghost-dev",
-    [string]$ThemeName = "wave",
+    [string]$ThemeName = "signal-wave-ayu",
     [switch]$RestartDocker
 )
 

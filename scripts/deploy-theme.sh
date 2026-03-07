@@ -3,7 +3,7 @@ set -euo pipefail
 
 THEME_SRC="/mnt/d/workspace/02.works/ghost-theme-ayu"
 GHOST_DEV="/mnt/d/workspace/02.works/ghost-dev"
-THEME_NAME="wave"
+THEME_NAME="signal-wave-ayu"
 RESTART_DOCKER="${1:-}"
 
 echo "[1/6] Build and zip theme"
@@ -16,8 +16,8 @@ if [[ ! -f "$ZIP_PATH" ]]; then
   exit 1
 fi
 
-echo "[2/6] Export wave-ayu-theme.zip"
-cp -f "$ZIP_PATH" "$THEME_SRC/wave-ayu-theme.zip"
+echo "[2/6] Export signal-wave-ayu.zip"
+cp -f "$ZIP_PATH" "$THEME_SRC/signal-wave-ayu.zip"
 
 TARGET="$GHOST_DEV/content/themes/${THEME_NAME}"
 
