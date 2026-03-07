@@ -10,6 +10,7 @@ $(function () {
     renderSeriesDetail();
     renderPostSeriesNavigation();
     renderSearchPage();
+    renderExplorePage();
     injectPromoSlots(document);
     normalizeInternalPostTags(document);
 });
@@ -1439,3 +1440,271 @@ function renderPostSeriesNavigation() {
 
 
 
+
+
+function renderExplorePage() {
+    'use strict';
+
+    var isExplorePage = /^\/explore\/?$/.test(window.location.pathname);
+    if (!isExplorePage) {
+        return;
+    }
+
+    var categoriesGrid = document.getElementById('explore-categories-grid');
+    var seriesList = document.getElementById('explore-series-list');
+    var topicsGrid = document.getElementById('explore-topics-grid');
+    var recentList = document.getElementById('explore-recent-list');
+
+    if (!categoriesGrid || !seriesList || !topicsGrid || !recentList) {
+        return;
+    }
+
+    var keyScript = document.querySelector('script[data-key]');
+    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+
+    if (!contentKey) {
+        categoriesGrid.innerHTML = '<div class="term-empty">Failed to load explore data.</div>';
+        seriesList.innerHTML = '';
+        topicsGrid.innerHTML = '';
+        recentList.innerHTML = '';
+        return;
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function pluralPosts(count) {
+        return String(count) + ' post' + (count === 1 ? '' : 's');
+    }
+
+    function formatDate(value) {
+        if (!value) {
+            return '';
+        }
+
+        return new Date(value).toISOString().slice(0, 10);
+    }
+
+    function postUrl(post) {
+        if (post.url) {
+            return post.url;
+        }
+
+        return '/' + encodeURIComponent(post.slug || '') + '/';
+    }
+
+    function fetchAllPosts(page, acc) {
+        var url = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&fields=id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,primary_tag&limit=100&page=' + String(page) + '&order=published_at%20desc';
+
+        return fetch(url)
+            .then(function (res) {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch posts');
+                }
+
+                return res.json();
+            })
+            .then(function (data) {
+                (data.posts || []).forEach(function (post) {
+                    acc.push(post);
+                });
+
+                var pages = data.meta && data.meta.pagination ? data.meta.pagination.pages : 1;
+                if (page < pages) {
+                    return fetchAllPosts(page + 1, acc);
+                }
+
+                return acc;
+            });
+    }
+
+    function fetchPrimaryCategories(tags) {
+        var publicPrimaryTags = tags.filter(function (tag) {
+            return AYU_TAG_UTILS.isPublicTag(tag) && !AYU_TAG_UTILS.isSeriesInternalTag(tag);
+        });
+
+        return Promise.all(publicPrimaryTags.map(function (tag) {
+            var countUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&filter=primary_tag:' + encodeURIComponent(tag.slug) + '&limit=1';
+
+            return fetch(countUrl)
+                .then(function (res) {
+                    if (!res.ok) {
+                        throw new Error('Failed to fetch primary category count');
+                    }
+
+                    return res.json();
+                })
+                .then(function (data) {
+                    var total = data.meta && data.meta.pagination ? data.meta.pagination.total : 0;
+                    return {
+                        slug: tag.slug,
+                        name: tag.name || tag.slug,
+                        description: tag.description || '',
+                        image: tag.feature_image || '',
+                        count: typeof total === 'number' ? total : 0
+                    };
+                });
+        })).then(function (items) {
+            return items.filter(function (item) {
+                return item.count > 0;
+            });
+        });
+    }
+
+    function categoryCardHtml(item) {
+        return [
+            '<article class="explore-card explore-card-category">',
+            '<a class="explore-card-media" href="/tag/', encodeURIComponent(item.slug), '/">',
+            '<img class="explore-card-image" src="', escapeHtml(item.image || AYU_DEFAULT_IMAGES.PRIMARY_TAG), '" alt="', escapeHtml(item.name), '">',
+            '</a>',
+            '<div class="explore-card-body">',
+            '<h3 class="explore-card-title"><a href="/tag/', encodeURIComponent(item.slug), '/">', escapeHtml(item.name), '</a></h3>',
+            '<p class="explore-card-desc">', escapeHtml(item.description || 'Primary category archive.'), '</p>',
+            '<p class="explore-card-count">', pluralPosts(item.count), '</p>',
+            '</div>',
+            '</article>'
+        ].join('');
+    }
+
+    function seriesCardHtml(item) {
+        return [
+            '<article class="explore-card explore-card-series">',
+            '<a class="explore-card-media" href="/series/?series=', encodeURIComponent(item.seriesSlug), '">',
+            '<img class="explore-card-image" src="', escapeHtml(item.image || AYU_DEFAULT_IMAGES.SERIES_TAG), '" alt="', escapeHtml(item.name), '">',
+            '</a>',
+            '<div class="explore-card-body">',
+            '<h3 class="explore-card-title"><a href="/series/?series=', encodeURIComponent(item.seriesSlug), '">', escapeHtml(item.name), '</a></h3>',
+            '<p class="explore-card-desc">', escapeHtml(item.description || 'Series archive.'), '</p>',
+            '<p class="explore-card-count">', pluralPosts(item.count), '</p>',
+            '</div>',
+            '</article>'
+        ].join('');
+    }
+
+    function topicCardHtml(item) {
+        return [
+            '<a class="explore-topic-card" href="/tag/', encodeURIComponent(item.slug), '/">',
+            '<span class="explore-topic-icon"><img src="', escapeHtml(item.image || AYU_DEFAULT_IMAGES.SECONDARY_TAG), '" alt="', escapeHtml(item.name), '"></span>',
+            '<span class="explore-topic-name">', escapeHtml(item.name), '</span>',
+            '<span class="explore-topic-count">', pluralPosts(item.count), '</span>',
+            '</a>'
+        ].join('');
+    }
+
+    function recentItemHtml(post) {
+        return [
+            '<li class="explore-recent-item">',
+            '<a class="explore-recent-link" href="', escapeHtml(postUrl(post)), '">',
+            '<span class="explore-recent-arrow" aria-hidden="true">&rarr;</span>',
+            '<span class="explore-recent-title">', escapeHtml(post.title || 'Untitled'), '</span>',
+            '<time class="explore-recent-date" datetime="', escapeHtml((post.published_at || '').slice(0, 10)), '">', escapeHtml(formatDate(post.published_at)), '</time>',
+            '</a>',
+            '</li>'
+        ].join('');
+    }
+
+    Promise.all([
+        fetch('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all&include=count.posts').then(function (res) {
+            if (!res.ok) {
+                throw new Error('Failed to fetch tags');
+            }
+            return res.json();
+        }),
+        fetchAllPosts(1, [])
+    ])
+        .then(function (results) {
+            var tags = results[0] && results[0].tags ? results[0].tags : [];
+            var posts = results[1] || [];
+
+            var tagBySlug = {};
+            tags.forEach(function (tag) {
+                if (tag && tag.slug) {
+                    tagBySlug[tag.slug] = tag;
+                }
+            });
+
+            var seriesMap = {};
+            var topicsMap = {};
+
+            posts.forEach(function (post) {
+                var classified = AYU_TAG_UTILS.classifyPostTags(post);
+
+                classified.series.forEach(function (tag) {
+                    var sSlug = AYU_TAG_UTILS.getSlug(tag);
+                    var seriesSlug = AYU_TAG_UTILS.getSeriesSlug(tag);
+                    var publicTag = tagBySlug[seriesSlug] || null;
+                    if (!seriesMap[sSlug]) {
+                        seriesMap[sSlug] = {
+                            slug: sSlug,
+                            seriesSlug: seriesSlug || sSlug,
+                            name: AYU_TAG_UTILS.getSeriesDisplayName(tag, seriesSlug),
+                            description: tag.description || (publicTag && publicTag.description) || '',
+                            image: tag.feature_image || (publicTag && publicTag.feature_image) || '',
+                            count: 0
+                        };
+                    }
+                    seriesMap[sSlug].count += 1;
+                });
+
+                classified.secondary.forEach(function (tag) {
+                    var tSlug = AYU_TAG_UTILS.getSlug(tag);
+                    var fullTag = tagBySlug[tSlug] || tag;
+                    if (!topicsMap[tSlug]) {
+                        topicsMap[tSlug] = {
+                            slug: tSlug,
+                            name: fullTag.name || tSlug,
+                            image: fullTag.feature_image || '',
+                            count: 0
+                        };
+                    }
+                    topicsMap[tSlug].count += 1;
+                });
+            });
+
+            var series = Object.keys(seriesMap).map(function (slug) { return seriesMap[slug]; });
+            var topics = Object.keys(topicsMap).map(function (slug) { return topicsMap[slug]; });
+
+            series.sort(function (a, b) {
+                if (b.count !== a.count) {
+                    return b.count - a.count;
+                }
+                return a.name.localeCompare(b.name);
+            });
+            topics.sort(function (a, b) {
+                if (b.count !== a.count) {
+                    return b.count - a.count;
+                }
+                return a.name.localeCompare(b.name);
+            });
+
+            var recent = posts.slice().sort(function (a, b) {
+                return new Date(b.published_at || 0).getTime() - new Date(a.published_at || 0).getTime();
+            }).slice(0, 5);
+
+            return fetchPrimaryCategories(tags).then(function (categories) {
+                categories.sort(function (a, b) {
+                    if (b.count !== a.count) {
+                        return b.count - a.count;
+                    }
+                    return a.name.localeCompare(b.name);
+                });
+
+                categoriesGrid.innerHTML = categories.length ? categories.slice(0, 6).map(categoryCardHtml).join('') : '<div class="term-empty">No categories yet.</div>';
+                seriesList.innerHTML = series.length ? series.slice(0, 3).map(seriesCardHtml).join('') : '<div class="term-empty">No series yet.</div>';
+                topicsGrid.innerHTML = topics.length ? topics.slice(0, 10).map(topicCardHtml).join('') : '<div class="term-empty">No topics yet.</div>';
+                recentList.innerHTML = recent.length ? recent.map(recentItemHtml).join('') : '<li class="term-empty">No recent posts.</li>';
+            });
+        })
+        .catch(function () {
+            categoriesGrid.innerHTML = '<div class="term-empty">Failed to load explore data.</div>';
+            seriesList.innerHTML = '';
+            topicsGrid.innerHTML = '';
+            recentList.innerHTML = '';
+        });
+}

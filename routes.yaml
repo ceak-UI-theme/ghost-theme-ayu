@@ -10,6 +10,8 @@ routes:
     template: page-series
   /search/:
     template: page-search
+  /explore/:
+    template: page-explore
 
 collections:
   /:
