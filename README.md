@@ -73,6 +73,19 @@ Categories count optimization:
 - Create a new Series: use a `series-*` tag
 - Topic tags: use any non-category and non-series public tags
 
+Examples:
+
+- `category-ai`
+- `series-unix-design`
+- `docker`
+- `python`
+
+A post typically includes:
+
+- 1 category
+- 0~1 series
+- multiple topics
+
 ## Post Meta Rendering
 
 `partials/post-meta.hbs` renders tag links and labels server-side first.
