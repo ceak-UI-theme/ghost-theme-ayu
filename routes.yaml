@@ -4,6 +4,8 @@ routes:
     content_type: text/xml
   /categories/:
     template: page-categories
+  /secondary-tags/:
+    template: page-secondary-tags
   /series/:
     template: page-series
   /search/:
