@@ -7,7 +7,6 @@ $(function () {
     renderPrimaryCategories();
     renderSecondaryTags();
     renderSeriesTags();
-    renderSeriesDetail();
     renderPostSeriesNavigation();
     renderSearchPage();
     renderExplorePage();
@@ -73,8 +72,9 @@ var AYU_TAG_UTILS = {
         return slug;
     },
     getDisplayName: function (tag, fallback) {
+        var rawName = tag && typeof tag === 'object' && tag.name ? String(tag.name).trim() : '';
         var slug = this.getSlug(tag) || String(fallback || '');
-        var normalized = slug;
+        var normalized = rawName || slug;
 
         if (normalized.indexOf('category-') === 0) {
             normalized = normalized.substring('category-'.length);
@@ -1238,7 +1238,7 @@ function renderPostSeriesNavigation() {
             }
 
             var seriesName = displaySeriesName(tag);
-            navTitle.innerHTML = 'Series: <a href="/series/?series=' + encodeURIComponent(seriesSlug) + '">' + escapeHtml(seriesName) + '</a>';
+            navTitle.innerHTML = 'Series: <a href="/tag/' + encodeURIComponent(internalSlug) + '/">' + escapeHtml(seriesName) + '</a>';
 
             navList.innerHTML = posts.map(function (post) {
                 var slug = (post.slug || '').toLowerCase();
@@ -1358,11 +1358,11 @@ function renderExplorePage() {
     function seriesCardHtml(item) {
         return [
             '<article class="explore-card explore-card-series">',
-            '<a class="explore-card-media" href="/series/?series=', encodeURIComponent(item.seriesSlug), '">',
+            '<a class="explore-card-media" href="/tag/', encodeURIComponent(item.slug), '/">',
             '<img class="explore-card-image" src="', escapeHtml(item.image || AYU_DEFAULT_IMAGES.SERIES_TAG), '" alt="', escapeHtml(item.name), '">',
             '</a>',
             '<div class="explore-card-body">',
-            '<h3 class="explore-card-title"><a href="/series/?series=', encodeURIComponent(item.seriesSlug), '">', escapeHtml(item.name), '</a></h3>',
+            '<h3 class="explore-card-title"><a href="/tag/', encodeURIComponent(item.slug), '/">', escapeHtml(item.name), '</a></h3>',
             '<p class="explore-card-desc">', escapeHtml(item.description || 'Series archive.'), '</p>',
             '<p class="explore-card-count">', pluralPosts(item.count), '</p>',
             '</div>',
