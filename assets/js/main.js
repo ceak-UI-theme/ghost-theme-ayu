@@ -1212,7 +1212,7 @@ function renderSecondaryTags() {
         var apiUrl = [
             '/ghost/api/content/posts/?key=',
             encodeURIComponent(contentKey),
-            '&limit=100&page=',
+            '&include=tags,primary_tag&limit=100&page=',
             String(page)
         ].join('');
 
@@ -1242,10 +1242,25 @@ function renderSecondaryTags() {
         .then(function (posts) {
             var tagMap = {};
 
-            posts.forEach(function (post) {
-                var classified = AYU_TAG_UTILS.classifyPostTags(post);
+            var primarySlugSet = {};
 
-                classified.secondary.forEach(function (tag) {
+            posts.forEach(function (post) {
+                var primary = post && post.primary_tag ? post.primary_tag : null;
+                if (primary && AYU_TAG_UTILS.isPublicTag(primary) && !AYU_TAG_UTILS.isSeriesInternalTag(primary)) {
+                    primarySlugSet[primary.slug] = true;
+                }
+            });
+
+            posts.forEach(function (post) {
+                var tags = (post.tags || []).filter(function (tag) {
+                    return AYU_TAG_UTILS.isPublicTag(tag) && !AYU_TAG_UTILS.isSeriesInternalTag(tag);
+                });
+
+                tags.forEach(function (tag) {
+                    if (primarySlugSet[tag.slug]) {
+                        return;
+                    }
+
                     if (!tagMap[tag.slug]) {
                         tagMap[tag.slug] = {
                             slug: tag.slug,
