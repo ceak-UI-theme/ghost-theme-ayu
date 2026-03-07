@@ -1,4 +1,4 @@
-﻿function renderSeriesTags() {
+function renderSeriesTags() {
     'use strict';
 
     var isSeriesPage = /^\/series\/?$/.test(window.location.pathname);
@@ -63,13 +63,10 @@
         var detailSlug = seriesSlugFromTagSlug(tagInfo.slug);
         var mediaHtml = '';
 
-        var cardImage = tagInfo.feature_image || tagInfo.fallback_feature_image || '';
+        var defaults = (typeof AYU_DEFAULT_IMAGES !== 'undefined' && AYU_DEFAULT_IMAGES) ? AYU_DEFAULT_IMAGES : {};
+        var cardImage = tagInfo.feature_image || tagInfo.fallback_feature_image || defaults.SERIES_TAG || '/assets/images/fallback/series-tag-default.png';
 
-        if (cardImage) {
-            mediaHtml = '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(cardImage) + '" alt="' + escapeHtml(title) + '">';
-        } else {
-            mediaHtml = '<span class="letter">' + initial + '</span>';
-        }
+        mediaHtml = '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(cardImage) + '" alt="' + escapeHtml(title) + '">';
 
         return [
             '<article class="post category-post">',
@@ -310,7 +307,8 @@ function renderSeriesDetail() {
         if (post.feature_image) {
             mediaHtml = '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(post.feature_image) + '" alt="' + title + '">';
         } else {
-            mediaHtml = '<span class="letter">' + escapeHtml((post.title || '?').charAt(0)) + '</span>';
+            var defaultPostImage = (typeof AYU_DEFAULT_IMAGES !== 'undefined' && AYU_DEFAULT_IMAGES.POST) ? AYU_DEFAULT_IMAGES.POST : '/assets/images/fallback/post-default.png';
+            mediaHtml = '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(defaultPostImage) + '" alt="' + title + '">';
         }
 
         return [
@@ -413,7 +411,8 @@ function renderSeriesDetail() {
                 descEl.style.display = '';
             }
 
-            var headerImage = tagData.feature_image || (publicTagData && publicTagData.feature_image ? publicTagData.feature_image : '');
+            var defaults = (typeof AYU_DEFAULT_IMAGES !== 'undefined' && AYU_DEFAULT_IMAGES) ? AYU_DEFAULT_IMAGES : {};
+            var headerImage = tagData.feature_image || (publicTagData && publicTagData.feature_image ? publicTagData.feature_image : '') || defaults.SERIES_TAG || '/assets/images/fallback/series-tag-default.png';
 
             if (headerImage && !headerEl.querySelector('.tag-header-image-wrap')) {
                 var imgWrap = document.createElement('div');

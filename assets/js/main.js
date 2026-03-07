@@ -14,6 +14,13 @@ $(function () {
     normalizeInternalPostTags(document);
 });
 
+var AYU_DEFAULT_IMAGES = {
+    POST: '/assets/images/fallback/post-default.png',
+    PRIMARY_TAG: '/assets/images/fallback/primary-tag-default.png',
+    SERIES_TAG: '/assets/images/fallback/series-tag-default.png',
+    SECONDARY_TAG: '/assets/images/fallback/secondary-tag-default.png'
+};
+
 var AYU_GLOBALS = {
     PAGINATION_PAGE_SIZE: 10,
     PROMO_INSERT_EVERY: 5,
@@ -479,7 +486,7 @@ function renderSearchPage() {
         if (post.feature_image) {
             mediaHtml = '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(post.feature_image) + '" alt="' + title + '">';
         } else {
-            mediaHtml = '<span class="letter">' + escapeHtml((post.title || '?').charAt(0)) + '</span>';
+            mediaHtml = '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(AYU_DEFAULT_IMAGES.POST) + '" alt="' + title + '">';
         }
 
         return [
@@ -834,8 +841,6 @@ function renderPrimaryCategories() {
 
     function cardHtml(tagInfo) {
         var desc = tagInfo.description ? escapeHtml(tagInfo.description) : 'Primary category archive';
-        var initial = escapeHtml((tagInfo.name || '?').charAt(0));
-
         return [
             '<article class="post category-post">',
             '<div class="post-media">',
@@ -843,9 +848,7 @@ function renderPrimaryCategories() {
             '<a href="/tag/',
             encodeURIComponent(tagInfo.slug),
             '/">',
-            '<span class="letter">',
-            initial,
-            '</span>',
+            '<img class="post-image lazyload u-object-fit" src="' + escapeHtml(AYU_DEFAULT_IMAGES.PRIMARY_TAG) + '" alt="' + escapeHtml(tagInfo.name) + '">',
             '</a>',
             '</div>',
             '</div>',
@@ -1002,19 +1005,20 @@ function renderSecondaryTags() {
 
     function featuredHtml(tagInfo) {
         var link = '/tag/' + encodeURIComponent(tagInfo.slug) + '/';
-        var image = tagInfo.feature_image ? [
+        var imageSource = tagInfo.feature_image || AYU_DEFAULT_IMAGES.SECONDARY_TAG;
+        var image = [
             '<div class="tag-header-image-wrap">',
             '<a href="',
             link,
             '">',
             '<img class="tag-header-image" src="',
-            escapeHtml(tagInfo.feature_image),
+            escapeHtml(imageSource),
             '" alt="',
             escapeHtml(tagInfo.name),
             '">',
             '</a>',
             '</div>'
-        ].join('') : '';
+        ].join('');
 
         return [
             image,
@@ -1032,14 +1036,14 @@ function renderSecondaryTags() {
     }
 
     function gridCardHtml(tagInfo) {
-        var initial = escapeHtml((tagInfo.name || '?').charAt(0));
-        var thumb = tagInfo.feature_image ? [
+        var thumbSource = tagInfo.feature_image || AYU_DEFAULT_IMAGES.SECONDARY_TAG;
+        var thumb = [
             '<img class="secondary-tag-thumb-image" src="',
-            escapeHtml(tagInfo.feature_image),
+            escapeHtml(thumbSource),
             '" alt="',
             escapeHtml(tagInfo.name),
             '">'
-        ].join('') : '<span class="secondary-tag-thumb-letter">' + initial + '</span>';
+        ].join('');
 
         return [
             '<a class="secondary-tag-card" href="/tag/',
