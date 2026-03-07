@@ -7,7 +7,7 @@
     {{#if tags}}
         <span class="post-meta-item post-meta-tags">
             {{#foreach tags}}
-                <a class="post-tag post-tag-{{slug}}" data-tag-slug="{{slug}}" data-tag-name="{{name}}" href="{{url}}" title=""></a>
+                <a class="post-tag post-tag-{{slug}}" data-tag-slug="{{slug}}" data-tag-name="{{name}}" href="{{url}}" title="{{name}}">{{name}}</a>
             {{/foreach}}
         </span>
     {{/if}}

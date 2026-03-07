@@ -152,11 +152,11 @@ function buildPostTagsHtml(post, escapeHtml, maxCount) {
         var displayName = AYU_TAG_UTILS.getDisplayName(tag, slug);
 
         if (AYU_TAG_UTILS.isCategoryTag(tag)) {
-            cls += ' is-primary-tag';
+            cls += ' is-primary-tag tag-category';
         } else if (AYU_TAG_UTILS.isSeriesTag(tag)) {
-            cls += ' is-series-tag';
+            cls += ' is-series-tag tag-series';
         } else {
-            cls += ' is-secondary-tag';
+            cls += ' is-secondary-tag tag-topic';
         }
 
         return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(displayName) + '">' + escapeHtml(displayName) + '</a>';
@@ -318,14 +318,17 @@ function normalizePostTaxonomyTags(root) {
             return;
         }
 
-        tagEl.classList.remove('is-primary-tag', 'is-series-tag', 'is-secondary-tag', 'is-internal-series');
+        tagEl.classList.remove('is-primary-tag', 'is-series-tag', 'is-secondary-tag', 'is-internal-series', 'tag-category', 'tag-series', 'tag-topic');
 
         if (AYU_TAG_UTILS.isCategoryTag(slug)) {
             tagEl.classList.add('is-primary-tag');
+            tagEl.classList.add('tag-category');
         } else if (AYU_TAG_UTILS.isSeriesTag(slug)) {
             tagEl.classList.add('is-series-tag');
+            tagEl.classList.add('tag-series');
         } else {
             tagEl.classList.add('is-secondary-tag');
+            tagEl.classList.add('tag-topic');
         }
 
         tagEl.setAttribute('href', '/tag/' + encodeURIComponent(slug) + '/');
