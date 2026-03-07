@@ -8,7 +8,7 @@
 }
 
 .post-feed .post + .post {
-    margin-top: 64px;
+    margin-top: 56px;
 }
 
 .post-feed .post-excerpt {
@@ -28,7 +28,7 @@
 
 @media (max-width: 767px) {
     .post-feed .post + .post {
-        margin-top: 30px;
+        margin-top: 28px;
     }
 
     .post-feed .post-media {

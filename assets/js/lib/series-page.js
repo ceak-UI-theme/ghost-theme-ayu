@@ -16,8 +16,11 @@ function renderSeriesTags() {
     var keyScript = document.querySelector('script[data-key]');
     var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
 
+    featuredGrid.innerHTML = buildLoadingStateHtml('Loading series...');
+    listGrid.innerHTML = buildSkeletonCards(2);
+
     if (!contentKey) {
-        featuredGrid.innerHTML = '<div class="term-empty">Failed to load series.</div>';
+        featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
         listGrid.innerHTML = '';
         return;
     }
@@ -121,7 +124,7 @@ function renderSeriesTags() {
             injectPromoSlots(listGrid);
         })
         .catch(function () {
-            featuredGrid.innerHTML = '<div class="term-empty">Failed to load series.</div>';
+            featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
             listGrid.innerHTML = '';
         });
 }

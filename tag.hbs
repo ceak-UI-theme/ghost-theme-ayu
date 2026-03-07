@@ -1,4 +1,22 @@
 {{!< default}}
+{{#contentFor "head"}}
+    <meta property="og:title" content="{{tag.name}}">
+    {{#if tag.description}}
+        <meta property="og:description" content="{{tag.description}}">
+    {{else}}
+        <meta property="og:description" content="{{@site.description}}">
+    {{/if}}
+    {{#if tag.feature_image}}
+        <meta property="og:image" content="{{img_url tag.feature_image size="l" absolute="true"}}">
+    {{else}}
+        {{#if @site.cover_image}}
+            <meta property="og:image" content="{{img_url @site.cover_image size="l" absolute="true"}}">
+        {{else}}
+            <meta property="og:image" content="{{@site.url}}/assets/images/fallback/post-default.png">
+        {{/if}}
+    {{/if}}
+    <link rel="canonical" href="{{url absolute="true"}}">
+{{/contentFor}}
 
 <div class="gh-outer">
 <main class="site-main gh-inner">

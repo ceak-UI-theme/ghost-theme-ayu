@@ -33,6 +33,26 @@ var AYU_TAG_PREFIX = {
     SERIES: 'series-'
 };
 
+function buildLoadingStateHtml(message) {
+    'use strict';
+
+    return '<div class="term-loading" role="status" aria-live="polite">' + String(message || 'Loading...') + '</div>';
+}
+
+function buildSkeletonCards(count) {
+    'use strict';
+
+    var size = typeof count === 'number' && count > 0 ? count : 3;
+    var html = [];
+    var i;
+
+    for (i = 0; i < size; i += 1) {
+        html.push('<div class="term-skeleton-card" aria-hidden="true"></div>');
+    }
+
+    return '<div class="term-skeleton-grid">' + html.join('') + '</div>';
+}
+
 // Taxonomy helpers (Category / Series / Topic) based on slug prefixes.
 var AYU_TAG_UTILS = {
     getSlug: function (tag) {
@@ -686,6 +706,18 @@ function renderSearchPage() {
     function runSearch(raw, page) {
         var query = (raw || '').trim();
 
+        if (query.length === 0) {
+            currentResults = [];
+            currentQuery = '';
+            resultsEl.innerHTML = '';
+            if (paginationEl) {
+                paginationEl.innerHTML = '';
+            }
+            setUrlQuery('');
+            setState('Start typing to search posts.', 'idle');
+            return Promise.resolve();
+        }
+
         if (query.length < 2) {
             currentResults = [];
             currentQuery = '';
@@ -694,7 +726,7 @@ function renderSearchPage() {
                 paginationEl.innerHTML = '';
             }
             setUrlQuery('');
-            setState('Enter a query and press Search.', 'idle');
+            setState('Enter at least 2 characters.', 'empty');
             return Promise.resolve();
         }
 
@@ -738,7 +770,7 @@ function renderSearchPage() {
                         paginationEl.innerHTML = '';
                     }
                     setUrlQuery(query);
-                    setState('No results found.', 'empty');
+                    setState('No posts found.', 'empty');
                     return;
                 }
 
@@ -785,8 +817,10 @@ function renderSearchPage() {
 
     if (initialQuery.trim().length >= 2) {
         runSearch(initialQuery, initialPage);
+    } else if (initialQuery.trim().length === 1) {
+        setState('Enter at least 2 characters.', 'empty');
     } else {
-        setState('Enter a query and press Search.', 'idle');
+        setState('Start typing to search posts.', 'idle');
     }
 }
 
@@ -900,8 +934,11 @@ function renderPrimaryCategories() {
     var keyScript = document.querySelector('script[data-key]');
     var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
 
+    featuredGrid.innerHTML = buildLoadingStateHtml('Loading categories...');
+    listGrid.innerHTML = buildSkeletonCards(2);
+
     if (!contentKey) {
-        featuredGrid.innerHTML = '<div class="term-empty">Failed to load categories.</div>';
+        featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
         listGrid.innerHTML = '';
         return;
     }
@@ -1007,7 +1044,7 @@ function renderPrimaryCategories() {
             injectPromoSlots(listGrid);
         })
         .catch(function () {
-            featuredGrid.innerHTML = '<div class="term-empty">Failed to load categories.</div>';
+            featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
             listGrid.innerHTML = '';
         });
 }
@@ -1031,9 +1068,12 @@ function renderSecondaryTags() {
     var keyScript = document.querySelector('script[data-key]');
     var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
 
+    featuredSection.hidden = false;
+    featuredSection.innerHTML = buildLoadingStateHtml('Loading topics...');
+    grid.innerHTML = buildSkeletonCards(8);
+
     if (!contentKey) {
-        featuredSection.hidden = false;
-        featuredSection.innerHTML = '<div class="term-empty">Failed to load topics.</div>';
+        featuredSection.innerHTML = '<div class="term-empty">Failed to load content.</div>';
         grid.innerHTML = '';
         return;
     }
@@ -1150,8 +1190,7 @@ function renderSecondaryTags() {
             grid.innerHTML = rest.length ? rest.map(gridCardHtml).join('') : '<div class="term-empty">No additional topics.</div>';
         })
         .catch(function () {
-            featuredSection.hidden = false;
-            featuredSection.innerHTML = '<div class="term-empty">Failed to load topics.</div>';
+            featuredSection.innerHTML = '<div class="term-empty">Failed to load content.</div>';
             grid.innerHTML = '';
         });
 }
@@ -1309,11 +1348,16 @@ function renderExplorePage() {
     var keyScript = document.querySelector('script[data-key]');
     var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
 
+    categoriesGrid.innerHTML = buildLoadingStateHtml('Loading categories...');
+    seriesList.innerHTML = buildLoadingStateHtml('Loading series...');
+    topicsGrid.innerHTML = buildLoadingStateHtml('Loading topics...');
+    recentList.innerHTML = '<li class="term-loading" role="status" aria-live="polite">Loading recent posts...</li>';
+
     if (!contentKey) {
-        categoriesGrid.innerHTML = '<div class="term-empty">Failed to load explore data.</div>';
-        seriesList.innerHTML = '';
-        topicsGrid.innerHTML = '';
-        recentList.innerHTML = '';
+        categoriesGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        seriesList.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        topicsGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        recentList.innerHTML = '<li class="term-empty">Failed to load content.</li>';
         return;
     }
 
@@ -1492,10 +1536,10 @@ function renderExplorePage() {
             recentList.innerHTML = recent.length ? recent.map(recentItemHtml).join('') : '<li class="term-empty">No recent posts.</li>';
         })
         .catch(function () {
-            categoriesGrid.innerHTML = '<div class="term-empty">Failed to load explore data.</div>';
-            seriesList.innerHTML = '';
-            topicsGrid.innerHTML = '';
-            recentList.innerHTML = '';
+            categoriesGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+            seriesList.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+            topicsGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+            recentList.innerHTML = '<li class="term-empty">Failed to load content.</li>';
         });
 }
 

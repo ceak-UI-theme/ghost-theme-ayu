@@ -89,15 +89,6 @@
     color: var(--brand-color);
 }
 
-.post-meta-tags .post-tag.is-internal-series {
-    color: #0ea5a4;
-    font-weight: 700;
-}
-
-.post-meta-tags .post-tag.is-internal-series:hover {
-    color: #0b8e8d;
-}
-
 .post-meta-tags .post-tag + .post-tag::before {
     content: ", ";
 }

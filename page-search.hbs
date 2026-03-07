@@ -1,4 +1,14 @@
-﻿{{!< default}}
+{{!< default}}
+{{#contentFor "head"}}
+    <meta property="og:title" content="{{meta_title}}">
+    <meta property="og:description" content="{{meta_description}}">
+    {{#if @site.cover_image}}
+        <meta property="og:image" content="{{img_url @site.cover_image size="l" absolute="true"}}">
+    {{else}}
+        <meta property="og:image" content="{{@site.url}}/assets/images/fallback/post-default.png">
+    {{/if}}
+    <link rel="canonical" href="{{url absolute="true"}}">
+{{/contentFor}}
 
 <div class="gh-outer">
 <main class="site-main gh-inner search-page">
@@ -14,7 +24,7 @@
                 <input id="search-input" class="search-input" type="search" name="q" autocomplete="off" placeholder="Search posts" />
                 <button class="search-submit gh-btn" type="submit">Search</button>
             </div>
-            <p id="search-state" class="search-state" aria-live="polite">Enter a query and press Search.</p>
+            <p id="search-state" class="search-state" aria-live="polite">Start typing to search posts.</p>
         </form>
     </section>
 
@@ -24,3 +34,4 @@
     </section>
 </main>
 </div>
+

@@ -1,4 +1,14 @@
 {{!< default}}
+{{#contentFor "head"}}
+    <meta property="og:title" content="{{meta_title}}">
+    <meta property="og:description" content="{{meta_description}}">
+    {{#if @site.cover_image}}
+        <meta property="og:image" content="{{img_url @site.cover_image size="l" absolute="true"}}">
+    {{else}}
+        <meta property="og:image" content="{{@site.url}}/assets/images/fallback/post-default.png">
+    {{/if}}
+    <link rel="canonical" href="{{url absolute="true"}}">
+{{/contentFor}}
 
 <div class="gh-outer">
 <main class="site-main gh-inner explore-page">
@@ -35,3 +45,4 @@
     </section>
 </main>
 </div>
+
