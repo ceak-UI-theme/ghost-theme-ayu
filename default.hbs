@@ -30,14 +30,13 @@
             </div>
 
             <nav class="gh-head-menu">
-                <ul class="nav">
-                    <li class="nav-tech-docs"><a href="{{@site.url}}/tag/tech-docs/">Tech Docs</a></li>
-                    <li class="nav-tech-gear"><a href="{{@site.url}}/tag/tech-gear/">Tech Gear</a></li>
-                    <li class="nav-ui-ux"><a href="{{@site.url}}/tag/ui-ux/">UI &amp; UX</a></li>
-                    <li class="nav-readium"><a href="{{@site.url}}/tag/readium/">Readium</a></li>
-                    <li class="nav-categories"><a href="{{@site.url}}/categories/">+More</a></li>
-                    <li class="nav-series"><a href="{{@site.url}}/series/">Series</a></li>
-                </ul>
+                <div class="gh-head-menu-group">
+                    {{navigation}}
+                    <ul class="nav nav-extra">
+                        <li class="nav-categories"><a href="{{@site.url}}/categories/">+More</a></li>
+                        <li class="nav-series"><a href="{{@site.url}}/series/">Series</a></li>
+                    </ul>
+                </div>
                 {{#unless @site.members_enabled}}
                     {{#match @custom.navigation_layout "Stacked"}}
                         <a class="gh-search gh-icon-btn" aria-label="Search page" href="{{@site.url}}/search/">{{> "icons/search"}}</a>
