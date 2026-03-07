@@ -1,4 +1,4 @@
-﻿.term {
+.term {
     max-width: 840px;
     margin: 0 auto 80px;
 }
@@ -187,6 +187,166 @@
     margin-top: 56px;
 }
 
+
+.category-hub-links {
+    margin: 0 auto 40px;
+    max-width: 840px;
+}
+
+.category-hub-link {
+    align-items: flex-start;
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 18px;
+}
+
+.category-hub-link-title {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.category-hub-link-description {
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+}
+
+.secondary-tags-featured {
+    align-items: center;
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    margin: 0 auto 32px;
+    max-width: 840px;
+    padding: 12px;
+}
+
+.secondary-tags-featured .tag-header-image-wrap {
+    border-radius: 10px;
+    flex: 0 0 56px;
+    margin: 0;
+    width: 56px;
+}
+
+.secondary-tags-featured .tag-header-image {
+    height: 56px;
+    object-fit: cover;
+    width: 56px;
+}
+
+.secondary-tags-featured-body {
+    min-width: 0;
+}
+
+.secondary-tags-featured .term-name {
+    font-size: 1.9rem;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.secondary-tags-featured .term-description {
+    margin-top: 6px;
+}
+
+.secondary-tags-list {
+    max-width: 840px;
+}
+
+.secondary-tags-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.secondary-tag-card {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+}
+
+.secondary-tag-thumb {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-default);
+    border-radius: 10px;
+    display: flex;
+    height: 56px;
+    justify-content: center;
+    overflow: hidden;
+    width: 56px;
+}
+
+.secondary-tag-thumb-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.secondary-tag-thumb-letter {
+    align-items: center;
+    color: var(--text-muted);
+    display: flex;
+    font-size: 1.6rem;
+    font-weight: 700;
+    justify-content: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.secondary-tag-name {
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.secondary-tag-card:hover .secondary-tag-name {
+    color: var(--text-primary);
+}
+
+@media (min-width: 768px) {
+    .secondary-tags-featured {
+        gap: 14px;
+        padding: 14px;
+    }
+
+    .secondary-tags-featured .tag-header-image-wrap {
+        flex-basis: 64px;
+        width: 64px;
+    }
+
+    .secondary-tags-featured .tag-header-image {
+        height: 64px;
+        width: 64px;
+    }
+
+    .secondary-tags-grid {
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+    }
+
+    .secondary-tag-thumb {
+        height: 64px;
+        width: 64px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .secondary-tags-grid {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+}
 @media (max-width: 767px) {
     .category-post .post-media {
         min-height: 80px;

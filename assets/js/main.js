@@ -1,10 +1,11 @@
-﻿$(function () {
+$(function () {
     'use strict';
     cover();
     player();
     themeToggle();
     renderAyuPagination();
     renderPrimaryCategories();
+    renderSecondaryTags();
     renderSeriesTags();
     renderSeriesDetail();
     renderPostSeriesNavigation();
@@ -953,6 +954,203 @@ function renderPrimaryCategories() {
 }
 
 
+function renderSecondaryTags() {
+    'use strict';
+
+    var isSecondaryTagsPage = /^\/secondary-tags\/?$/.test(window.location.pathname);
+    if (!isSecondaryTagsPage) {
+        return;
+    }
+
+    var featuredSection = document.getElementById('secondary-tags-featured');
+    var grid = document.getElementById('secondary-tags-grid');
+
+    if (!featuredSection || !grid) {
+        return;
+    }
+
+    var keyScript = document.querySelector('script[data-key]');
+    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+
+    if (!contentKey) {
+        featuredSection.hidden = false;
+        featuredSection.innerHTML = '<div class="term-empty">Failed to load secondary tags.</div>';
+        grid.innerHTML = '';
+        return;
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function isPublicTag(tag) {
+        return !!(tag && tag.slug && tag.visibility === 'public' && tag.slug.indexOf('hash-') !== 0);
+    }
+
+    function resolvePrimaryTag(post, publicTags) {
+        if (post.primary_tag && isPublicTag(post.primary_tag)) {
+            return post.primary_tag;
+        }
+
+        return publicTags.length ? publicTags[0] : null;
+    }
+
+    function featuredHtml(tagInfo) {
+        var link = '/tag/' + encodeURIComponent(tagInfo.slug) + '/';
+        var image = tagInfo.feature_image ? [
+            '<div class="tag-header-image-wrap">',
+            '<a href="',
+            link,
+            '">',
+            '<img class="tag-header-image" src="',
+            escapeHtml(tagInfo.feature_image),
+            '" alt="',
+            escapeHtml(tagInfo.name),
+            '">',
+            '</a>',
+            '</div>'
+        ].join('') : '';
+
+        return [
+            image,
+            '<div class="secondary-tags-featured-body">',
+            '<h2 class="term-name"><a href="',
+            link,
+            '">',
+            escapeHtml(tagInfo.name),
+            '</a></h2>',
+            '<div class="term-description">',
+            escapeHtml(tagInfo.description || 'Most-used secondary tag archive.'),
+            '</div>',
+            '</div>'
+        ].join('');
+    }
+
+    function gridCardHtml(tagInfo) {
+        var initial = escapeHtml((tagInfo.name || '?').charAt(0));
+        var thumb = tagInfo.feature_image ? [
+            '<img class="secondary-tag-thumb-image" src="',
+            escapeHtml(tagInfo.feature_image),
+            '" alt="',
+            escapeHtml(tagInfo.name),
+            '">'
+        ].join('') : '<span class="secondary-tag-thumb-letter">' + initial + '</span>';
+
+        return [
+            '<a class="secondary-tag-card" href="/tag/',
+            encodeURIComponent(tagInfo.slug),
+            '/" title="',
+            escapeHtml(tagInfo.name),
+            '">',
+            '<span class="secondary-tag-thumb">',
+            thumb,
+            '</span>',
+            '<span class="secondary-tag-name">',
+            escapeHtml(tagInfo.name),
+            '</span>',
+            '</a>'
+        ].join('');
+    }
+
+    function fetchAllPosts(page, postList) {
+        var apiUrl = [
+            '/ghost/api/content/posts/?key=',
+            encodeURIComponent(contentKey),
+            '&include=tags&limit=100&page=',
+            String(page),
+            '&fields=id,slug,title'
+        ].join('');
+
+        return fetch(apiUrl)
+            .then(function (res) {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch posts for secondary tags');
+                }
+
+                return res.json();
+            })
+            .then(function (data) {
+                (data.posts || []).forEach(function (post) {
+                    postList.push(post);
+                });
+
+                var pages = data.meta && data.meta.pagination ? data.meta.pagination.pages : 1;
+                if (page < pages) {
+                    return fetchAllPosts(page + 1, postList);
+                }
+
+                return postList;
+            });
+    }
+
+    fetchAllPosts(1, [])
+        .then(function (posts) {
+            var tagMap = {};
+
+            posts.forEach(function (post) {
+                var publicTags = (post.tags || []).filter(isPublicTag);
+                if (!publicTags.length) {
+                    return;
+                }
+
+                var primaryTag = resolvePrimaryTag(post, publicTags);
+
+                publicTags.forEach(function (tag) {
+                    if (primaryTag && tag.slug === primaryTag.slug) {
+                        return;
+                    }
+
+                    if (!tagMap[tag.slug]) {
+                        tagMap[tag.slug] = {
+                            slug: tag.slug,
+                            name: tag.name || tag.slug,
+                            description: tag.description || '',
+                            feature_image: tag.feature_image || '',
+                            count: 0
+                        };
+                    }
+
+                    tagMap[tag.slug].count += 1;
+                });
+            });
+
+            var tags = Object.keys(tagMap).map(function (slug) {
+                return tagMap[slug];
+            });
+
+            if (!tags.length) {
+                featuredSection.hidden = false;
+                featuredSection.innerHTML = '<div class="term-empty">No secondary tags found.</div>';
+                grid.innerHTML = '';
+                return;
+            }
+
+            tags.sort(function (a, b) {
+                if (b.count !== a.count) {
+                    return b.count - a.count;
+                }
+
+                return a.name.localeCompare(b.name);
+            });
+
+            var featured = tags[0];
+            var rest = tags.slice(1);
+
+            featuredSection.hidden = false;
+            featuredSection.innerHTML = featuredHtml(featured);
+            grid.innerHTML = rest.length ? rest.map(gridCardHtml).join('') : '<div class="term-empty">No additional secondary tags.</div>';
+        })
+        .catch(function () {
+            featuredSection.hidden = false;
+            featuredSection.innerHTML = '<div class="term-empty">Failed to load secondary tags.</div>';
+            grid.innerHTML = '';
+        });
+}
 function renderPostSeriesNavigation() {
     'use strict';
 
