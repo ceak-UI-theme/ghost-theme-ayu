@@ -57,17 +57,17 @@
                 "options": ["Modern sans-serif", "Elegant serif"],
                 "default": "Modern sans-serif"
             },
-            "apple_podcasts_link": {
+            "github_link": {
                 "type": "text",
-                "default": "https://podcasts.apple.com/"
+                "default": "https://github.com/"
             },
-            "google_podcasts_link": {
+            "twitter_x_link": {
                 "type": "text",
-                "default": "https://podcasts.google.com/"
+                "default": "https://x.com/"
             },
-            "spotify_link": {
+            "linkedin_link": {
                 "type": "text",
-                "default": "https://open.spotify.com/"
+                "default": "https://www.linkedin.com/"
             },
             "rss_link": {
                 "type": "text"
