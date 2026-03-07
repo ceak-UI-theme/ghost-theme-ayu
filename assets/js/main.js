@@ -936,7 +936,7 @@ function renderPrimaryCategories() {
     }
 
     function fetchPrimaryCategories() {
-        var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all';
+        var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all';
 
         return fetch(tagsUrl)
             .then(function (res) {
@@ -946,36 +946,17 @@ function renderPrimaryCategories() {
                 return res.json();
             })
             .then(function (data) {
-                var publicTags = (data.tags || []).filter(function (tag) {
+                return (data.tags || []).filter(function (tag) {
                     return AYU_TAG_UTILS.isCategoryTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
-                });
-
-                return Promise.all(publicTags.map(function (tag) {
-                    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&filter=tag:' + encodeURIComponent(tag.slug) + '&limit=1';
-
-                    return fetch(postsUrl)
-                        .then(function (res) {
-                            if (!res.ok) {
-                                throw new Error('Failed to fetch primary tag posts');
-                            }
-                            return res.json();
-                        })
-                        .then(function (postsData) {
-                            var pagination = postsData.meta && postsData.meta.pagination ? postsData.meta.pagination : null;
-                            var total = pagination && typeof pagination.total === 'number' ? pagination.total : 0;
-
-                            return {
-                                slug: tag.slug,
-                                name: AYU_TAG_UTILS.getDisplayName(tag, tag.slug),
-                                description: tag.description || '',
-                                feature_image: tag.feature_image || '',
-                                count: total
-                            };
-                        });
-                }));
-            })
-            .then(function (tags) {
-                return tags.filter(function (tag) {
+                }).map(function (tag) {
+                    return {
+                        slug: tag.slug,
+                        name: AYU_TAG_UTILS.getDisplayName(tag, tag.slug),
+                        description: tag.description || '',
+                        feature_image: tag.feature_image || '',
+                        count: tag.count && typeof tag.count.posts === 'number' ? tag.count.posts : 0
+                    };
+                }).filter(function (tag) {
                     return tag.count > 0;
                 });
             });
