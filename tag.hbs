@@ -1,4 +1,4 @@
-﻿{{!< default}}
+{{!< default}}
 
 <div class="gh-outer">
 <main class="site-main gh-inner">
@@ -9,7 +9,7 @@
                 <img class="tag-header-image" src="{{img_url tag.feature_image size="l"}}" alt="{{tag.name}}">
             </div>
         {{/if}}
-        <h1 class="term-name">{{tag.name}}</h1>
+        <h1 class="term-name" data-tag-slug="{{tag.slug}}">{{tag.name}}</h1>
         {{#if tag.description}}
             <div class="term-description">{{tag.description}}</div>
         {{/if}}
@@ -63,3 +63,4 @@
 
 </main>
 </div>
+
