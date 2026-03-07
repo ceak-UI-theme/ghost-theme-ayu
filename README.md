@@ -1,38 +1,87 @@
-# Wave
+# signal-wave-ayu
 
-Wave is a [Ghost](https://github.com/TryGhost/Ghost) theme dedicated to podcasters. Share your voice and words with your audience.
+A Ghost theme based on Wave, customized for a content-first technical blog.
 
-**Demo: https://wave.ghost.io**
+## Taxonomy Model
 
-# Instructions
+This theme uses explicit public tag prefixes.
 
-1. [Download this theme](https://github.com/TryGhost/Wave/archive/main.zip)
-2. Log into Ghost, and go to the `Design` settings area to upload the zip file
+- `category-*` -> Category
+- `series-*` -> Series
+- all other public tags -> Topics
 
-# Development
+Examples:
 
-Edition styles are compiled using Gulp/PostCSS to polyfill future CSS spec. You'll need [Node](https://nodejs.org/), [Yarn](https://yarnpkg.com/) and [Gulp](https://gulpjs.com) installed globally. After that, from the theme's root directory:
+- `category-ai`
+- `series-unix-story`
+- `docker`
+
+## URL Structure
+
+- `/categories/` -> Categories hub
+- `/series/` -> Series hub
+- `/secondary-tags/` -> Topics hub
+- `/explore/` -> Explore hub
+- `/tag/{slug}/` -> Ghost tag archive (including series detail, e.g. `/tag/series-unix-story/`)
+
+Series detail is handled by Ghost tag archive only.
+
+## Hub Pages
+
+Hub page templates:
+
+- `page-categories.hbs`
+- `page-series.hbs`
+- `page-secondary-tags.hbs`
+- `page-explore.hbs`
+
+Rendering strategy:
+
+- Layout: Handlebars templates
+- Data list: client-side JS via Ghost Content API
+
+## Content API Usage
+
+Main runtime script: `assets/js/main.js`
+
+Core behavior:
+
+- classify tags by slug prefix (`category-*`, `series-*`, topic)
+- add taxonomy UI classes (`tag-category`, `tag-series`, `tag-topic`)
+- normalize labels for display enhancement
+
+Categories count optimization:
+
+- uses `GET /ghost/api/content/tags/?limit=all&include=count.posts`
+- reads `count.posts` directly
+- does not use per-tag N+1 posts API calls
+
+## Post Meta Rendering
+
+`partials/post-meta.hbs` renders tag links and labels server-side first.
+
+- JS enhances classes/labels
+- if JS fails, tag links and names still work
+
+## Development
 
 ```bash
-# Install
-yarn
-
-# Run build & watch for changes
-yarn dev
+npm install
+npm run dev
 ```
 
-Now you can edit `/assets/css/` files, which will be compiled to `/assets/built/` automatically.
-
-The `zip` Gulp task packages the theme files into `dist/wave.zip`, which you can then upload to your site.
+Build zip:
 
 ```bash
-yarn zip
+npm run zip
 ```
 
-# Contribution
+Theme validation:
 
-This repo is synced automatically with [TryGhost/Themes](https://github.com/TryGhost/Themes) monorepo. If you're looking to contribute or raise an issue, head over to the main repository [TryGhost/Themes](https://github.com/TryGhost/Themes) where our official themes are developed.
+```bash
+npm test
+```
 
-## Copyright & License
+## License
 
-Copyright (c) 2013-2026 Ghost Foundation - Released under the [MIT license](LICENSE).
+MIT

@@ -42,7 +42,7 @@ var AYU_TAG_UTILS = {
     },
     isPublicTag: function (tag) {
         var slug = this.getSlug(tag);
-        if (!slug || slug.indexOf('hash-') === 0) {
+        if (!slug) {
             return false;
         }
 
@@ -318,7 +318,7 @@ function normalizePostTaxonomyTags(root) {
             return;
         }
 
-        tagEl.classList.remove('is-primary-tag', 'is-series-tag', 'is-secondary-tag', 'is-internal-series', 'tag-category', 'tag-series', 'tag-topic');
+        tagEl.classList.remove('is-primary-tag', 'is-series-tag', 'is-secondary-tag', 'tag-category', 'tag-series', 'tag-topic');
 
         if (AYU_TAG_UTILS.isCategoryTag(slug)) {
             tagEl.classList.add('is-primary-tag');
@@ -1204,9 +1204,9 @@ function renderPostSeriesNavigation() {
         return '/' + encodeURIComponent(post.slug || '') + '/';
     }
 
-    var internalSlug = 'series-' + seriesSlug;
-    var tagUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&filter=slug:' + encodeURIComponent(internalSlug) + '&limit=1';
-    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&filter=tag:' + encodeURIComponent(internalSlug) + '&fields=id,title,slug,url,published_at&order=published_at%20asc&limit=all';
+    var seriesTagSlug = 'series-' + seriesSlug;
+    var tagUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&filter=slug:' + encodeURIComponent(seriesTagSlug) + '&limit=1';
+    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&filter=tag:' + encodeURIComponent(seriesTagSlug) + '&fields=id,title,slug,url,published_at&order=published_at%20asc&limit=all';
 
     Promise.all([
         fetch(tagUrl).then(function (res) {
@@ -1234,7 +1234,7 @@ function renderPostSeriesNavigation() {
             }
 
             var seriesName = displaySeriesName(tag);
-            navTitle.innerHTML = 'Series: <a href="/tag/' + encodeURIComponent(internalSlug) + '/">' + escapeHtml(seriesName) + '</a>';
+            navTitle.innerHTML = 'Series: <a href="/tag/' + encodeURIComponent(seriesTagSlug) + '/">' + escapeHtml(seriesName) + '</a>';
 
             navList.innerHTML = posts.map(function (post) {
                 var slug = (post.slug || '').toLowerCase();
