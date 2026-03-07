@@ -83,6 +83,8 @@ function zipper(done) {
             '**',
             '!node_modules', '!node_modules/**',
             '!dist', '!dist/**',
+            '!scripts', '!scripts/**',
+            '!*.zip',
             '!yarn-error.log'
         ], {encoding: false}),
         zip(filename),
