@@ -9,11 +9,11 @@
 @import "site/footer.css";
 @import "site/player.css";
 @import "site/theme-ayu.css";
+@import "series.css";
 @import "blog/post.css";
 @import "blog/feed.css";
 @import "blog/single.css";
 @import "blog/author.css";
 @import "misc/utilities.css";
 @import "post-toc.css";
-
 @import "post-navigation.css";
