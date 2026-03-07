@@ -80,13 +80,15 @@ function zipper(done) {
 
     pump([
         src([
-            '**',
-            '!node_modules', '!node_modules/**',
-            '!dist', '!dist/**',
-            '!scripts', '!scripts/**',
-            '!*.zip',
-            '!yarn-error.log'
-        ], {encoding: false}),
+            '*.hbs',
+            'partials/**',
+            'assets/**',
+            'routes.yaml',
+            'package.json',
+            'gulpfile.js',
+            'LICENSE',
+            'README.md'
+        ], {encoding: false, cwdbase: true}),
         zip(filename),
         dest('dist/')
     ], handleError(done));
