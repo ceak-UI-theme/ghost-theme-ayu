@@ -73,8 +73,12 @@ var AYU_TAG_UTILS = {
     },
     getDisplayName: function (tag, fallback) {
         var rawName = tag && typeof tag === 'object' && tag.name ? String(tag.name).trim() : '';
+        if (rawName) {
+            return rawName;
+        }
+
         var slug = this.getSlug(tag) || String(fallback || '');
-        var normalized = rawName || slug;
+        var normalized = slug;
 
         if (normalized.indexOf('category-') === 0) {
             normalized = normalized.substring('category-'.length);
@@ -296,6 +300,7 @@ function normalizePostTaxonomyTags(root) {
         var href = tagEl.getAttribute('href') || '';
         var cls = tagEl.className || '';
         var slug = tagEl.getAttribute('data-tag-slug') || '';
+        var tagName = tagEl.getAttribute('data-tag-name') || '';
 
         if (!slug) {
             var slugMatch = cls.match(/(?:^|\s)post-tag-([^\s]+)/);
@@ -325,7 +330,10 @@ function normalizePostTaxonomyTags(root) {
 
         tagEl.setAttribute('href', '/tag/' + encodeURIComponent(slug) + '/');
 
-        var displayName = AYU_TAG_UTILS.getDisplayName(slug, slug);
+        var displayName = AYU_TAG_UTILS.getDisplayName({
+            slug: slug,
+            name: tagName
+        }, slug);
         tagEl.textContent = displayName;
         tagEl.setAttribute('title', displayName);
     });
@@ -356,7 +364,11 @@ function normalizeTagHeaderName(root) {
         return;
     }
 
-    titleEl.textContent = AYU_TAG_UTILS.getDisplayName(slug, slug);
+    var currentName = (titleEl.textContent || '').trim();
+    titleEl.textContent = AYU_TAG_UTILS.getDisplayName({
+        slug: slug,
+        name: currentName
+    }, slug);
 }
 function cover() {
     'use strict';
