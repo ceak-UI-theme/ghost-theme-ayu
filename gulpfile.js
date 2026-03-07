@@ -44,7 +44,7 @@ function css(done) {
             easyimport,
             autoprefixer(),
             cssnano()
-        ]),
+        ], {encoding: false}),
         dest('assets/built/', {sourcemaps: '.'}),
         livereload()
     ], handleError(done));
@@ -84,7 +84,7 @@ function zipper(done) {
             '!node_modules', '!node_modules/**',
             '!dist', '!dist/**',
             '!yarn-error.log'
-        ]),
+        ], {encoding: false}),
         zip(filename),
         dest('dist/')
     ], handleError(done));
