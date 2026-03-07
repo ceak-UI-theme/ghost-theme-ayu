@@ -28,6 +28,12 @@ var AYU_GLOBALS = {
     MOBILE_BREAKPOINT: 767
 };
 
+var AYU_TAG_PREFIX = {
+    CATEGORY: 'category-',
+    SERIES: 'series-'
+};
+
+// Taxonomy helpers (Category / Series / Topic) based on slug prefixes.
 var AYU_TAG_UTILS = {
     getSlug: function (tag) {
         if (!tag) {
@@ -54,19 +60,23 @@ var AYU_TAG_UTILS = {
     },
     isCategoryTag: function (tag) {
         var slug = this.getSlug(tag);
-        return slug.indexOf('category-') === 0;
+        return slug.indexOf(AYU_TAG_PREFIX.CATEGORY) === 0;
     },
     isSeriesTag: function (tag) {
         var slug = this.getSlug(tag);
-        return slug.indexOf('series-') === 0;
+        return slug.indexOf(AYU_TAG_PREFIX.SERIES) === 0;
     },
-    isSecondaryTag: function (tag) {
+    isTopicTag: function (tag) {
         return this.isPublicTag(tag) && !this.isCategoryTag(tag) && !this.isSeriesTag(tag);
+    },
+    // Backward-compatible alias; prefer isTopicTag in new code.
+    isSecondaryTag: function (tag) {
+        return this.isTopicTag(tag);
     },
     extractSeriesSlug: function (tag) {
         var slug = this.getSlug(tag);
-        if (slug.indexOf('series-') === 0) {
-            return slug.substring('series-'.length);
+        if (slug.indexOf(AYU_TAG_PREFIX.SERIES) === 0) {
+            return slug.substring(AYU_TAG_PREFIX.SERIES.length);
         }
 
         return slug;
@@ -80,10 +90,10 @@ var AYU_TAG_UTILS = {
         var slug = this.getSlug(tag) || String(fallback || '');
         var normalized = slug;
 
-        if (normalized.indexOf('category-') === 0) {
-            normalized = normalized.substring('category-'.length);
-        } else if (normalized.indexOf('series-') === 0) {
-            normalized = normalized.substring('series-'.length);
+        if (normalized.indexOf(AYU_TAG_PREFIX.CATEGORY) === 0) {
+            normalized = normalized.substring(AYU_TAG_PREFIX.CATEGORY.length);
+        } else if (normalized.indexOf(AYU_TAG_PREFIX.SERIES) === 0) {
+            normalized = normalized.substring(AYU_TAG_PREFIX.SERIES.length);
         }
 
         normalized = normalized.replace(/-/g, ' ').trim();
@@ -121,7 +131,7 @@ var AYU_TAG_UTILS = {
             return self.isSeriesTag(tag);
         }));
         var secondaryTags = dedupeBySlug(allTags.filter(function (tag) {
-            return self.isSecondaryTag(tag);
+            return self.isTopicTag(tag);
         }));
 
         var ordered = categoryTags.concat(seriesTags, secondaryTags);
@@ -1104,7 +1114,7 @@ function renderSecondaryTags() {
         })
         .then(function (data) {
             var tags = (data.tags || []).filter(function (tag) {
-                return AYU_TAG_UTILS.isSecondaryTag(tag);
+                return AYU_TAG_UTILS.isTopicTag(tag);
             }).map(function (tag) {
                 return {
                     slug: tag.slug,
@@ -1445,7 +1455,7 @@ function renderExplorePage() {
             });
 
             var topics = tags.filter(function (tag) {
-                return AYU_TAG_UTILS.isSecondaryTag(tag);
+                return AYU_TAG_UTILS.isTopicTag(tag);
             }).map(function (tag) {
                 return {
                     slug: tag.slug,
