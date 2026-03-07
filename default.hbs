@@ -106,7 +106,7 @@
                 {{#if @custom.twitter_x_link}}
                     <a href="{{@custom.twitter_x_link}}" class="subscribe-link" target="_blank" rel="noopener noreferrer">
                         {{> "icons/twitter"}}
-                        <span class="subscribe-text">Twitter(X)</span>
+                        <span class="subscribe-text">X (Twitter)</span>
                     </a>
                 {{/if}}
                 {{#if @custom.linkedin_link}}
@@ -132,6 +132,7 @@
 
 </div>
 
+{{! TODO: Replace jQuery dependency after main.js is fully migrated to vanilla JS }}
 <script
     src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -145,7 +146,6 @@
 
 </body>
 </html>
-
 
 
 

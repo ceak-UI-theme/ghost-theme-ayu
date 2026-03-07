@@ -63,7 +63,7 @@ var AYU_TAG_UTILS = {
     isSecondaryTag: function (tag) {
         return this.isPublicTag(tag) && !this.isCategoryTag(tag) && !this.isSeriesTag(tag);
     },
-    getSeriesSlug: function (tag) {
+    extractSeriesSlug: function (tag) {
         var slug = this.getSlug(tag);
         if (slug.indexOf('series-') === 0) {
             return slug.substring('series-'.length);
@@ -1434,7 +1434,7 @@ function renderExplorePage() {
             }).map(function (tag) {
                 return {
                     slug: tag.slug,
-                    seriesSlug: AYU_TAG_UTILS.getSeriesSlug(tag),
+                    seriesSlug: AYU_TAG_UTILS.extractSeriesSlug(tag),
                     name: AYU_TAG_UTILS.getDisplayName(tag, tag.slug),
                     description: tag.description || '',
                     image: tag.feature_image || '',

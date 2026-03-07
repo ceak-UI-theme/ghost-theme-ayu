@@ -63,7 +63,7 @@
             },
             "twitter_x_link": {
                 "type": "text",
-                "default": "https://x.com/"
+                "default": "https://x.com/{username}"
             },
             "linkedin_link": {
                 "type": "text",
