@@ -1136,7 +1136,7 @@ function renderSecondaryTags() {
 
     if (!contentKey) {
         featuredSection.hidden = false;
-        featuredSection.innerHTML = '<div class="term-empty">Failed to load secondary tags.</div>';
+        featuredSection.innerHTML = '<div class="term-empty">Failed to load topics.</div>';
         grid.innerHTML = '';
         return;
     }
@@ -1177,7 +1177,7 @@ function renderSecondaryTags() {
             escapeHtml(tagInfo.name),
             '</a></h2>',
             '<div class="term-description">',
-            escapeHtml(tagInfo.description || 'Most-used secondary tag archive.'),
+            escapeHtml(tagInfo.description || 'Most-used topic archive.'),
             '</div>',
             '</div>'
         ].join('');
@@ -1220,7 +1220,7 @@ function renderSecondaryTags() {
         return fetch(apiUrl)
             .then(function (res) {
                 if (!res.ok) {
-                    throw new Error('Failed to fetch posts for secondary tags');
+                    throw new Error('Failed to fetch posts for topics');
                 }
 
                 return res.json();
@@ -1282,7 +1282,7 @@ function renderSecondaryTags() {
 
             if (!tags.length) {
                 featuredSection.hidden = false;
-                featuredSection.innerHTML = '<div class="term-empty">No secondary tags found.</div>';
+                featuredSection.innerHTML = '<div class="term-empty">No topics found.</div>';
                 grid.innerHTML = '';
                 return;
             }
@@ -1300,11 +1300,11 @@ function renderSecondaryTags() {
 
             featuredSection.hidden = false;
             featuredSection.innerHTML = featuredHtml(featured);
-            grid.innerHTML = rest.length ? rest.map(gridCardHtml).join('') : '<div class="term-empty">No additional secondary tags.</div>';
+            grid.innerHTML = rest.length ? rest.map(gridCardHtml).join('') : '<div class="term-empty">No additional topics.</div>';
         })
         .catch(function () {
             featuredSection.hidden = false;
-            featuredSection.innerHTML = '<div class="term-empty">Failed to load secondary tags.</div>';
+            featuredSection.innerHTML = '<div class="term-empty">Failed to load topics.</div>';
             grid.innerHTML = '';
         });
 }
