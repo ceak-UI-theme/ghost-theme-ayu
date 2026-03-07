@@ -19,17 +19,85 @@ var AYU_GLOBALS = {
     MOBILE_BREAKPOINT: 767
 };
 
-function buildPromoCardHtml() {
+function getAdSlotConfig(slotType) {
     'use strict';
 
+    var configs = {
+        'list-inline': {
+            wrapperTag: 'article',
+            wrapperClass: 'post post-promo ayu-ad-slot ayu-ad-slot--list-inline',
+            label: 'Promo',
+            copy: 'This is a promo slot.'
+        },
+        'post-top': {
+            wrapperTag: 'aside',
+            wrapperClass: 'post-ad-slot ayu-ad-slot ayu-ad-slot--post-top',
+            label: 'Sponsored',
+            copy: 'Reserved area for post top advertisement.'
+        },
+        'post-bottom': {
+            wrapperTag: 'aside',
+            wrapperClass: 'post-ad-slot ayu-ad-slot ayu-ad-slot--post-bottom',
+            label: 'Sponsored',
+            copy: 'Reserved area for post bottom advertisement.'
+        }
+    };
+
+    return configs[slotType] || configs['list-inline'];
+}
+
+function buildAdSlotInnerHtml(slotType) {
+    'use strict';
+
+    var config = getAdSlotConfig(slotType);
+
     return [
-        '<article class="post post-promo" aria-label="Promotion">',
         '<div class="post-wrapper post-promo-wrapper">',
-        '<div class="post-promo-label">Promo</div>',
-        '<p class="post-promo-copy">This is a promo slot.</p>',
+        '<div class="post-promo-label">',
+        config.label,
         '</div>',
-        '</article>'
+        '<p class="post-promo-copy">',
+        config.copy,
+        '</p>',
+        '</div>'
     ].join('');
+}
+
+function createAdSlotElement(slotType) {
+    'use strict';
+
+    var config = getAdSlotConfig(slotType);
+    var element = document.createElement(config.wrapperTag);
+
+    element.className = config.wrapperClass;
+    element.setAttribute('aria-label', 'Advertisement');
+    element.setAttribute('data-ad-slot-rendered', slotType);
+    element.innerHTML = buildAdSlotInnerHtml(slotType);
+
+    return element;
+}
+
+function renderAdSlots(root) {
+    'use strict';
+
+    var scope = root || document;
+    if (!scope || !scope.querySelectorAll) {
+        return;
+    }
+
+    var slots = Array.prototype.slice.call(scope.querySelectorAll('.js-ad-slot[data-ad-slot]'));
+    slots.forEach(function (slot) {
+        var slotType = slot.getAttribute('data-ad-slot');
+        if (!slotType || slot.getAttribute('data-ad-slot-rendered')) {
+            return;
+        }
+
+        slot.classList.add('ayu-ad-slot');
+        slot.classList.add('ayu-ad-slot--' + slotType);
+        slot.setAttribute('aria-label', 'Advertisement');
+        slot.setAttribute('data-ad-slot-rendered', slotType);
+        slot.innerHTML = buildAdSlotInnerHtml(slotType);
+    });
 }
 
 function injectPromoSlots(root) {
@@ -55,13 +123,13 @@ function injectPromoSlots(root) {
 
         var children = Array.prototype.slice.call(feed.children);
         children.forEach(function (el) {
-            if (el.classList && el.classList.contains('post') && el.classList.contains('post-promo')) {
+            if (el.classList && el.classList.contains('ayu-ad-slot--list-inline')) {
                 el.remove();
             }
         });
 
         var posts = Array.prototype.slice.call(feed.children).filter(function (el) {
-            return el.classList && el.classList.contains('post') && !el.classList.contains('post-promo');
+            return el.classList && el.classList.contains('post') && !el.classList.contains('ayu-ad-slot--list-inline');
         });
 
         posts.forEach(function (postEl, index) {
@@ -70,19 +138,11 @@ function injectPromoSlots(root) {
                 return;
             }
 
-            var promoWrap = document.createElement('div');
-            promoWrap.innerHTML = buildPromoCardHtml();
-            var promoNode = promoWrap.firstElementChild;
-
-            if (!promoNode) {
-                return;
-            }
-
+            var promoNode = createAdSlotElement('list-inline');
             postEl.insertAdjacentElement('afterend', promoNode);
         });
     });
 }
-
 function normalizeInternalPostTags(root) {
     'use strict';
 
@@ -1013,6 +1073,8 @@ function renderPostSeriesNavigation() {
             navSection.hidden = true;
         });
 }
+
+
 
 
 

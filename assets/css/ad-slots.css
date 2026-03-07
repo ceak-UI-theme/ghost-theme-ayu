@@ -1,0 +1,50 @@
+﻿.ayu-ad-slot {
+    border: 1px dashed var(--border-default);
+    border-radius: 12px;
+    background: var(--bg-surface-2);
+}
+
+.post-promo-wrapper {
+    padding: 18px 20px;
+}
+
+.post-promo-label {
+    color: var(--accent-link);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.post-promo-copy {
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+    margin: 8px 0 0;
+}
+
+.post-feed .ayu-ad-slot--list-inline {
+    display: block;
+}
+
+.post-feed .ayu-ad-slot--list-inline:hover {
+    transform: none;
+}
+
+.post-ad-slot-wrap {
+    margin: 20px 0;
+}
+
+.post-ad-slot {
+    display: block;
+}
+
+@media (max-width: 767px) {
+    .post-ad-slot-wrap {
+        margin: 14px 0;
+    }
+
+    .post-promo-wrapper {
+        padding: 14px;
+    }
+}
+
