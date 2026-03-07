@@ -33,28 +33,13 @@ function renderSeriesTags() {
     }
 
     function seriesSlugFromTagSlug(tagSlug) {
-        if (tagSlug && tagSlug.indexOf('hash-series-') === 0) {
-            return tagSlug.substring('hash-series-'.length);
-        }
-
-        return tagSlug || '';
+        return AYU_TAG_UTILS.getSeriesSlug(tagSlug) || tagSlug || '';
     }
 
     function displayName(name, slug) {
-        if (name && name.indexOf('#series-') === 0) {
-            return name.substring('#series-'.length);
-        }
-
-        if (name && name.indexOf('series-') === 0) {
-            return name.substring('series-'.length);
-        }
-
-        if (slug && slug.indexOf('hash-series-') === 0) {
-            return slug.substring('hash-series-'.length);
-        }
-
-        return name || slug || 'series';
+        return AYU_TAG_UTILS.getSeriesDisplayName({ name: name, slug: slug }, slug);
     }
+
 
     function seriesCardHtml(tagInfo) {
         var title = displayName(tagInfo.name, tagInfo.slug);
@@ -120,7 +105,7 @@ function renderSeriesTags() {
             });
 
             var tags = allTags.filter(function (tag) {
-                return tag && tag.slug && tag.slug.indexOf('hash-series-') === 0;
+                return AYU_TAG_UTILS.isSeriesInternalTag(tag);
             }).map(function (tag) {
                 var seriesSlug = seriesSlugFromTagSlug(tag.slug);
 
@@ -243,20 +228,9 @@ function renderSeriesDetail() {
     }
 
     function toDisplayName(tag) {
-        if (!tag) {
-            return detailSlug;
-        }
-
-        if (tag.name && tag.name.indexOf('#series-') === 0) {
-            return tag.name.substring('#series-'.length);
-        }
-
-        if (tag.name && tag.name.indexOf('series-') === 0) {
-            return tag.name.substring('series-'.length);
-        }
-
-        return tag.name || detailSlug;
+        return AYU_TAG_UTILS.getSeriesDisplayName(tag, detailSlug);
     }
+
 
     function postUrl(post) {
         if (post.url) {
@@ -275,33 +249,7 @@ function renderSeriesDetail() {
             month: 'short',
             year: 'numeric'
         }).toUpperCase() : '';
-        var tagsHtml = (post.tags || []).filter(function (tag) {
-            var tagSlug = tag && tag.slug ? tag.slug : '';
-            return tagSlug.indexOf('hash-') !== 0 || tagSlug.indexOf('hash-series-') === 0;
-        }).map(function (tag) {
-            var tagSlug = tag && tag.slug ? tag.slug : '';
-            var tagName = tag && tag.name ? tag.name : '';
-            var href = '/tag/' + encodeURIComponent(tagSlug) + '/';
-            var isSeriesInternal = tagSlug.indexOf('hash-series-') === 0;
-            var displayTagName = tagName;
-            var tagClass = 'post-tag post-tag-' + escapeHtml(tagSlug);
-
-            if (isSeriesInternal) {
-                href = '/series/?series=' + encodeURIComponent(tagSlug.substring('hash-series-'.length));
-
-                if (displayTagName.indexOf('#series-') === 0) {
-                    displayTagName = displayTagName.substring('#series-'.length);
-                } else if (displayTagName.indexOf('series-') === 0) {
-                    displayTagName = displayTagName.substring('series-'.length);
-                } else {
-                    displayTagName = tagSlug.substring('hash-series-'.length);
-                }
-
-                tagClass += ' is-internal-series';
-            }
-
-            return '<a class="' + tagClass + '" href="' + href + '" title="' + escapeHtml(tagName) + '">' + escapeHtml(displayTagName) + '</a>';
-        }).join('');
+        var tagsHtml = buildPostTagsHtml(post, escapeHtml);
         var mediaHtml;
 
         if (post.feature_image) {

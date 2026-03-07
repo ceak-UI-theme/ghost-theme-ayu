@@ -27,6 +27,140 @@ var AYU_GLOBALS = {
     MOBILE_BREAKPOINT: 767
 };
 
+var AYU_TAG_UTILS = {
+    getSlug: function (tag) {
+        if (!tag) {
+            return '';
+        }
+
+        if (typeof tag === 'string') {
+            return tag;
+        }
+
+        return tag.slug || '';
+    },
+    isSeriesInternalTag: function (tag) {
+        var slug = this.getSlug(tag);
+        return slug.indexOf('hash-series-') === 0;
+    },
+    isPublicTag: function (tag) {
+        var slug = this.getSlug(tag);
+        if (!slug || slug.indexOf('hash-') === 0) {
+            return false;
+        }
+
+        if (!tag || typeof tag === 'string' || typeof tag.visibility === 'undefined') {
+            return true;
+        }
+
+        return tag.visibility === 'public';
+    },
+    getSeriesSlug: function (tag) {
+        var slug = this.getSlug(tag);
+        if (slug.indexOf('hash-series-') === 0) {
+            return slug.substring('hash-series-'.length);
+        }
+
+        return '';
+    },
+    getSeriesDisplayName: function (tag, fallback) {
+        var name = tag && tag.name ? tag.name : '';
+        if (name.indexOf('#series-') === 0) {
+            return name.substring('#series-'.length);
+        }
+        if (name.indexOf('series-') === 0) {
+            return name.substring('series-'.length);
+        }
+
+        return name || fallback || this.getSeriesSlug(tag) || 'series';
+    },
+    classifyPostTags: function (post) {
+        var self = this;
+        var allTags = Array.isArray(post && post.tags) ? post.tags.filter(function (tag) {
+            return !!self.getSlug(tag);
+        }) : [];
+        var primary = post && post.primary_tag && self.isPublicTag(post.primary_tag) && !self.isSeriesInternalTag(post.primary_tag) ? post.primary_tag : null;
+
+        if (primary) {
+            var primarySlug = self.getSlug(primary);
+            var fromTags = allTags.find(function (tag) {
+                return self.getSlug(tag) === primarySlug;
+            });
+            if (fromTags) {
+                primary = fromTags;
+            }
+        }
+
+        function dedupeBySlug(items) {
+            var seen = {};
+            return items.filter(function (tag) {
+                var slug = self.getSlug(tag);
+                if (!slug || seen[slug]) {
+                    return false;
+                }
+
+                seen[slug] = true;
+                return true;
+            });
+        }
+
+        var seriesTags = dedupeBySlug(allTags.filter(function (tag) {
+            return self.isSeriesInternalTag(tag);
+        }));
+        var secondaryTags = dedupeBySlug(allTags.filter(function (tag) {
+            if (!self.isPublicTag(tag) || self.isSeriesInternalTag(tag)) {
+                return false;
+            }
+
+            return !(primary && self.getSlug(tag) === self.getSlug(primary));
+        }));
+
+        var ordered = [];
+        if (primary) {
+            ordered.push(primary);
+        }
+        ordered = ordered.concat(seriesTags, secondaryTags);
+
+        return {
+            primary: primary,
+            series: seriesTags,
+            secondary: secondaryTags,
+            ordered: ordered
+        };
+    }
+};
+
+function buildPostTagsHtml(post, escapeHtml, maxCount) {
+    'use strict';
+
+    var classified = AYU_TAG_UTILS.classifyPostTags(post);
+    var tags = classified.ordered;
+
+    if (typeof maxCount === 'number' && maxCount >= 0) {
+        tags = tags.slice(0, maxCount);
+    }
+
+    return tags.map(function (tag) {
+        var slug = AYU_TAG_UTILS.getSlug(tag);
+        var name = tag && tag.name ? tag.name : slug;
+        var href = '/tag/' + encodeURIComponent(slug) + '/';
+        var cls = 'post-tag post-tag-' + escapeHtml(slug);
+        var displayName = name;
+
+        if (classified.primary && slug === AYU_TAG_UTILS.getSlug(classified.primary)) {
+            cls += ' is-primary-tag';
+        } else if (AYU_TAG_UTILS.isSeriesInternalTag(tag)) {
+            cls += ' is-series-tag is-internal-series';
+            href = '/series/?series=' + encodeURIComponent(AYU_TAG_UTILS.getSeriesSlug(tag));
+            displayName = AYU_TAG_UTILS.getSeriesDisplayName(tag, AYU_TAG_UTILS.getSeriesSlug(tag));
+        } else {
+            cls += ' is-secondary-tag';
+        }
+
+        return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(name) + '">' + escapeHtml(displayName) + '</a>';
+    }).join('');
+}
+
 function getAdSlotConfig(slotType) {
     'use strict';
 
@@ -175,7 +309,7 @@ function normalizeInternalPostTags(root) {
         }
 
         var isInternalHash = slug.indexOf('hash-') === 0 || text.indexOf('#') === 0 || href.indexOf('/tag/hash-') !== -1;
-        var isSeriesInternal = slug.indexOf('hash-series-') === 0 || text.indexOf('#series-') === 0;
+        var isSeriesInternal = AYU_TAG_UTILS.isSeriesInternalTag(slug) || text.indexOf('#series-') === 0;
 
         if (!isInternalHash) {
             return;
@@ -186,10 +320,8 @@ function normalizeInternalPostTags(root) {
             return;
         }
 
-        var seriesSlug = '';
-        if (slug.indexOf('hash-series-') === 0) {
-            seriesSlug = slug.substring('hash-series-'.length);
-        } else if (text.indexOf('#series-') === 0) {
+        var seriesSlug = AYU_TAG_UTILS.getSeriesSlug(slug);
+        if (!seriesSlug && text.indexOf('#series-') === 0) {
             seriesSlug = text.substring('#series-'.length);
         }
 
@@ -249,38 +381,85 @@ function normalizeInternalPostTags(root) {
             return;
         }
 
+        var nodeBySlug = {};
+        var orderedSlugs = [];
+        var hintedPrimarySlug = '';
+
         tagNodes.forEach(function (node) {
+            var wasPrimary = node.classList.contains('is-primary-tag');
             node.classList.remove('is-primary-tag', 'is-series-tag', 'is-secondary-tag');
-        });
 
-        var seriesTags = tagNodes.filter(function (node) {
             var href = node.getAttribute('href') || '';
-            return node.classList.contains('is-internal-series') || href.indexOf('/series/?series=') === 0;
-        });
+            var cls = node.className || '';
+            var slugMatch = cls.match(/(?:^|\s)post-tag-([^\s]+)/);
+            var slug = slugMatch ? slugMatch[1] : '';
 
-        var nonSeriesTags = tagNodes.filter(function (node) {
-            return seriesTags.indexOf(node) === -1;
-        });
-
-        var primaryTag = nonSeriesTags.length ? nonSeriesTags[0] : null;
-        var secondaryTags = primaryTag ? nonSeriesTags.slice(1) : [];
-
-        var ordered = [];
-        if (primaryTag) {
-            ordered.push(primaryTag);
-        }
-        ordered = ordered.concat(seriesTags, secondaryTags);
-
-        ordered.forEach(function (node, index) {
-            if (primaryTag && node === primaryTag && index === 0) {
-                node.classList.add('is-primary-tag');
-            } else if (seriesTags.indexOf(node) !== -1) {
-                node.classList.add('is-series-tag');
-            } else {
-                node.classList.add('is-secondary-tag');
+            if (!slug && href.indexOf('/tag/') !== -1) {
+                var tagPath = href.split('?')[0];
+                var tagMatch = tagPath.match(/\/tag\/([^/]+)\/?$/);
+                slug = tagMatch ? decodeURIComponent(tagMatch[1]) : '';
             }
 
-            container.appendChild(node);
+            if (!slug && href.indexOf('/series/?series=') === 0) {
+                var seriesValue = href.split('series=')[1] || '';
+                slug = 'hash-series-' + decodeURIComponent(seriesValue);
+            }
+
+            if (!slug) {
+                return;
+            }
+
+            if (!hintedPrimarySlug && wasPrimary) {
+                hintedPrimarySlug = slug;
+            }
+
+            if (!nodeBySlug[slug]) {
+                nodeBySlug[slug] = [];
+                orderedSlugs.push(slug);
+            }
+
+            nodeBySlug[slug].push(node);
+        });
+
+        var parsedTags = orderedSlugs.map(function (slug) {
+            var sample = nodeBySlug[slug][0];
+            return {
+                slug: slug,
+                name: (sample.textContent || '').trim(),
+                visibility: AYU_TAG_UTILS.isSeriesInternalTag(slug) ? 'internal' : 'public'
+            };
+        });
+
+        var hintedPrimary = hintedPrimarySlug ? parsedTags.find(function (tag) {
+            return tag.slug === hintedPrimarySlug;
+        }) : null;
+
+        if (!hintedPrimary) {
+            hintedPrimary = parsedTags.find(function (tag) {
+                return AYU_TAG_UTILS.isPublicTag(tag) && !AYU_TAG_UTILS.isSeriesInternalTag(tag);
+            });
+        }
+
+        var classified = AYU_TAG_UTILS.classifyPostTags({
+            primary_tag: hintedPrimary || null,
+            tags: parsedTags
+        });
+
+        classified.ordered.forEach(function (tag) {
+            var slug = AYU_TAG_UTILS.getSlug(tag);
+            var nodeList = nodeBySlug[slug] || [];
+
+            nodeList.forEach(function (node) {
+                if (classified.primary && slug === AYU_TAG_UTILS.getSlug(classified.primary)) {
+                    node.classList.add('is-primary-tag');
+                } else if (AYU_TAG_UTILS.isSeriesInternalTag(tag)) {
+                    node.classList.add('is-series-tag');
+                } else {
+                    node.classList.add('is-secondary-tag');
+                }
+
+                container.appendChild(node);
+            });
         });
 
         if (!container.querySelector('.post-tag')) {
@@ -461,26 +640,7 @@ function renderSearchPage() {
         var excerpt = excerptText ? '<div class="post-excerpt">' + escapeHtml(excerptText) + '</div>' : '';
         var dateIso = post.published_at ? post.published_at.substring(0, 10) : '';
         var dateText = post.published_at ? formatDate(post.published_at) : '';
-        var tagsHtml = (post.tags || []).filter(function (tag) {
-            var slug = tag && tag.slug ? tag.slug : '';
-            return slug.indexOf('hash-') !== 0 || slug.indexOf('hash-series-') === 0;
-        }).slice(0, 3).map(function (tag) {
-            var slug = tag && tag.slug ? tag.slug : '';
-            var name = tag && tag.name ? tag.name : '';
-            var href = '/tag/' + encodeURIComponent(slug) + '/';
-            var cls = 'post-tag post-tag-' + escapeHtml(slug);
-            var displayName = name;
-
-            if (slug.indexOf('hash-series-') === 0) {
-                href = '/series/?series=' + encodeURIComponent(slug.substring('hash-series-'.length));
-                cls += ' is-internal-series';
-                if (displayName.indexOf('#series-') === 0) {
-                    displayName = displayName.substring('#series-'.length);
-                }
-            }
-
-            return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(name) + '">' + escapeHtml(displayName) + '</a>';
-        }).join('');
+        var tagsHtml = buildPostTagsHtml(post, escapeHtml, 3);
 
         var mediaHtml;
         if (post.feature_image) {
@@ -841,6 +1001,7 @@ function renderPrimaryCategories() {
 
     function cardHtml(tagInfo) {
         var desc = tagInfo.description ? escapeHtml(tagInfo.description) : 'Primary category archive';
+
         return [
             '<article class="post category-post">',
             '<div class="post-media">',
@@ -871,56 +1032,53 @@ function renderPrimaryCategories() {
         ].join('');
     }
 
-    function fetchAllPrimaryTags(page, tagMap) {
-        var apiUrl = [
-            '/ghost/api/content/posts/?key=',
-            encodeURIComponent(contentKey),
-            '&include=tags&limit=100&page=',
-            String(page),
-            '&fields=id,slug,title'
-        ].join('');
+    function fetchPrimaryCategories() {
+        var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all';
 
-        return fetch(apiUrl)
+        return fetch(tagsUrl)
             .then(function (res) {
                 if (!res.ok) {
-                    throw new Error('Failed to fetch posts for categories');
+                    throw new Error('Failed to fetch tags for categories');
                 }
                 return res.json();
             })
             .then(function (data) {
-                (data.posts || []).forEach(function (post) {
-                    var primaryTag = post.primary_tag || (post.tags && post.tags.length ? post.tags[0] : null);
-                    if (!primaryTag || primaryTag.visibility !== 'public' || !primaryTag.slug) {
-                        return;
-                    }
-
-                    if (!tagMap[primaryTag.slug]) {
-                        tagMap[primaryTag.slug] = {
-                            slug: primaryTag.slug,
-                            name: primaryTag.name || primaryTag.slug,
-                            description: primaryTag.description || '',
-                            count: 0
-                        };
-                    }
-
-                    tagMap[primaryTag.slug].count += 1;
+                var publicTags = (data.tags || []).filter(function (tag) {
+                    return AYU_TAG_UTILS.isPublicTag(tag) && !AYU_TAG_UTILS.isSeriesInternalTag(tag);
                 });
 
-                var pages = data.meta && data.meta.pagination ? data.meta.pagination.pages : 1;
-                if (page < pages) {
-                    return fetchAllPrimaryTags(page + 1, tagMap);
-                }
+                return Promise.all(publicTags.map(function (tag) {
+                    var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&filter=primary_tag:' + encodeURIComponent(tag.slug) + '&limit=1';
 
-                return tagMap;
+                    return fetch(postsUrl)
+                        .then(function (res) {
+                            if (!res.ok) {
+                                throw new Error('Failed to fetch primary tag posts');
+                            }
+                            return res.json();
+                        })
+                        .then(function (postsData) {
+                            var pagination = postsData.meta && postsData.meta.pagination ? postsData.meta.pagination : null;
+                            var total = pagination && typeof pagination.total === 'number' ? pagination.total : 0;
+
+                            return {
+                                slug: tag.slug,
+                                name: tag.name || tag.slug,
+                                description: tag.description || '',
+                                count: total
+                            };
+                        });
+                }));
+            })
+            .then(function (tags) {
+                return tags.filter(function (tag) {
+                    return tag.count > 0;
+                });
             });
     }
 
-    fetchAllPrimaryTags(1, {})
-        .then(function (tagMap) {
-            var tags = Object.keys(tagMap).map(function (slug) {
-                return tagMap[slug];
-            });
-
+    fetchPrimaryCategories()
+        .then(function (tags) {
             if (!tags.length) {
                 featuredGrid.innerHTML = '<div class="term-empty">nothing happened</div>';
                 listGrid.innerHTML = '';
@@ -991,17 +1149,6 @@ function renderSecondaryTags() {
             .replace(/'/g, '&#39;');
     }
 
-    function isPublicTag(tag) {
-        return !!(tag && tag.slug && tag.visibility === 'public' && tag.slug.indexOf('hash-') !== 0);
-    }
-
-    function resolvePrimaryTag(post, publicTags) {
-        if (post.primary_tag && isPublicTag(post.primary_tag)) {
-            return post.primary_tag;
-        }
-
-        return publicTags.length ? publicTags[0] : null;
-    }
 
     function featuredHtml(tagInfo) {
         var link = '/tag/' + encodeURIComponent(tagInfo.slug) + '/';
@@ -1065,9 +1212,8 @@ function renderSecondaryTags() {
         var apiUrl = [
             '/ghost/api/content/posts/?key=',
             encodeURIComponent(contentKey),
-            '&include=tags&limit=100&page=',
-            String(page),
-            '&fields=id,slug,title'
+            '&limit=100&page=',
+            String(page)
         ].join('');
 
         return fetch(apiUrl)
@@ -1097,18 +1243,9 @@ function renderSecondaryTags() {
             var tagMap = {};
 
             posts.forEach(function (post) {
-                var publicTags = (post.tags || []).filter(isPublicTag);
-                if (!publicTags.length) {
-                    return;
-                }
+                var classified = AYU_TAG_UTILS.classifyPostTags(post);
 
-                var primaryTag = resolvePrimaryTag(post, publicTags);
-
-                publicTags.forEach(function (tag) {
-                    if (primaryTag && tag.slug === primaryTag.slug) {
-                        return;
-                    }
-
+                classified.secondary.forEach(function (tag) {
                     if (!tagMap[tag.slug]) {
                         tagMap[tag.slug] = {
                             slug: tag.slug,
@@ -1203,17 +1340,7 @@ function renderPostSeriesNavigation() {
     }
 
     function displaySeriesName(tag) {
-        var name = tag && tag.name ? tag.name : '';
-
-        if (name.indexOf('#series-') === 0) {
-            return name.substring('#series-'.length);
-        }
-
-        if (name.indexOf('series-') === 0) {
-            return name.substring('series-'.length);
-        }
-
-        return name || seriesSlug;
+        return AYU_TAG_UTILS.getSeriesDisplayName(tag, seriesSlug);
     }
 
     function postUrl(post) {
