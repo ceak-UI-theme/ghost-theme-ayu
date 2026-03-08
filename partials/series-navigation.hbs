@@ -1,4 +1,12 @@
-﻿<section class="post-series-nav" id="post-series-nav" hidden data-post-slug="{{slug}}">
+﻿<section
+    class="post-series-nav"
+    id="post-series-nav"
+    hidden
+    data-post-slug="{{slug}}"
+    data-series-slug=""
+    data-series-slugs="{{#foreach tags visibility="public"}}{{#match slug "~" "series-"}}{{slug}} {{/match}}{{/foreach}}"
+    data-series-nav-source="template-tag"
+>
     <h3 class="post-series-nav-title" id="post-series-nav-title"></h3>
     <ol class="post-series-nav-list" id="post-series-nav-list"></ol>
 </section>

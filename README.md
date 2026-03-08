@@ -258,6 +258,12 @@ Series 정렬 기준
 
 `published\_at 오름차순`
 
+운영 정책 (first-series-wins)
+
+- post당 series tag는 1개를 권장
+- series tag가 0개면 navigation 미표시
+- series tag가 2개 이상이면 첫 번째 series만 사용하고, 콘솔 경고 + 상태값(`multiple-series-tags-first-used`)을 남김
+
 * * *
 
 # 9\. Table of Contents
