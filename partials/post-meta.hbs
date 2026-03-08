@@ -7,7 +7,24 @@
     {{#if tags}}
         <span class="post-meta-item post-meta-tags">
             {{#foreach tags}}
-                <a class="post-tag post-tag-{{slug}}" data-tag-slug="{{slug}}" data-tag-name="{{name}}" href="{{url}}" title="{{name}}">{{name}}</a>
+                {{#match visibility "public"}}
+                    {{!--
+                        Ghost Handlebars does not provide a reliable startsWith helper in theme templates.
+                        Taxonomy role detection uses `match "~"` (substring match), so slug naming rules must stay strict:
+                        - category-* and series-* are reserved prefixes
+                        - avoid embedding `category-` or `series-` in the middle of unrelated slugs
+                    --}}
+                    <a
+                        class="post-tag post-tag-{{slug}} {{#match slug "~" "category-"}}is-primary-tag tag-category{{else match slug "~" "series-"}}is-series-tag tag-series{{else}}is-secondary-tag tag-topic{{/match}}"
+                        data-tag-slug="{{slug}}"
+                        data-tag-name="{{name}}"
+                        data-tag-visibility="{{visibility}}"
+                        data-taxonomy-role="{{#match slug "~" "category-"}}category{{else match slug "~" "series-"}}series{{else}}topic{{/match}}"
+                        data-taxonomy-rendered="server"
+                        href="{{url}}"
+                        title="{{name}}"
+                    >{{name}}</a>
+                {{/match}}
             {{/foreach}}
         </span>
     {{/if}}

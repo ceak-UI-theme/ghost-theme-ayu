@@ -86,6 +86,34 @@ category / series prefix가 없는 일반 tag
 
 * * *
 
+## Taxonomy 운영 규칙 (중요)
+
+테마의 taxonomy 판정 기준은 slug입니다.
+
+- `category-*` slug는 category로 취급
+- `series-*` slug는 series로 취급
+- 그 외 public tag는 topic으로 취급
+
+운영 권장사항
+
+- `slug`는 시스템 규칙용으로 관리
+- `name`은 사용자 표시용으로 관리
+- `name`에는 가능하면 `category-`, `series-` prefix를 넣지 않기
+
+권장 예시
+
+- slug: `category-ai`, name: `AI`
+- slug: `series-readium-dev`, name: `Readium Dev`
+
+현재 구현 한계
+
+- `partials/post-meta.hbs`의 taxonomy 판정은 Ghost Handlebars 제약으로 strict startsWith 대신 `match "~"`를 사용
+- `match "~"`는 substring 판정이므로 slug naming convention을 엄격히 지켜야 함
+- `category-*`, `series-*` 외 slug에 `category-`, `series-` 문자열이 중간 포함되지 않도록 운영 필요
+- 템플릿만으로 모든 prefix 제거/표시명 가공을 일반화하기 어렵기 때문에, 최종 표시 품질은 `name` 저장 품질에 크게 좌우됨
+
+* * *
+
 # 3\. 권장 태그 구조
 
 한 포스트에 다음 구조를 권장합니다.

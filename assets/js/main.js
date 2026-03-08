@@ -33,10 +33,46 @@ var AYU_TAG_PREFIX = {
     SERIES: 'series-'
 };
 
+var AYU_TAXONOMY = {
+    ROLE: {
+        CATEGORY: 'category',
+        SERIES: 'series',
+        TOPIC: 'topic'
+    },
+    ROLE_CLASS: {
+        category: ['is-primary-tag', 'tag-category'],
+        series: ['is-series-tag', 'tag-series'],
+        topic: ['is-secondary-tag', 'tag-topic']
+    }
+};
+
 var AYU_USER_MESSAGES = {
     HUB_LOAD_FAILED: 'Content could not be loaded. Please try again later.',
     SEARCH_UNAVAILABLE: 'Search is currently unavailable. Please try again later.'
 };
+
+function resolveTaxonomyRoleFromSlug(slug) {
+    'use strict';
+
+    if (AYU_TAG_UTILS.isCategoryTag(slug)) {
+        return AYU_TAXONOMY.ROLE.CATEGORY;
+    }
+
+    if (AYU_TAG_UTILS.isSeriesTag(slug)) {
+        return AYU_TAXONOMY.ROLE.SERIES;
+    }
+
+    return AYU_TAXONOMY.ROLE.TOPIC;
+}
+
+function applyTaxonomyRoleClasses(tagEl, role) {
+    'use strict';
+
+    var classes = AYU_TAXONOMY.ROLE_CLASS[role] || AYU_TAXONOMY.ROLE_CLASS.topic;
+    classes.forEach(function (className) {
+        tagEl.classList.add(className);
+    });
+}
 
 function buildLoadingStateHtml(message) {
     'use strict';
@@ -224,14 +260,9 @@ function buildPostTagsHtml(post, escapeHtml, maxCount) {
         var href = '/tag/' + encodeURIComponent(slug) + '/';
         var cls = 'post-tag post-tag-' + escapeHtml(slug);
         var displayName = AYU_TAG_UTILS.getDisplayName(tag, slug);
-
-        if (AYU_TAG_UTILS.isCategoryTag(tag)) {
-            cls += ' is-primary-tag tag-category';
-        } else if (AYU_TAG_UTILS.isSeriesTag(tag)) {
-            cls += ' is-series-tag tag-series';
-        } else {
-            cls += ' is-secondary-tag tag-topic';
-        }
+        var role = resolveTaxonomyRoleFromSlug(slug);
+        var roleClasses = AYU_TAXONOMY.ROLE_CLASS[role] || AYU_TAXONOMY.ROLE_CLASS.topic;
+        cls += ' ' + roleClasses.join(' ');
 
         return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(displayName) + '">' + escapeHtml(displayName) + '</a>';
     }).join('');
@@ -387,23 +418,36 @@ function normalizePostTaxonomyTags(root) {
             slug = m ? decodeURIComponent(m[1]) : '';
         }
 
-        if (!AYU_TAG_UTILS.isPublicTag(slug)) {
+        var visibility = (tagEl.getAttribute('data-tag-visibility') || '').trim();
+        var isPublic = visibility ? visibility === 'public' : AYU_TAG_UTILS.isPublicTag(slug);
+        if (!isPublic) {
             tagEl.remove();
             return;
         }
 
-        tagEl.classList.remove('is-primary-tag', 'is-series-tag', 'is-secondary-tag', 'tag-category', 'tag-series', 'tag-topic');
-
-        if (AYU_TAG_UTILS.isCategoryTag(slug)) {
-            tagEl.classList.add('is-primary-tag');
-            tagEl.classList.add('tag-category');
-        } else if (AYU_TAG_UTILS.isSeriesTag(slug)) {
-            tagEl.classList.add('is-series-tag');
-            tagEl.classList.add('tag-series');
-        } else {
-            tagEl.classList.add('is-secondary-tag');
-            tagEl.classList.add('tag-topic');
+        var role = (tagEl.getAttribute('data-taxonomy-role') || '').trim();
+        if (!role) {
+            role = resolveTaxonomyRoleFromSlug(slug);
+            tagEl.setAttribute('data-taxonomy-role', role);
         }
+
+        if (!tagEl.classList.contains('is-primary-tag') && !tagEl.classList.contains('is-series-tag') && !tagEl.classList.contains('is-secondary-tag')) {
+            applyTaxonomyRoleClasses(tagEl, role);
+        }
+
+        if (!slug) {
+            return;
+        }
+
+        var renderedMode = tagEl.getAttribute('data-taxonomy-rendered') || '';
+        if (renderedMode === 'server') {
+            if (!tagEl.getAttribute('title')) {
+                tagEl.setAttribute('title', (tagEl.textContent || '').trim());
+            }
+            return;
+        }
+
+        applyTaxonomyRoleClasses(tagEl, role);
 
         tagEl.setAttribute('href', '/tag/' + encodeURIComponent(slug) + '/');
 
