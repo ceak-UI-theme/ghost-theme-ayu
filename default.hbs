@@ -5,6 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{meta_title}}</title>
+    <script>
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem('theme-preference');
+                var nextTheme = savedTheme === 'dark' ? 'dark' : 'light';
+                var root = document.documentElement;
+
+                root.setAttribute('data-theme', nextTheme);
+                root.classList.toggle('theme-dark', nextTheme === 'dark');
+            } catch (error) {
+                // Ignore storage access errors and keep default theme.
+            }
+        }());
+    </script>
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">
 
     {{ghost_head}}
