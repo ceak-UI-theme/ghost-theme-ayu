@@ -101,7 +101,6 @@ function themeToggle() {
 
         toggles.forEach(function (toggle) {
             toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-            toggle.textContent = isDark ? 'Light' : 'Dark';
             toggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
         });
     }
