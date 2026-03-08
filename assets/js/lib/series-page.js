@@ -19,7 +19,12 @@ function renderSeriesTags() {
     listGrid.innerHTML = buildSkeletonCards(2);
 
     if (!contentKey) {
-        featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        if (typeof logAyuWarning === 'function') {
+            logAyuWarning('Content hub load failed: missing Content API key (series)');
+        } else {
+            console.warn('[Ayu Theme] Content hub load failed: missing Content API key (series)');
+        }
+        featuredGrid.innerHTML = '<div class="term-empty">Content could not be loaded. Please try again later.</div>';
         listGrid.innerHTML = '';
         return;
     }
@@ -122,8 +127,13 @@ function renderSeriesTags() {
             listGrid.innerHTML = listTags.map(seriesCardHtml).join('');
             injectPromoSlots(listGrid);
         })
-        .catch(function () {
-            featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        .catch(function (error) {
+            if (typeof logAyuWarning === 'function') {
+                logAyuWarning('Content hub load failed (series)', error);
+            } else {
+                console.error('[Ayu Theme] Content hub load failed (series)', error);
+            }
+            featuredGrid.innerHTML = '<div class="term-empty">Content could not be loaded. Please try again later.</div>';
             listGrid.innerHTML = '';
         });
 }

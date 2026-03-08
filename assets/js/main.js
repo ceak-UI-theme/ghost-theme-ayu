@@ -33,6 +33,11 @@ var AYU_TAG_PREFIX = {
     SERIES: 'series-'
 };
 
+var AYU_USER_MESSAGES = {
+    HUB_LOAD_FAILED: 'Content could not be loaded. Please try again later.',
+    SEARCH_UNAVAILABLE: 'Search is currently unavailable. Please try again later.'
+};
+
 function buildLoadingStateHtml(message) {
     'use strict';
 
@@ -67,6 +72,29 @@ function getAyuContentApiKey() {
     var runtimeKey = runtimeScript ? String(runtimeScript.getAttribute('data-key') || '').trim() : '';
 
     return runtimeKey;
+}
+
+function buildTermErrorHtml(message) {
+    'use strict';
+
+    return '<div class="term-empty">' + String(message || AYU_USER_MESSAGES.HUB_LOAD_FAILED) + '</div>';
+}
+
+function buildTermErrorListItemHtml(message) {
+    'use strict';
+
+    return '<li class="term-empty">' + String(message || AYU_USER_MESSAGES.HUB_LOAD_FAILED) + '</li>';
+}
+
+function logAyuWarning(message, error) {
+    'use strict';
+
+    if (error) {
+        console.error('[Ayu Theme] ' + String(message), error);
+        return;
+    }
+
+    console.warn('[Ayu Theme] ' + String(message));
 }
 
 // Taxonomy helpers (Category / Series / Topic) based on slug prefixes.
@@ -752,7 +780,8 @@ function renderSearchPage() {
             if (paginationEl) {
                 paginationEl.innerHTML = '';
             }
-            setState('Search unavailable: missing content API key.', 'error');
+            logAyuWarning('Search initialization failed: missing Content API key');
+            setState(AYU_USER_MESSAGES.SEARCH_UNAVAILABLE, 'error');
             return Promise.resolve();
         }
 
@@ -793,14 +822,15 @@ function renderSearchPage() {
                 currentQuery = query;
                 renderResultPage(page || 1);
             })
-            .catch(function () {
+            .catch(function (error) {
                 currentResults = [];
                 currentQuery = query;
                 resultsEl.innerHTML = '';
                 if (paginationEl) {
                     paginationEl.innerHTML = '';
                 }
-                setState('Search failed. Please try again.', 'error');
+                logAyuWarning('Search request failed', error);
+                setState(AYU_USER_MESSAGES.SEARCH_UNAVAILABLE, 'error');
             });
     }
 
@@ -952,7 +982,8 @@ function renderPrimaryCategories() {
     listGrid.innerHTML = buildSkeletonCards(2);
 
     if (!contentKey) {
-        featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        logAyuWarning('Content hub load failed: missing Content API key (categories)');
+        featuredGrid.innerHTML = buildTermErrorHtml();
         listGrid.innerHTML = '';
         return;
     }
@@ -1057,8 +1088,9 @@ function renderPrimaryCategories() {
             listGrid.innerHTML = listTags.map(cardHtml).join('');
             injectPromoSlots(listGrid);
         })
-        .catch(function () {
-            featuredGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        .catch(function (error) {
+            logAyuWarning('Content hub load failed (categories)', error);
+            featuredGrid.innerHTML = buildTermErrorHtml();
             listGrid.innerHTML = '';
         });
 }
@@ -1086,7 +1118,8 @@ function renderSecondaryTags() {
     grid.innerHTML = buildSkeletonCards(8);
 
     if (!contentKey) {
-        featuredSection.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        logAyuWarning('Content hub load failed: missing Content API key (secondary-tags)');
+        featuredSection.innerHTML = buildTermErrorHtml();
         grid.innerHTML = '';
         return;
     }
@@ -1202,8 +1235,9 @@ function renderSecondaryTags() {
             featuredSection.innerHTML = featuredHtml(featured);
             grid.innerHTML = rest.length ? rest.map(gridCardHtml).join('') : '<div class="term-empty">No additional topics.</div>';
         })
-        .catch(function () {
-            featuredSection.innerHTML = '<div class="term-empty">Failed to load content.</div>';
+        .catch(function (error) {
+            logAyuWarning('Content hub load failed (secondary-tags)', error);
+            featuredSection.innerHTML = buildTermErrorHtml();
             grid.innerHTML = '';
         });
 }
@@ -1365,10 +1399,11 @@ function renderExplorePage() {
     recentList.innerHTML = '<li class="term-loading" role="status" aria-live="polite">Loading recent posts...</li>';
 
     if (!contentKey) {
-        categoriesGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
-        seriesList.innerHTML = '<div class="term-empty">Failed to load content.</div>';
-        topicsGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
-        recentList.innerHTML = '<li class="term-empty">Failed to load content.</li>';
+        logAyuWarning('Content hub load failed: missing Content API key (explore)');
+        categoriesGrid.innerHTML = buildTermErrorHtml();
+        seriesList.innerHTML = buildTermErrorHtml();
+        topicsGrid.innerHTML = buildTermErrorHtml();
+        recentList.innerHTML = buildTermErrorListItemHtml();
         return;
     }
 
@@ -1546,11 +1581,12 @@ function renderExplorePage() {
             topicsGrid.innerHTML = topics.length ? topics.slice(0, 10).map(topicCardHtml).join('') : '<div class="term-empty">No topics yet.</div>';
             recentList.innerHTML = recent.length ? recent.map(recentItemHtml).join('') : '<li class="term-empty">No recent posts.</li>';
         })
-        .catch(function () {
-            categoriesGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
-            seriesList.innerHTML = '<div class="term-empty">Failed to load content.</div>';
-            topicsGrid.innerHTML = '<div class="term-empty">Failed to load content.</div>';
-            recentList.innerHTML = '<li class="term-empty">Failed to load content.</li>';
+        .catch(function (error) {
+            logAyuWarning('Content hub load failed (explore)', error);
+            categoriesGrid.innerHTML = buildTermErrorHtml();
+            seriesList.innerHTML = buildTermErrorHtml();
+            topicsGrid.innerHTML = buildTermErrorHtml();
+            recentList.innerHTML = buildTermErrorListItemHtml();
         });
 }
 
