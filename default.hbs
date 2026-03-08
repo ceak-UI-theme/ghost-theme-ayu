@@ -147,16 +147,6 @@
 
 </div>
 
-{{! TODO: jQuery removal plan
- - Identify and isolate all jQuery usages in main.js
- - Refactor those paths to vanilla JS
- - Remove jQuery CDN dependency once migration is complete
-}}
-<script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous">
-</script>
 <script id="ayu-content-key" data-key="{{@site.content_api_key}}"></script>
 <script src="{{asset "built/main.min.js"}}"></script>
 

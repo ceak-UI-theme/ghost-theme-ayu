@@ -1,5 +1,6 @@
-$(function () {
+function bootstrapAyuTheme() {
     'use strict';
+
     cover();
     player();
     themeToggle();
@@ -13,7 +14,13 @@ $(function () {
     injectPromoSlots(document);
     normalizePostTaxonomyTags(document);
     normalizeTagHeaderName(document);
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapAyuTheme);
+} else {
+    bootstrapAyuTheme();
+}
 
 var AYU_DEFAULT_IMAGES = {
     POST: '/assets/images/fallback/post-default.png',
@@ -495,12 +502,24 @@ function normalizeTagHeaderName(root) {
 function cover() {
     'use strict';
 
-    var image = $('.cover-image');
-    if (!image) return;
+    var image = document.querySelector('.cover-image');
+    var coverEl = document.querySelector('.site-cover');
 
-    image.imagesLoaded(function () {
-        $('.site-cover').addClass('initialized');
-    });
+    if (!image || !coverEl) {
+        return;
+    }
+
+    function markInitialized() {
+        coverEl.classList.add('initialized');
+    }
+
+    if (image.complete) {
+        markInitialized();
+        return;
+    }
+
+    image.addEventListener('load', markInitialized, { once: true });
+    image.addEventListener('error', markInitialized, { once: true });
 }
 
 function renderAyuPagination() {
@@ -917,91 +936,153 @@ function renderSearchPage() {
 
 function player() {
     'use strict';
-    var player = jQuery('.player');
-    var playerAudio = jQuery('.player-audio');
-    var playerProgress = jQuery('.player-progress');
-    var timeCurrent = jQuery('.player-time-current');
-    var timeDuration = jQuery('.player-time-duration');
-    var playButton = jQuery('.button-play');
-    var backwardButton = jQuery('.player-backward');
-    var forwardButton = jQuery('.player-forward');
+    var player = document.querySelector('.player');
+    var playerAudio = player ? player.querySelector('.player-audio') : null;
+    var playerProgress = player ? player.querySelector('.player-progress') : null;
+    var timeCurrent = player ? player.querySelector('.player-time-current') : null;
+    var timeDuration = player ? player.querySelector('.player-time-duration') : null;
+    var playButton = player ? player.querySelector('.button-play') : null;
+    var backwardButton = player ? player.querySelector('.player-backward') : null;
+    var forwardButton = player ? player.querySelector('.player-forward') : null;
     var playerSpeed = 1;
-    var speedButton = jQuery('.player-speed');
+    var speedButton = player ? player.querySelector('.player-speed') : null;
+    var site = document.querySelector('.site');
 
-    jQuery('.site').on('click', '.js-play', function () {
-        var clicked = jQuery(this);
+    if (!player || !playerAudio || !site) {
+        return;
+    }
 
-        if (clicked.hasClass('post-play')) {
-            var episode = clicked.closest('.post');
-            if (player.attr('data-playing') !== episode.attr('data-id')) {
-                playerAudio.attr('src', episode.attr('data-url'));
-                jQuery('.post[data-id="' + player.attr('data-playing') + '"]').find('.post-play').removeClass('playing');
-                player.attr('data-playing', episode.attr('data-id'));
-                player.find('.post-image').attr('src', episode.find('.post-image').attr('src'));
-                player.find('.post-title').text(episode.find('.post-title').text());
-                player.find('.post-meta time').attr('datetime', episode.find('.post-meta-date time').attr('datetime'));
-                player.find('.post-meta time').text(episode.find('.post-meta-date time').text());
-            }
+    function removePlayingFromPost(postId) {
+        if (!postId) {
+            return;
         }
 
-        if (playerAudio[0].paused) {
-            var playPromise = playerAudio[0].play();
+        var selector = '.post[data-id="' + postId + '"] .post-play';
+        var postPlay = document.querySelector(selector);
+        if (postPlay) {
+            postPlay.classList.remove('playing');
+        }
+    }
+
+    function syncPlayerFromEpisode(episode) {
+        if (!episode) {
+            return;
+        }
+
+        var nextId = episode.getAttribute('data-id') || '';
+        var currentId = player.getAttribute('data-playing') || '';
+
+        if (currentId !== nextId) {
+            removePlayingFromPost(currentId);
+            player.setAttribute('data-playing', nextId);
+        }
+
+        var audioUrl = episode.getAttribute('data-url') || '';
+        if (audioUrl) {
+            playerAudio.setAttribute('src', audioUrl);
+        }
+
+        var episodeImage = episode.querySelector('.post-image');
+        var playerImage = player.querySelector('.post-image');
+        if (episodeImage && playerImage) {
+            playerImage.setAttribute('src', episodeImage.getAttribute('src') || '');
+        }
+
+        var episodeTitle = episode.querySelector('.post-title');
+        var playerTitle = player.querySelector('.post-title');
+        if (episodeTitle && playerTitle) {
+            playerTitle.textContent = episodeTitle.textContent || '';
+        }
+
+        var episodeTime = episode.querySelector('.post-meta-date time');
+        var playerTime = player.querySelector('.post-meta time');
+        if (episodeTime && playerTime) {
+            playerTime.setAttribute('datetime', episodeTime.getAttribute('datetime') || '');
+            playerTime.textContent = episodeTime.textContent || '';
+        }
+    }
+
+    site.addEventListener('click', function (event) {
+        var clicked = event.target.closest('.js-play');
+        if (!clicked || !site.contains(clicked)) {
+            return;
+        }
+
+        if (clicked.classList.contains('post-play')) {
+            syncPlayerFromEpisode(clicked.closest('.post'));
+        }
+
+        if (playerAudio.paused) {
+            var playPromise = playerAudio.play();
             if (playPromise !== undefined) {
                 playPromise
                     .then(function () {
-                        clicked.addClass('playing');
-                        playButton.addClass('playing');
-                        jQuery('.post[data-id="' + player.attr('data-playing') + '"]').find('.post-play').addClass('playing');
-                        jQuery('body').addClass('player-opened');
+                        clicked.classList.add('playing');
+                        if (playButton) {
+                            playButton.classList.add('playing');
+                        }
+
+                        var activeId = player.getAttribute('data-playing') || '';
+                        var activeSelector = '.post[data-id="' + activeId + '"] .post-play';
+                        var activePostPlay = activeId ? document.querySelector(activeSelector) : null;
+                        if (activePostPlay) {
+                            activePostPlay.classList.add('playing');
+                        }
+
+                        document.body.classList.add('player-opened');
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
             }
         } else {
-            playerAudio[0].pause();
-            clicked.removeClass('playing');
-            playButton.removeClass('playing');
-            jQuery('.post[data-id="' + player.attr('data-playing') + '"]').find('.post-play').removeClass('playing');
+            playerAudio.pause();
+            clicked.classList.remove('playing');
+            if (playButton) {
+                playButton.classList.remove('playing');
+            }
+            removePlayingFromPost(player.getAttribute('data-playing') || '');
         }
     });
 
-    playerAudio.on('timeupdate', function () {
-        const duration = isNaN(playerAudio[0].duration) ? 0 : playerAudio[0].duration;
-        timeDuration.text(
-            new Date(duration * 1000).toISOString().substring(11, 19)
-        );
-        playerAudio[0].addEventListener('timeupdate', function (e) {
-            timeCurrent.text(
-                new Date(e.target.currentTime * 1000)
-                    .toISOString()
-                    .substring(11, 19)
-            );
-            playerProgress.css(
-                'width',
-                (e.target.currentTime / playerAudio[0].duration) * 100 + '%'
-            );
+    playerAudio.addEventListener('timeupdate', function () {
+        var duration = isNaN(playerAudio.duration) ? 0 : playerAudio.duration;
+        if (timeDuration) {
+            timeDuration.textContent = new Date(duration * 1000).toISOString().substring(11, 19);
+        }
+        if (timeCurrent) {
+            timeCurrent.textContent = new Date(playerAudio.currentTime * 1000).toISOString().substring(11, 19);
+        }
+        if (playerProgress) {
+            var progress = playerAudio.duration ? (playerAudio.currentTime / playerAudio.duration) * 100 : 0;
+            playerProgress.style.width = progress + '%';
+        }
+    });
+
+    if (backwardButton) {
+        backwardButton.addEventListener('click', function () {
+            playerAudio.currentTime = playerAudio.currentTime - 10;
         });
-    });
+    }
 
-    backwardButton.on('click', function () {
-        playerAudio[0].currentTime = playerAudio[0].currentTime - 10;
-    });
+    if (forwardButton) {
+        forwardButton.addEventListener('click', function () {
+            playerAudio.currentTime = playerAudio.currentTime + 30;
+        });
+    }
 
-    forwardButton.on('click', function () {
-        playerAudio[0].currentTime = playerAudio[0].currentTime + 30;
-    });
+    if (speedButton) {
+        speedButton.addEventListener('click', function () {
+            if (playerSpeed < 2) {
+                playerSpeed += 0.5;
+            } else {
+                playerSpeed = 1;
+            }
 
-    speedButton.on('click', function () {
-        if (playerSpeed < 2) {
-            playerSpeed += 0.5;
-        } else {
-            playerSpeed = 1;
-        }
-
-        playerAudio[0].playbackRate = playerSpeed;
-        speedButton.text(playerSpeed + 'x');
-    });
+            playerAudio.playbackRate = playerSpeed;
+            speedButton.textContent = playerSpeed + 'x';
+        });
+    }
 }
 
 
