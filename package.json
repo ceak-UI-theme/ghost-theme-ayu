@@ -48,17 +48,27 @@
         "custom": {
             "navigation_layout": {
                 "type": "select",
-                "options": ["Logo on the left", "Logo in the middle", "Stacked"],
+                "options": [
+                    "Logo on the left",
+                    "Logo in the middle",
+                    "Stacked"
+                ],
                 "default": "Logo on the left"
             },
             "title_font": {
                 "type": "select",
-                "options": ["Modern sans-serif", "Elegant serif"],
+                "options": [
+                    "Modern sans-serif",
+                    "Elegant serif"
+                ],
                 "default": "Modern sans-serif"
             },
             "body_font": {
                 "type": "select",
-                "options": ["Modern sans-serif", "Elegant serif"],
+                "options": [
+                    "Modern sans-serif",
+                    "Elegant serif"
+                ],
                 "default": "Modern sans-serif"
             },
             "github_link": {
@@ -81,9 +91,11 @@
     "scripts": {
         "dev": "gulp",
         "test": "gscan .",
-        "zip": "gulp zip"
+        "zip": "gulp zip",
+        "test:e2e": "playwright test"
     },
     "devDependencies": {
+        "@playwright/test": "^1.58.2",
         "@tryghost/shared-theme-assets": "2.5.2",
         "autoprefixer": "10.4.27",
         "beeper": "2.1.0",
@@ -101,5 +113,3 @@
         "pump": "3.0.4"
     }
 }
-
-
