@@ -1,5 +1,12 @@
+var AYU_RUNTIME_FLAGS = window.__ayuRuntimeFlags || (window.__ayuRuntimeFlags = {});
+
 function bootstrapAyuTheme() {
     'use strict';
+
+    if (AYU_RUNTIME_FLAGS.bootstrapped) {
+        return;
+    }
+    AYU_RUNTIME_FLAGS.bootstrapped = true;
 
     cover();
     player();
@@ -511,12 +518,18 @@ function cover() {
 
     function markInitialized() {
         coverEl.classList.add('initialized');
+        image.removeAttribute('data-ayu-cover-bound');
     }
 
     if (image.complete) {
         markInitialized();
         return;
     }
+
+    if (image.getAttribute('data-ayu-cover-bound') === 'true') {
+        return;
+    }
+    image.setAttribute('data-ayu-cover-bound', 'true');
 
     image.addEventListener('load', markInitialized, { once: true });
     image.addEventListener('error', markInitialized, { once: true });
@@ -612,6 +625,10 @@ function themeToggle() {
 
 
     toggles.forEach(function (toggle) {
+        if (toggle.getAttribute('data-ayu-theme-bound') === 'true') {
+            return;
+        }
+        toggle.setAttribute('data-ayu-theme-bound', 'true');
         toggle.addEventListener('click', function () {
             var nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             setTheme(nextTheme);
@@ -646,6 +663,11 @@ function renderSearchPage() {
     if (!formEl || !inputEl || !stateEl || !resultsEl) {
         return;
     }
+
+    if (formEl.getAttribute('data-ayu-search-bound') === 'true') {
+        return;
+    }
+    formEl.setAttribute('data-ayu-search-bound', 'true');
 
     var contentKey = getAyuContentApiKey();
 
@@ -951,6 +973,11 @@ function player() {
     if (!player || !playerAudio || !site) {
         return;
     }
+
+    if (player.getAttribute('data-ayu-player-bound') === 'true') {
+        return;
+    }
+    player.setAttribute('data-ayu-player-bound', 'true');
 
     function removePlayingFromPost(postId) {
         if (!postId) {
