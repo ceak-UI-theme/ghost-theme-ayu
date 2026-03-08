@@ -6,3 +6,13 @@
 /signal-wave-ayu.zip
 
 /scripts/
+
+# Local runtime/debug artifacts
+/home.*.html
+/main.*.js
+/search.*.html
+
+# Playwright outputs
+/test-results/
+/playwright-report/
+/blob-report/
