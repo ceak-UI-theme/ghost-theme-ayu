@@ -47,6 +47,7 @@ var AYU_TAXONOMY = {
 };
 
 var AYU_USER_MESSAGES = {
+    HUB_LOADING: 'Loading content...',
     HUB_LOAD_FAILED: 'Content could not be loaded. Please try again later.',
     SEARCH_UNAVAILABLE: 'Search is currently unavailable. Please try again later.'
 };
@@ -77,7 +78,7 @@ function applyTaxonomyRoleClasses(tagEl, role) {
 function buildLoadingStateHtml(message) {
     'use strict';
 
-    return '<div class="term-loading" role="status" aria-live="polite">' + String(message || 'Loading...') + '</div>';
+    return '<div class="term-loading" role="status" aria-live="polite">' + String(message || AYU_USER_MESSAGES.HUB_LOADING) + '</div>';
 }
 
 function buildSkeletonCards(count) {
@@ -610,6 +611,7 @@ function renderSearchPage() {
     'use strict';
 
     var SEARCH_PAGE_SIZE = AYU_GLOBALS.PAGINATION_PAGE_SIZE;
+    var SEARCH_HINT_TEXT = 'Search titles and excerpts (2+ characters).';
 
     var isSearchPage = /^\/search\/?$/.test(window.location.pathname);
     if (!isSearchPage) {
@@ -801,7 +803,7 @@ function renderSearchPage() {
                 paginationEl.innerHTML = '';
             }
             setUrlQuery('');
-            setState('Start typing to search posts.', 'idle');
+            setState(SEARCH_HINT_TEXT, 'idle');
             return Promise.resolve();
         }
 
@@ -909,7 +911,7 @@ function renderSearchPage() {
     } else if (initialQuery.trim().length === 1) {
         setState('Enter at least 2 characters.', 'empty');
     } else {
-        setState('Start typing to search posts.', 'idle');
+        setState(SEARCH_HINT_TEXT, 'idle');
     }
 }
 
@@ -1022,7 +1024,7 @@ function renderPrimaryCategories() {
 
     var contentKey = getAyuContentApiKey();
 
-    featuredGrid.innerHTML = buildLoadingStateHtml('Loading categories...');
+    featuredGrid.innerHTML = buildLoadingStateHtml();
     listGrid.innerHTML = buildSkeletonCards(2);
 
     if (!contentKey) {
@@ -1158,7 +1160,7 @@ function renderSecondaryTags() {
     var contentKey = getAyuContentApiKey();
 
     featuredSection.hidden = false;
-    featuredSection.innerHTML = buildLoadingStateHtml('Loading topics...');
+    featuredSection.innerHTML = buildLoadingStateHtml();
     grid.innerHTML = buildSkeletonCards(8);
 
     if (!contentKey) {
@@ -1470,10 +1472,10 @@ function renderExplorePage() {
 
     var contentKey = getAyuContentApiKey();
 
-    categoriesGrid.innerHTML = buildLoadingStateHtml('Loading categories...');
-    seriesList.innerHTML = buildLoadingStateHtml('Loading series...');
-    topicsGrid.innerHTML = buildLoadingStateHtml('Loading topics...');
-    recentList.innerHTML = '<li class="term-loading" role="status" aria-live="polite">Loading recent posts...</li>';
+    categoriesGrid.innerHTML = buildLoadingStateHtml();
+    seriesList.innerHTML = buildLoadingStateHtml();
+    topicsGrid.innerHTML = buildLoadingStateHtml();
+    recentList.innerHTML = '<li class="term-loading" role="status" aria-live="polite">' + AYU_USER_MESSAGES.HUB_LOADING + '</li>';
 
     if (!contentKey) {
         logAyuWarning('Content hub load failed: missing Content API key (explore)');

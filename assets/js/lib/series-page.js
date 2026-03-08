@@ -15,7 +15,7 @@ function renderSeriesTags() {
 
     var contentKey = typeof getAyuContentApiKey === 'function' ? getAyuContentApiKey() : '';
 
-    featuredGrid.innerHTML = buildLoadingStateHtml('Loading series...');
+    featuredGrid.innerHTML = buildLoadingStateHtml();
     listGrid.innerHTML = buildSkeletonCards(2);
 
     if (!contentKey) {
@@ -103,7 +103,7 @@ function renderSeriesTags() {
             });
 
             if (!tags.length) {
-                featuredGrid.innerHTML = '<div class="term-empty">No series tags found.</div>';
+                featuredGrid.innerHTML = '<div class="term-empty">No series found.</div>';
                 listGrid.innerHTML = '';
                 return;
             }

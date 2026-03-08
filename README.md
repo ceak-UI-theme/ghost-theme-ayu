@@ -289,18 +289,21 @@ Series 정렬 기준
 
 `/search/`
 
-특징
+현재 구현 기준
 
-- 2글자 이상 검색
-- title
-- excerpt
-- custom excerpt
+- 2글자 이상 입력 시 검색 실행
+- Ghost Content API로 post 목록을 가져온 뒤 클라이언트에서 필터링
+- 검색 대상 필드: `title`, `excerpt`, `custom_excerpt`
+- 결과는 검색 페이지 내에서 pagination으로 렌더
 
-검색 방식
+포함되지 않는 범위
 
-`Ghost Content API` → `JS filtering`
+- 본문 전체(full-text) 검색
+- relevance ranking / typo tolerance
+- 형태소 분석
 
-즉 전문 검색 엔진은 아닙니다.
+정리하면, 현재 검색은 “정식 검색 엔진”이 아니라 사이트 내 빠른 찾기에 가깝습니다.  
+작은/중간 규모 블로그에는 현실적인 방식이고, 글 수가 크게 늘어나면 별도 검색 전략 검토가 필요할 수 있습니다.
 
 * * *
 
@@ -600,7 +603,9 @@ JS
 
 검색은 단순 필터
 
-title excerpt custom_excerpt
+`title` `excerpt` `custom_excerpt` 필드 기반 클라이언트 필터링
+
+즉 고급 검색 엔진이 아니라 빠른 찾기 용도이며, 콘텐츠 규모가 커질수록 별도 검색 전략이 필요할 수 있음
 
 Series 정렬
 
