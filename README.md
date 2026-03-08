@@ -112,6 +112,13 @@ category / series prefix가 없는 일반 tag
 - `category-*`, `series-*` 외 slug에 `category-`, `series-` 문자열이 중간 포함되지 않도록 운영 필요
 - 템플릿만으로 모든 prefix 제거/표시명 가공을 일반화하기 어렵기 때문에, 최종 표시 품질은 `name` 저장 품질에 크게 좌우됨
 
+서버/클라이언트 역할 분리
+
+- 서버 템플릿(`partials/post-meta.hbs`)이 tag 링크에 taxonomy 의미를 먼저 내려준다.
+- 서버 렌더 tag는 `data-taxonomy-role` / `data-taxonomy-rendered="server"`를 포함한다.
+- JS(`assets/js/lib/taxonomy.js`)는 서버 값을 우선 신뢰하고, 값이 없을 때만 slug prefix fallback을 사용한다.
+- 클라이언트에서 동적으로 생성한 tag는 `data-taxonomy-rendered="client"`로 표시하고 JS 보정을 적용한다.
+
 * * *
 
 # 3\. 권장 태그 구조

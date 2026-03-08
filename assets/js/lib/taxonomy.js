@@ -13,6 +13,10 @@ var AYU_TAXONOMY = {
         category: ['is-primary-tag', 'tag-category'],
         series: ['is-series-tag', 'tag-series'],
         topic: ['is-secondary-tag', 'tag-topic']
+    },
+    RENDERED: {
+        SERVER: 'server',
+        CLIENT: 'client'
     }
 };
 
@@ -28,6 +32,17 @@ function resolveTaxonomyRoleFromSlug(slug) {
     }
 
     return AYU_TAXONOMY.ROLE.TOPIC;
+}
+
+function normalizeTaxonomyRole(role) {
+    'use strict';
+
+    var raw = String(role || '').trim().toLowerCase();
+    if (raw === AYU_TAXONOMY.ROLE.CATEGORY || raw === AYU_TAXONOMY.ROLE.SERIES || raw === AYU_TAXONOMY.ROLE.TOPIC) {
+        return raw;
+    }
+
+    return '';
 }
 
 function applyTaxonomyRoleClasses(tagEl, role) {
@@ -171,7 +186,7 @@ function buildPostTagsHtml(post, escapeHtml, maxCount) {
         var roleClasses = AYU_TAXONOMY.ROLE_CLASS[role] || AYU_TAXONOMY.ROLE_CLASS.topic;
         cls += ' ' + roleClasses.join(' ');
 
-        return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(displayName) + '">' + escapeHtml(displayName) + '</a>';
+        return '<a class="' + cls + '" href="' + href + '" title="' + escapeHtml(displayName) + '" data-tag-slug="' + escapeHtml(slug) + '" data-tag-name="' + escapeHtml(displayName) + '" data-taxonomy-role="' + escapeHtml(role) + '" data-taxonomy-rendered="' + AYU_TAXONOMY.RENDERED.CLIENT + '">' + escapeHtml(displayName) + '</a>';
     }).join('');
 }
 
@@ -209,7 +224,12 @@ function normalizePostTaxonomyTags(root) {
             return;
         }
 
-        var role = (tagEl.getAttribute('data-taxonomy-role') || '').trim();
+        var renderedMode = (tagEl.getAttribute('data-taxonomy-rendered') || '').trim().toLowerCase();
+
+        // Role resolution priority:
+        // 1) Template-provided taxonomy role (server-rendered DOM)
+        // 2) Slug prefix fallback (category-* / series-* / topic)
+        var role = normalizeTaxonomyRole(tagEl.getAttribute('data-taxonomy-role'));
         if (!role) {
             role = resolveTaxonomyRoleFromSlug(slug);
             tagEl.setAttribute('data-taxonomy-role', role);
@@ -223,8 +243,7 @@ function normalizePostTaxonomyTags(root) {
             return;
         }
 
-        var renderedMode = tagEl.getAttribute('data-taxonomy-rendered') || '';
-        if (renderedMode === 'server') {
+        if (renderedMode === AYU_TAXONOMY.RENDERED.SERVER) {
             if (!tagEl.getAttribute('title')) {
                 tagEl.setAttribute('title', (tagEl.textContent || '').trim());
             }

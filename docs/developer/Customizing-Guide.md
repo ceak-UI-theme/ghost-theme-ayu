@@ -263,7 +263,7 @@ PAGINATION_PAGE_SIZE: 20
 
 현재 동작은 다음과 같다.
 
-1. 현재 포스트의 class에서 `tag-series-*`를 추출
+1. `#post-series-nav`의 `data-series-slugs`에서 series 후보를 읽음
 2. 해당 series tag 조회
 3. 그 시리즈의 모든 글 조회
 4. `published_at asc` 기준 정렬
@@ -327,7 +327,8 @@ posts.sort(function(a, b) {
 # 11. 포스트 메타 출력 방식 변경
 
 포스트 메타는 `partials/post-meta.hbs`에서 출력한다.  
-기본적으로 날짜와 tag 링크가 들어가고, 이후 JS가 taxonomy class와 표시명 보정을 추가한다.
+기본적으로 날짜와 tag 링크가 들어가며, taxonomy 의미(`data-taxonomy-role`, `data-taxonomy-rendered="server"`)도 함께 내려준다.  
+JS는 서버 의미를 우선 사용하고, 누락된 경우에만 slug prefix fallback 보정을 수행한다.
 
 이 구조는 장점과 단점이 있다.
 
