@@ -27,7 +27,7 @@ test.describe('UI round checks', () => {
     const key = await getContentApiKey(request, base);
     expect(key).not.toBe('');
 
-    const tagsRes = await request.get(`${base}/ghost/api/content/tags/?key=${encodeURIComponent(key)}&include=count.posts&limit=all`);
+    const tagsRes = await request.get(`${base}/ghost/api/content/tags/?key=${encodeURIComponent(key)}&include=count.posts&limit=15&order=count.posts%20desc`);
     expect(tagsRes.ok()).toBeTruthy();
     const tagsJson = await tagsRes.json();
     const tags = tagsJson.tags || [];
@@ -38,13 +38,20 @@ test.describe('UI round checks', () => {
 
     await page.goto('/explore/');
 
+    const recentRes = await request.get(`${base}/ghost/api/content/posts/?key=${encodeURIComponent(key)}&fields=id&limit=8&order=published_at%20desc`);
+    expect(recentRes.ok()).toBeTruthy();
+    const recentJson = await recentRes.json();
+    const recentTotal = (recentJson.posts || []).length;
+
     const categoryCards = page.locator('#explore-categories-grid .explore-card-category');
     const seriesCards = page.locator('#explore-series-list .explore-card-series');
     const topicCards = page.locator('#explore-topics-grid .explore-topic-card');
+    const recentItems = page.locator('#explore-recent-list .explore-recent-item');
 
     await expect(categoryCards).toHaveCount(Math.min(categoriesTotal, 10));
     await expect(seriesCards).toHaveCount(Math.min(seriesTotal, 10));
     await expect(topicCards).toHaveCount(Math.min(topicsTotal, 10));
+    await expect(recentItems).toHaveCount(Math.min(recentTotal, 5));
 
     const categoriesMore = page.locator('#explore-categories-more');
     const seriesMore = page.locator('#explore-series-more');

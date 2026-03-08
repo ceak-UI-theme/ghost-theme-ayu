@@ -45,6 +45,23 @@ function normalizeTaxonomyRole(role) {
     return '';
 }
 
+function resolveStrictTaxonomyRole(slug, role) {
+    'use strict';
+
+    var normalizedRole = normalizeTaxonomyRole(role);
+    var strictRole = resolveTaxonomyRoleFromSlug(slug);
+
+    if (strictRole === AYU_TAXONOMY.ROLE.CATEGORY || strictRole === AYU_TAXONOMY.ROLE.SERIES) {
+        return strictRole;
+    }
+
+    if (normalizedRole === AYU_TAXONOMY.ROLE.CATEGORY || normalizedRole === AYU_TAXONOMY.ROLE.SERIES) {
+        return strictRole;
+    }
+
+    return normalizedRole || strictRole;
+}
+
 function applyTaxonomyRoleClasses(tagEl, role) {
     'use strict';
 
@@ -229,11 +246,8 @@ function normalizePostTaxonomyTags(root) {
         // Role resolution priority:
         // 1) Template-provided taxonomy role (server-rendered DOM)
         // 2) Slug prefix fallback (category-* / series-* / topic)
-        var role = normalizeTaxonomyRole(tagEl.getAttribute('data-taxonomy-role'));
-        if (!role) {
-            role = resolveTaxonomyRoleFromSlug(slug);
-            tagEl.setAttribute('data-taxonomy-role', role);
-        }
+        var role = resolveStrictTaxonomyRole(slug, tagEl.getAttribute('data-taxonomy-role'));
+        tagEl.setAttribute('data-taxonomy-role', role);
 
         if (!tagEl.classList.contains('is-primary-tag') && !tagEl.classList.contains('is-series-tag') && !tagEl.classList.contains('is-secondary-tag')) {
             applyTaxonomyRoleClasses(tagEl, role);

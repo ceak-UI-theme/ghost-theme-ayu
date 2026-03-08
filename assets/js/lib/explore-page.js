@@ -2,6 +2,9 @@ function renderExplorePage() {
     'use strict';
 
     var EXPLORE_SECTION_MAX = 10;
+    var EXPLORE_RECENT_MAX = 5;
+    var EXPLORE_TAG_FETCH_LIMIT = 15;
+    var EXPLORE_RECENT_FETCH_LIMIT = 8;
     var isExplorePage = /^\/explore\/?$/.test(window.location.pathname);
     if (!isExplorePage) {
         return;
@@ -126,22 +129,34 @@ function renderExplorePage() {
     }
 
     function fetchRecentPosts() {
-        var url = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&fields=id,title,slug,url,published_at&limit=5&order=published_at%20desc';
+        var url = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&fields=id,title,slug,url,published_at&limit=' + String(EXPLORE_RECENT_FETCH_LIMIT) + '&order=published_at%20desc';
         return fetchAyuContentApiJson(url, { contentKey: contentKey })
             .then(function (data) {
                 return data.posts || [];
             });
     }
 
+    function fetchTagBatch() {
+        var url = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=' + String(EXPLORE_TAG_FETCH_LIMIT) + '&include=count.posts&order=count.posts%20desc';
+        return fetchAyuContentApiJson(url, { contentKey: contentKey })
+            .then(function (data) {
+                return data.tags || [];
+            });
+    }
+
     Promise.all([
-        fetchAyuContentApiJson('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all&include=count.posts', { contentKey: contentKey }),
+        fetchTagBatch(),
+        fetchTagBatch(),
+        fetchTagBatch(),
         fetchRecentPosts()
     ])
         .then(function (results) {
-            var tags = results[0] && results[0].tags ? results[0].tags : [];
-            var recent = results[1] || [];
+            var categoryTags = results[0] || [];
+            var seriesTags = results[1] || [];
+            var topicTags = results[2] || [];
+            var recent = results[3] || [];
 
-            var categories = tags.filter(function (tag) {
+            var categories = categoryTags.filter(function (tag) {
                 return AYU_TAG_UTILS.isCategoryTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
             }).map(function (tag) {
                 return {
@@ -155,7 +170,7 @@ function renderExplorePage() {
                 return item.count > 0;
             });
 
-            var series = tags.filter(function (tag) {
+            var series = seriesTags.filter(function (tag) {
                 return AYU_TAG_UTILS.isSeriesTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
             }).map(function (tag) {
                 return {
@@ -170,7 +185,7 @@ function renderExplorePage() {
                 return item.count > 0;
             });
 
-            var topics = tags.filter(function (tag) {
+            var topics = topicTags.filter(function (tag) {
                 return AYU_TAG_UTILS.isTopicTag(tag);
             }).map(function (tag) {
                 return {
@@ -205,7 +220,7 @@ function renderExplorePage() {
             categoriesGrid.innerHTML = categories.length ? categories.slice(0, EXPLORE_SECTION_MAX).map(categoryCardHtml).join('') : '<div class="term-empty">No categories yet.</div>';
             seriesList.innerHTML = series.length ? series.slice(0, EXPLORE_SECTION_MAX).map(seriesCardHtml).join('') : '<div class="term-empty">No series yet.</div>';
             topicsGrid.innerHTML = topics.length ? topics.slice(0, EXPLORE_SECTION_MAX).map(topicCardHtml).join('') : '<div class="term-empty">No topics yet.</div>';
-            recentList.innerHTML = recent.length ? recent.map(recentItemHtml).join('') : '<li class="term-empty">No recent posts.</li>';
+            recentList.innerHTML = recent.length ? recent.slice(0, EXPLORE_RECENT_MAX).map(recentItemHtml).join('') : '<li class="term-empty">No recent posts.</li>';
 
             if (categoriesMore) {
                 categoriesMore.hidden = categories.length <= EXPLORE_SECTION_MAX;

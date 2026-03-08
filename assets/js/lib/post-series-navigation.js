@@ -13,10 +13,14 @@ function renderPostSeriesNavigation() {
         return;
     }
     // Template emits raw series candidates. Policy: first-series-wins.
+    function isStrictSeriesSlug(slug) {
+        return String(slug || '').toLowerCase().indexOf(AYU_TAG_PREFIX.SERIES) === 0;
+    }
+
     var rawSeriesListValue = (navSection.getAttribute('data-series-slugs') || '').trim().toLowerCase();
     var rawSeriesTokens = rawSeriesListValue ? rawSeriesListValue.split(/\s+/).filter(Boolean) : [];
     var seriesCandidates = rawSeriesTokens.filter(function (slug) {
-        return slug.indexOf(AYU_TAG_PREFIX.SERIES) === 0;
+        return isStrictSeriesSlug(slug);
     });
     navSection.setAttribute('data-series-count', String(seriesCandidates.length));
 

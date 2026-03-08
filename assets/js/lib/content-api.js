@@ -17,9 +17,9 @@ function getAyuContentApiKey() {
 var AYU_CONTENT_API_CACHE = window.__ayuContentApiCache || (window.__ayuContentApiCache = {});
 var AYU_CONTENT_API_CACHE_STORAGE_KEY = 'ayu-content-api-cache::';
 var AYU_CONTENT_API_TTL_MS = {
-    SETTINGS: 20 * 60 * 1000,
+    SETTINGS: 30 * 60 * 1000,
     TAGS: 10 * 60 * 1000,
-    POSTS: 5 * 60 * 1000,
+    POSTS: 10 * 60 * 1000,
     DEFAULT: 5 * 60 * 1000
 };
 
@@ -128,7 +128,7 @@ function fetchAyuContentApiJson(pathOrUrl, options) {
         })
         .then(function (data) {
             var payload = {
-                expiresAt: now + ttl,
+                expiresAt: Date.now() + ttl,
                 data: data
             };
 

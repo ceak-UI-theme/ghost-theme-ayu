@@ -71,12 +71,16 @@ test.describe('Runtime extra checks', () => {
 
       const hasTags = keys.some((k) => k.includes('/ghost/api/content/tags/'));
       const hasPosts = keys.some((k) => k.includes('/ghost/api/content/posts/'));
+      const hasTagLimit15 = keys.some((k) => k.includes('/ghost/api/content/tags/') && k.includes('limit=15'));
+      const hasPostsLimit8 = keys.some((k) => k.includes('/ghost/api/content/posts/') && k.includes('limit=8'));
 
-      return { count: keys.length, hasTags, hasPosts };
+      return { count: keys.length, hasTags, hasPosts, hasTagLimit15, hasPostsLimit8 };
     });
 
     expect(cacheInfo.count).toBeGreaterThan(0);
     expect(cacheInfo.hasTags || cacheInfo.hasPosts).toBeTruthy();
+    expect(cacheInfo.hasTagLimit15).toBeTruthy();
+    expect(cacheInfo.hasPostsLimit8).toBeTruthy();
   });
 
   test('series navigation renders list for a post with series and keeps state contract', async ({ page, request, baseURL }) => {
@@ -110,5 +114,88 @@ test.describe('Runtime extra checks', () => {
       await expect(page.locator('#post-series-nav-list li')).toHaveCount(await page.locator('#post-series-nav-list li').count());
       expect(await page.locator('#post-series-nav-list li').count()).toBeGreaterThan(0);
     }
+  });
+
+  test('series navigation ignores non series-* tokens and still resolves with first valid series-*', async ({ page, request, baseURL }) => {
+    const base = typeof baseURL === 'string' ? baseURL : 'http://172.22.0.199:2368';
+    const key = await getContentApiKey(request, base);
+    expect(key).not.toBe('');
+
+    const postsRes = await request.get(`${base}/ghost/api/content/posts/?key=${encodeURIComponent(key)}&include=tags&fields=slug,url,title&limit=all`);
+    expect(postsRes.ok()).toBeTruthy();
+    const posts = (await postsRes.json()).posts || [];
+
+    const target = posts.find((post) => {
+      const tags = post.tags || [];
+      return tags.some((tag) => tag.visibility === 'public' && String(tag.slug || '').startsWith('series-'));
+    });
+    test.skip(!target, 'No post with series-* tag in current dataset');
+
+    await page.goto(toPath(target.url || `/${target.slug}/`));
+
+    const nav = page.locator('#post-series-nav');
+    await expect(nav).toHaveCount(1);
+    await expect(nav).toBeVisible();
+
+    const currentSeriesSlug = await nav.getAttribute('data-series-slug');
+    expect(currentSeriesSlug).toBeTruthy();
+    expect(String(currentSeriesSlug)).toMatch(/^series-/);
+
+    await page.evaluate(() => {
+      const navEl = document.getElementById('post-series-nav');
+      if (!navEl) return;
+      const valid = navEl.getAttribute('data-series-slug') || '';
+      navEl.setAttribute('data-series-slugs', ['misc-tag', 'another-invalid', valid].join(' '));
+      navEl.setAttribute('data-series-nav-state', 'ready');
+      navEl.hidden = true;
+      if (typeof window.renderPostSeriesNavigation === 'function') {
+        window.renderPostSeriesNavigation();
+      }
+    });
+
+    await expect
+      .poll(async () => (await nav.getAttribute('data-series-slug')) || '', { timeout: 20_000 })
+      .toMatch(/^series-/);
+    await expect
+      .poll(async () => (await nav.getAttribute('data-series-nav-state')) || '', { timeout: 20_000 })
+      .toMatch(/ready|multiple-series-tags-first-used|empty-series-posts/);
+  });
+
+  test('taxonomy normalization corrects conflicting role by strict slug prefix', async ({ page, request, baseURL }) => {
+    const base = typeof baseURL === 'string' ? baseURL : 'http://172.22.0.199:2368';
+    const key = await getContentApiKey(request, base);
+    expect(key).not.toBe('');
+
+    await page.goto('/search/');
+
+    const result = await page.evaluate(() => {
+      const host = document.createElement('div');
+      host.innerHTML = [
+        '<div class="post-meta">',
+        '<span class="post-meta-tags">',
+        '<a class="post-tag" href="/tag/category-demo/" data-tag-slug="category-demo" data-tag-name="Demo" data-taxonomy-role="topic" data-taxonomy-rendered="client">Demo</a>',
+        '<a class="post-tag" href="/tag/plain-topic/" data-tag-slug="plain-topic" data-tag-name="Plain" data-taxonomy-role="series" data-taxonomy-rendered="client">Plain</a>',
+        '</span>',
+        '</div>',
+      ].join('');
+      document.body.appendChild(host);
+      if (typeof window.normalizePostTaxonomyTags === 'function') {
+        window.normalizePostTaxonomyTags(host);
+      }
+
+      const tags = Array.from(host.querySelectorAll('.post-tag')).map((el) => ({
+        slug: el.getAttribute('data-tag-slug') || '',
+        role: el.getAttribute('data-taxonomy-role') || '',
+      }));
+      host.remove();
+      return tags;
+    });
+
+    const categoryTag = result.find((t) => t.slug === 'category-demo');
+    const topicTag = result.find((t) => t.slug === 'plain-topic');
+    expect(categoryTag).toBeTruthy();
+    expect(topicTag).toBeTruthy();
+    expect(categoryTag.role).toBe('category');
+    expect(topicTag.role).toBe('topic');
   });
 });
