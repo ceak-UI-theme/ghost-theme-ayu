@@ -13,8 +13,7 @@ function renderSeriesTags() {
         return;
     }
 
-    var keyScript = document.querySelector('script[data-key]');
-    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+    var contentKey = typeof getAyuContentApiKey === 'function' ? getAyuContentApiKey() : '';
 
     featuredGrid.innerHTML = buildLoadingStateHtml('Loading series...');
     listGrid.innerHTML = buildSkeletonCards(2);

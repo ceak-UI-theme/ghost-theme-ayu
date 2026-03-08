@@ -53,6 +53,22 @@ function buildSkeletonCards(count) {
     return '<div class="term-skeleton-grid">' + html.join('') + '</div>';
 }
 
+function getAyuContentApiKey() {
+    'use strict';
+
+    var themeScript = document.querySelector('#ayu-content-key');
+    var themeKey = themeScript ? String(themeScript.getAttribute('data-key') || '').trim() : '';
+    if (themeKey) {
+        return themeKey;
+    }
+
+    // Fallback for Ghost-provided runtime scripts (Portal / Sodo Search).
+    var runtimeScript = document.querySelector('script[data-api*="/ghost/api/content/"][data-key], script[src*="portal"][data-key], script[src*="sodo-search"][data-key]');
+    var runtimeKey = runtimeScript ? String(runtimeScript.getAttribute('data-key') || '').trim() : '';
+
+    return runtimeKey;
+}
+
 // Taxonomy helpers (Category / Series / Topic) based on slug prefixes.
 var AYU_TAG_UTILS = {
     getSlug: function (tag) {
@@ -538,8 +554,7 @@ function renderSearchPage() {
         return;
     }
 
-    var keyScript = document.querySelector('script[data-key]');
-    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+    var contentKey = getAyuContentApiKey();
 
     function escapeHtml(value) {
         return String(value || '')
@@ -931,8 +946,7 @@ function renderPrimaryCategories() {
         return;
     }
 
-    var keyScript = document.querySelector('script[data-key]');
-    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+    var contentKey = getAyuContentApiKey();
 
     featuredGrid.innerHTML = buildLoadingStateHtml('Loading categories...');
     listGrid.innerHTML = buildSkeletonCards(2);
@@ -1065,8 +1079,7 @@ function renderSecondaryTags() {
         return;
     }
 
-    var keyScript = document.querySelector('script[data-key]');
-    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+    var contentKey = getAyuContentApiKey();
 
     featuredSection.hidden = false;
     featuredSection.innerHTML = buildLoadingStateHtml('Loading topics...');
@@ -1224,8 +1237,7 @@ function renderPostSeriesNavigation() {
 
     var seriesSlug = seriesMatch[1].toLowerCase();
     var currentSlug = (navSection.getAttribute('data-post-slug') || window.location.pathname.replace(/^\/+|\/+$/g, '')).toLowerCase();
-    var keyScript = document.querySelector('script[data-key]');
-    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+    var contentKey = getAyuContentApiKey();
 
     if (!contentKey) {
         navSection.hidden = true;
@@ -1345,8 +1357,7 @@ function renderExplorePage() {
         return;
     }
 
-    var keyScript = document.querySelector('script[data-key]');
-    var contentKey = keyScript ? keyScript.getAttribute('data-key') : '';
+    var contentKey = getAyuContentApiKey();
 
     categoriesGrid.innerHTML = buildLoadingStateHtml('Loading categories...');
     seriesList.innerHTML = buildLoadingStateHtml('Loading series...');
