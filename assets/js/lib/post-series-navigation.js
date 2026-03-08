@@ -90,20 +90,8 @@ function renderPostSeriesNavigation() {
     var postsUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&filter=tag:' + encodeURIComponent(seriesTagSlug) + '&fields=id,title,slug,url,published_at&order=published_at%20asc&limit=all';
 
     Promise.all([
-        fetch(tagUrl).then(function (res) {
-            if (!res.ok) {
-                throw new Error('Failed to fetch series tag');
-            }
-
-            return res.json();
-        }),
-        fetch(postsUrl).then(function (res) {
-            if (!res.ok) {
-                throw new Error('Failed to fetch series posts');
-            }
-
-            return res.json();
-        })
+        fetchAyuContentApiJson(tagUrl, { contentKey: contentKey }),
+        fetchAyuContentApiJson(postsUrl, { contentKey: contentKey })
     ])
         .then(function (results) {
             var tag = results[0] && results[0].tags ? results[0].tags[0] : null;

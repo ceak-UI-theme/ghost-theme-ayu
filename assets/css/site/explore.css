@@ -40,6 +40,10 @@
     gap: 14px;
 }
 
+.explore-section-more {
+    justify-self: start;
+}
+
 .explore-section-title {
     margin: 0;
     font-size: 2.2rem;

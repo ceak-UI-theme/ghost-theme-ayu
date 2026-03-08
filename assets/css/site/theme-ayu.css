@@ -100,7 +100,6 @@ select:focus-visible,
 .category-featured,
 .category-post-list,
 .post-feed .post.post-promo,
-.player,
 .author,
 .term-card,
 .category-ad-inline {
@@ -137,8 +136,6 @@ select:focus-visible,
     color: var(--text-muted);
 }
 
-.post-play,
-.button-play,
 .gh-head-btn.gh-btn,
 .gh-btn.gh-primary-btn,
 .ayu-page-link.is-active {
@@ -147,8 +144,6 @@ select:focus-visible,
     color: #1a1f2b;
 }
 
-.post-play:hover,
-.button-play:hover,
 .gh-head-btn.gh-btn:hover,
 .gh-btn.gh-primary-btn:hover {
     filter: brightness(1.06);
@@ -315,6 +310,14 @@ figcaption,
 .post-meta .post-tag.is-series-tag:hover,
 .post-tag.is-internal-series:hover {
     color: #6ad0c6;
+}
+
+.post-meta-tags .post-tag.is-series-tag.is-inactive-series-tag,
+.post-meta .post-tag.is-series-tag.is-inactive-series-tag {
+    color: var(--text-muted);
+    opacity: 0.55;
+    pointer-events: none;
+    cursor: default;
 }
 
 .post-meta-tags .post-tag.is-secondary-tag,

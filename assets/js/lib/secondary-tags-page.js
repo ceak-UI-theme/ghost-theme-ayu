@@ -93,13 +93,7 @@ function renderSecondaryTags() {
         ].join('');
     }
 
-    fetch('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all')
-        .then(function (res) {
-            if (!res.ok) {
-                throw new Error('Failed to fetch tags for topics');
-            }
-            return res.json();
-        })
+    fetchAyuContentApiJson('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all', { contentKey: contentKey })
         .then(function (data) {
             var tags = (data.tags || []).filter(function (tag) {
                 return AYU_TAG_UTILS.isTopicTag(tag);

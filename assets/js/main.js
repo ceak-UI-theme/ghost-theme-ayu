@@ -7,7 +7,6 @@ function bootstrapAyuTheme() {
     AYU_RUNTIME_FLAGS.bootstrapped = true;
 
     cover();
-    player();
     themeToggle();
     renderAyuPagination();
     renderPrimaryCategories();

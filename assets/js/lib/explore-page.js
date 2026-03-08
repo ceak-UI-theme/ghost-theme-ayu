@@ -1,6 +1,7 @@
 function renderExplorePage() {
     'use strict';
 
+    var EXPLORE_SECTION_MAX = 10;
     var isExplorePage = /^\/explore\/?$/.test(window.location.pathname);
     if (!isExplorePage) {
         return;
@@ -10,6 +11,9 @@ function renderExplorePage() {
     var seriesList = document.getElementById('explore-series-list');
     var topicsGrid = document.getElementById('explore-topics-grid');
     var recentList = document.getElementById('explore-recent-list');
+    var categoriesMore = document.getElementById('explore-categories-more');
+    var seriesMore = document.getElementById('explore-series-more');
+    var topicsMore = document.getElementById('explore-topics-more');
 
     if (!categoriesGrid || !seriesList || !topicsGrid || !recentList) {
         return;
@@ -21,6 +25,15 @@ function renderExplorePage() {
     seriesList.innerHTML = buildLoadingStateHtml();
     topicsGrid.innerHTML = buildLoadingStateHtml();
     recentList.innerHTML = '<li class="term-loading" role="status" aria-live="polite">' + AYU_USER_MESSAGES.HUB_LOADING + '</li>';
+    if (categoriesMore) {
+        categoriesMore.hidden = true;
+    }
+    if (seriesMore) {
+        seriesMore.hidden = true;
+    }
+    if (topicsMore) {
+        topicsMore.hidden = true;
+    }
 
     if (!contentKey) {
         logAyuWarning('Content hub load failed: missing Content API key (explore)');
@@ -114,25 +127,14 @@ function renderExplorePage() {
 
     function fetchRecentPosts() {
         var url = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&fields=id,title,slug,url,published_at&limit=5&order=published_at%20desc';
-        return fetch(url)
-            .then(function (res) {
-                if (!res.ok) {
-                    throw new Error('Failed to fetch recent posts');
-                }
-                return res.json();
-            })
+        return fetchAyuContentApiJson(url, { contentKey: contentKey })
             .then(function (data) {
                 return data.posts || [];
             });
     }
 
     Promise.all([
-        fetch('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all&include=count.posts').then(function (res) {
-            if (!res.ok) {
-                throw new Error('Failed to fetch tags');
-            }
-            return res.json();
-        }),
+        fetchAyuContentApiJson('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all&include=count.posts', { contentKey: contentKey }),
         fetchRecentPosts()
     ])
         .then(function (results) {
@@ -200,10 +202,20 @@ function renderExplorePage() {
                 return a.name.localeCompare(b.name);
             });
 
-            categoriesGrid.innerHTML = categories.length ? categories.slice(0, 6).map(categoryCardHtml).join('') : '<div class="term-empty">No categories yet.</div>';
-            seriesList.innerHTML = series.length ? series.slice(0, 3).map(seriesCardHtml).join('') : '<div class="term-empty">No series yet.</div>';
-            topicsGrid.innerHTML = topics.length ? topics.slice(0, 10).map(topicCardHtml).join('') : '<div class="term-empty">No topics yet.</div>';
+            categoriesGrid.innerHTML = categories.length ? categories.slice(0, EXPLORE_SECTION_MAX).map(categoryCardHtml).join('') : '<div class="term-empty">No categories yet.</div>';
+            seriesList.innerHTML = series.length ? series.slice(0, EXPLORE_SECTION_MAX).map(seriesCardHtml).join('') : '<div class="term-empty">No series yet.</div>';
+            topicsGrid.innerHTML = topics.length ? topics.slice(0, EXPLORE_SECTION_MAX).map(topicCardHtml).join('') : '<div class="term-empty">No topics yet.</div>';
             recentList.innerHTML = recent.length ? recent.map(recentItemHtml).join('') : '<li class="term-empty">No recent posts.</li>';
+
+            if (categoriesMore) {
+                categoriesMore.hidden = categories.length <= EXPLORE_SECTION_MAX;
+            }
+            if (seriesMore) {
+                seriesMore.hidden = series.length <= EXPLORE_SECTION_MAX;
+            }
+            if (topicsMore) {
+                topicsMore.hidden = topics.length <= EXPLORE_SECTION_MAX;
+            }
         })
         .catch(function (error) {
             logAyuWarning('Content hub load failed (explore)', error);

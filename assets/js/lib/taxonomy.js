@@ -268,6 +268,22 @@ function normalizePostTaxonomyTags(root) {
             container.remove();
         }
     });
+
+    var metaContainers = scope.querySelectorAll ? scope.querySelectorAll('.post-meta') : [];
+    Array.prototype.slice.call(metaContainers).forEach(function (metaEl) {
+        var seriesTags = metaEl.querySelectorAll ? metaEl.querySelectorAll('.post-tag[data-taxonomy-role="series"]') : [];
+        Array.prototype.slice.call(seriesTags).forEach(function (seriesTag, index) {
+            var isInactive = index > 0;
+            seriesTag.classList.toggle('is-inactive-series-tag', isInactive);
+            if (isInactive) {
+                seriesTag.setAttribute('aria-disabled', 'true');
+                seriesTag.setAttribute('tabindex', '-1');
+            } else {
+                seriesTag.removeAttribute('aria-disabled');
+                seriesTag.removeAttribute('tabindex');
+            }
+        });
+    });
 }
 
 function normalizeTagHeaderName(root) {

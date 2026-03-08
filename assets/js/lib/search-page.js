@@ -231,13 +231,7 @@ function renderSearchPage() {
 
         var apiUrl = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&include=tags,authors&fields=id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt&limit=all';
 
-        return fetch(apiUrl)
-            .then(function (res) {
-                if (!res.ok) {
-                    throw new Error('Failed to search posts');
-                }
-                return res.json();
-            })
+        return fetchAyuContentApiJson(apiUrl, { contentKey: contentKey })
             .then(function (data) {
                 var allPosts = data && data.posts ? data.posts : [];
                 var keyword = query.toLowerCase();
