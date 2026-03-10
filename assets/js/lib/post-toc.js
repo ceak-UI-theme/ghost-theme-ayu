@@ -29,7 +29,9 @@
             return;
         }
 
-        var headings = Array.prototype.slice.call(contentRoot.querySelectorAll('h1, h2, h3'));
+        var hasH1 = Boolean(contentRoot.querySelector('h1'));
+        var headingSelector = hasH1 ? 'h1, h2' : 'h2, h3';
+        var headings = Array.prototype.slice.call(contentRoot.querySelectorAll(headingSelector));
         if (!headings.length) {
             return;
         }
