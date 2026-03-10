@@ -21,9 +21,21 @@
             .replace(/^-+|-+$/g, '') || 'section';
     }
 
+    function getPostContentRoot(tocRoot) {
+        var articleRoot = tocRoot && tocRoot.closest('article.single')
+            ? tocRoot.closest('article.single')
+            : document.querySelector('article.single');
+
+        if (articleRoot) {
+            return articleRoot.querySelector('.post-content') || articleRoot.querySelector('.gh-content');
+        }
+
+        return document.querySelector('.post-content') || document.querySelector('.gh-content');
+    }
+
     function buildToc() {
         var tocRoot = document.querySelector('.post-toc');
-        var contentRoot = document.querySelector('.post-content');
+        var contentRoot = getPostContentRoot(tocRoot);
 
         if (!tocRoot || !contentRoot) {
             return;
