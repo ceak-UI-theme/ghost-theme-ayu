@@ -206,7 +206,13 @@ select:focus {
 /* Article readability first */
 .gh-content {
     color: var(--text-primary);
-    line-height: 1.85;
+    font-size: 19px;
+    line-height: 1.75;
+    letter-spacing: -0.01em;
+}
+
+.gh-content p {
+    margin-bottom: 1.6em;
 }
 
 .gh-content h1,
@@ -216,6 +222,26 @@ select:focus {
 .gh-content h5,
 .gh-content h6 {
     color: var(--text-strong);
+}
+
+.gh-content h2 {
+    margin-top: 2.5em;
+    margin-bottom: 0.8em;
+}
+
+.gh-content h3 {
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+}
+
+.gh-content hr {
+    margin: 3em 0;
+    opacity: 0.25;
+}
+
+.gh-content ul,
+.gh-content ol {
+    margin-bottom: 1.6em;
 }
 
 .gh-content a {
@@ -245,10 +271,28 @@ code[class*="language-"] {
 }
 
 .gh-content blockquote {
-    background: var(--bg-surface-2);
-    border-left: 3px solid var(--accent-primary);
-    color: var(--text-secondary);
-    padding: 0.9em 1.1em;
+    margin: 2em 0;
+    padding-left: 1.2em;
+    border-left: 3px solid var(--ghost-accent-color);
+    opacity: 0.9;
+}
+
+.gh-content > p:first-of-type {
+    font-size: 1.12em;
+}
+
+.gh-content img {
+    margin: 40px 0 48px;
+    border-radius: 10px;
+    transition: transform 0.15s ease;
+}
+
+.gh-content img:hover {
+    transform: translateY(-1px);
+}
+
+.gh-content figure {
+    margin: 40px 0 48px;
 }
 
 .gh-content table,
@@ -270,6 +314,10 @@ code[class*="language-"] {
 
 figcaption,
 .gh-content figcaption {
+    margin-top: 10px;
+    font-size: 0.85em;
+    opacity: 0.7;
+    text-align: center;
     color: var(--text-muted);
 }
 

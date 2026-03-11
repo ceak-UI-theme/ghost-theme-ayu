@@ -12,7 +12,7 @@ function readingWidthToggle() {
     }
 
     var storageKey = 'ayu-reading-width';
-    var validModes = ['normal', 'wide', 'expanded'];
+    var validModes = ['normal', 'wide'];
     var mode = 'normal';
     var breakpoint = typeof window !== 'undefined' && window.AYU_GLOBALS && window.AYU_GLOBALS.MOBILE_BREAKPOINT
         ? Number(window.AYU_GLOBALS.MOBILE_BREAKPOINT) || 767
