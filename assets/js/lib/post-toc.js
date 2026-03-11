@@ -12,6 +12,14 @@
     function buildToc() {
         var tocRoot = document.querySelector('.post-toc');
         var contentRoot = AYU_HEADING_IDS.getPostContentRoot(tocRoot);
+        var modeWidths = {
+            normal: 720,
+            wide: 920,
+            expanded: 1200
+        };
+        var fallbackCollapseWidth = 1400;
+        var safetyMargin = 24;
+        var overlapMargin = 16;
 
         if (!tocRoot || !contentRoot) {
             return;
@@ -38,7 +46,10 @@
 
         tocRoot.innerHTML = [
             '<div class="post-toc-inner">',
+            '<div class="toc-header-row">',
             '<div class="toc-title">On this page</div>',
+            '<button class="post-toc-toggle" type="button" aria-label="Collapse table of contents" aria-expanded="true">−</button>',
+            '</div>',
             '<ul class="post-toc-list">',
             listItems,
             '</ul>',
@@ -47,7 +58,98 @@
 
         tocRoot.hidden = false;
 
+        var toggleButton = tocRoot.querySelector('.post-toc-toggle');
         var tocItems = Array.prototype.slice.call(tocRoot.querySelectorAll('li[data-toc-index]'));
+        var manualCollapsed = false;
+        var manualOverride = false;
+        var autoHidden = false;
+        var lastMode = '';
+
+        function getEffectiveMode() {
+            var mode = (document.body && document.body.getAttribute('data-reading-width')) || 'normal';
+            if (!modeWidths[mode]) {
+                mode = 'normal';
+            }
+            return mode;
+        }
+
+        function getCollapseThresholdByMode(mode) {
+            var rootStyle = window.getComputedStyle(document.documentElement);
+            var gap = parseFloat(rootStyle.getPropertyValue('--gap')) || 36;
+            var tocStyle = window.getComputedStyle(tocRoot);
+            var tocWidth = parseFloat(tocStyle.getPropertyValue('--toc-panel-width')) || 280;
+            var tocRight = parseFloat(tocStyle.right) || 40;
+            var inner = document.querySelector('.gh-inner');
+            var innerMax = inner ? parseFloat(window.getComputedStyle(inner).maxWidth) : NaN;
+            if (!Number.isFinite(innerMax) || innerMax <= 0) {
+                innerMax = modeWidths.expanded;
+            }
+            var contentTarget = Math.min(modeWidths[mode] || modeWidths.normal, innerMax);
+            return contentTarget + tocWidth + tocRight + gap + safetyMargin;
+        }
+
+        function getContentRightEdge() {
+            var nodes = contentRoot.querySelectorAll('p, h2, h3, ul, ol, blockquote, pre, table');
+            var contentRight = 0;
+            var idx;
+
+            for (idx = 0; idx < nodes.length; idx += 1) {
+                var rect = nodes[idx].getBoundingClientRect();
+                if (rect.width <= 0 || rect.height <= 0) {
+                    continue;
+                }
+                contentRight = Math.max(contentRight, rect.right);
+            }
+
+            if (!contentRight) {
+                contentRight = contentRoot.getBoundingClientRect().right;
+            }
+
+            return contentRight;
+        }
+
+        function shouldCollapseForOverlap() {
+            var tocStyle = window.getComputedStyle(tocRoot);
+            var tocWidth = parseFloat(tocStyle.getPropertyValue('--toc-panel-width')) || 280;
+            var tocRight = parseFloat(tocStyle.right) || 40;
+            var tocLeft = window.innerWidth - tocRight - tocWidth;
+            var contentRight = getContentRightEdge();
+
+            return tocLeft < (contentRight + overlapMargin);
+        }
+
+        function updateToggleUi() {
+            if (!toggleButton) {
+                return;
+            }
+
+            var expanded = !(manualCollapsed || autoHidden);
+            toggleButton.textContent = expanded ? '−' : '+';
+            toggleButton.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+            toggleButton.setAttribute('aria-label', expanded ? 'Collapse table of contents' : 'Expand table of contents');
+        }
+
+        function evaluateTocLayout() {
+            autoHidden = window.innerWidth <= getMobileBreakpoint();
+            tocRoot.classList.toggle('is-auto-hidden', autoHidden);
+
+            if (autoHidden) {
+                tocRoot.classList.remove('is-collapsed');
+                updateToggleUi();
+                return;
+            }
+
+            var mode = getEffectiveMode();
+            var threshold = getCollapseThresholdByMode(mode);
+            var overlapCollapse = shouldCollapseForOverlap();
+            if (!manualOverride) {
+                manualCollapsed = window.innerWidth <= Math.max(fallbackCollapseWidth, threshold) || overlapCollapse;
+            }
+
+            tocRoot.classList.toggle('is-collapsed', manualCollapsed);
+            updateToggleUi();
+            lastMode = mode;
+        }
 
         function refreshActive() {
             var probeY = window.scrollY + 140;
@@ -79,87 +181,35 @@
         }
 
         window.addEventListener('scroll', onScroll, {passive: true});
-        window.addEventListener('resize', onScroll);
+        window.addEventListener('resize', function () {
+            onScroll();
+            evaluateTocLayout();
+        });
         refreshActive();
+        evaluateTocLayout();
 
-        var touchLike = window.matchMedia('(pointer: coarse)').matches;
-        if (touchLike) {
-            return;
+        if (toggleButton) {
+            toggleButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                if (autoHidden) {
+                    return;
+                }
+                manualOverride = true;
+                manualCollapsed = !manualCollapsed;
+                tocRoot.classList.toggle('is-collapsed', manualCollapsed);
+                updateToggleUi();
+            });
         }
 
-        var dragging = false;
-        var offsetX = 0;
-        var offsetY = 0;
-        var startX = 0;
-        var startY = 0;
-
-        tocRoot.addEventListener('mousedown', function (event) {
-            if (window.innerWidth <= getMobileBreakpoint()) {
-                return;
+        var observer = new MutationObserver(function () {
+            var mode = getEffectiveMode();
+            if (mode !== lastMode) {
+                manualOverride = false;
             }
-
-            if (event.target && event.target.closest('a')) {
-                return;
-            }
-
-            var rect = tocRoot.getBoundingClientRect();
-            dragging = true;
-            startX = event.clientX;
-            startY = event.clientY;
-            offsetX = startX - rect.left;
-            offsetY = startY - rect.top;
-
-            tocRoot.classList.add('is-dragging');
-            tocRoot.style.left = rect.left + 'px';
-            tocRoot.style.top = rect.top + 'px';
-            tocRoot.style.right = 'auto';
-            tocRoot.style.bottom = 'auto';
-            event.preventDefault();
+            onScroll();
         });
-
-        window.addEventListener('mousemove', function (event) {
-            if (!dragging) {
-                return;
-            }
-
-            var nextLeft = event.clientX - offsetX;
-            var nextTop = event.clientY - offsetY;
-            var maxLeft = window.innerWidth - tocRoot.offsetWidth;
-            var maxTop = window.innerHeight - tocRoot.offsetHeight;
-
-            if (nextLeft < 0) {
-                nextLeft = 0;
-            }
-            if (nextTop < 0) {
-                nextTop = 0;
-            }
-            if (nextLeft > maxLeft) {
-                nextLeft = maxLeft;
-            }
-            if (nextTop > maxTop) {
-                nextTop = maxTop;
-            }
-
-            tocRoot.style.left = nextLeft + 'px';
-            tocRoot.style.top = nextTop + 'px';
-        });
-
-        window.addEventListener('mouseup', function (event) {
-            if (!dragging) {
-                return;
-            }
-
-            dragging = false;
-            tocRoot.classList.remove('is-dragging');
-
-            var moved = Math.abs(event.clientX - startX) + Math.abs(event.clientY - startY);
-            if (moved < 4) {
-                tocRoot.style.left = '';
-                tocRoot.style.top = '';
-                tocRoot.style.right = '';
-                tocRoot.style.bottom = '';
-            }
-        });
+        observer.observe(document.body, {attributes: true, attributeFilter: ['data-reading-width']});
     }
 
     if (document.readyState === 'loading') {

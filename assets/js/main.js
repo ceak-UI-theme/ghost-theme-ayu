@@ -10,6 +10,7 @@ function bootstrapAyuTheme() {
     themeToggle();
     syncStickyHeaderOffset();
     postReadingProgress();
+    readingWidthToggle();
     renderAyuPagination();
     renderPrimaryCategories();
     renderSecondaryTags();
