@@ -56,6 +56,26 @@ function getJsFiles(version) {
         src(`node_modules/@tryghost/shared-theme-assets/assets/js/${version}/main.js`),
     ];
 
+    if (fs.existsSync('node_modules/prismjs/components/prism-core.min.js')) {
+        jsFiles.push(src([
+            'node_modules/prismjs/components/prism-core.min.js',
+            'node_modules/prismjs/components/prism-markup.min.js',
+            'node_modules/prismjs/components/prism-clike.min.js',
+            'node_modules/prismjs/components/prism-css.min.js',
+            'node_modules/prismjs/components/prism-javascript.min.js',
+            'node_modules/prismjs/components/prism-typescript.min.js',
+            'node_modules/prismjs/components/prism-bash.min.js',
+            'node_modules/prismjs/components/prism-json.min.js',
+            'node_modules/prismjs/components/prism-yaml.min.js',
+            'node_modules/prismjs/components/prism-java.min.js',
+            'node_modules/prismjs/components/prism-python.min.js',
+            'node_modules/prismjs/components/prism-sql.min.js',
+            'node_modules/prismjs/components/prism-markdown.min.js',
+            'node_modules/prismjs/components/prism-diff.min.js',
+            'node_modules/prismjs/components/prism-docker.min.js'
+        ]));
+    }
+
     if (fs.existsSync(`assets/js/lib`)) {
         jsFiles.push(src(`assets/js/lib/*.js`));
     }

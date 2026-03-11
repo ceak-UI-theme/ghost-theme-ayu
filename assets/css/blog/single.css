@@ -287,6 +287,72 @@ body.post-template[data-reading-width="expanded"] .post-content {
     background: transparent !important;
 }
 
+.post-content .code-block .token.comment,
+.post-content .code-block .token.prolog,
+.post-content .code-block .token.doctype,
+.post-content .code-block .token.cdata {
+    color: #768390 !important;
+}
+
+.post-content .code-block .token.punctuation {
+    color: #9aa5b1 !important;
+}
+
+.post-content .code-block .token.property,
+.post-content .code-block .token.tag,
+.post-content .code-block .token.constant,
+.post-content .code-block .token.symbol,
+.post-content .code-block .token.deleted {
+    color: #f07178 !important;
+}
+
+.post-content .code-block .token.boolean,
+.post-content .code-block .token.number {
+    color: #d4bfff !important;
+}
+
+.post-content .code-block .token.selector,
+.post-content .code-block .token.attr-name,
+.post-content .code-block .token.string,
+.post-content .code-block .token.char,
+.post-content .code-block .token.builtin,
+.post-content .code-block .token.inserted {
+    color: #b8cc52 !important;
+}
+
+.post-content .code-block .token.operator,
+.post-content .code-block .token.entity,
+.post-content .code-block .token.url,
+.post-content .code-block .language-css .token.string,
+.post-content .code-block .style .token.string,
+.post-content .code-block .token.variable {
+    color: #59c2ff !important;
+}
+
+.post-content .code-block .token.atrule,
+.post-content .code-block .token.attr-value,
+.post-content .code-block .token.keyword {
+    color: #ffb454 !important;
+}
+
+.post-content .code-block .token.function,
+.post-content .code-block .token.class-name {
+    color: #ffd580 !important;
+}
+
+.post-content .code-block .token.regex,
+.post-content .code-block .token.important {
+    color: #95e6cb !important;
+}
+
+.post-content .code-block .token.inserted {
+    background: rgba(149, 230, 203, 0.14) !important;
+}
+
+.post-content .code-block .token.deleted {
+    background: rgba(240, 113, 120, 0.16) !important;
+}
+
 .post-content .code-block a,
 .post-content .code-block a:hover,
 .post-content .code-block a:focus {
