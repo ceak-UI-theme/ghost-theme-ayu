@@ -20,3 +20,38 @@
     margin-bottom: 16px;
     font-size: 1.3rem;
 }
+
+.post-content h2,
+.post-content h3 {
+    position: relative;
+    scroll-margin-top: calc(var(--gh-head-height, 64px) + 10px);
+}
+
+.post-content .heading-anchor {
+    position: absolute;
+    left: -1em;
+    top: 0;
+    color: var(--text-muted);
+    opacity: 0;
+    text-decoration: none;
+    transition: opacity 0.12s ease;
+}
+
+.post-content h2:hover .heading-anchor,
+.post-content h3:hover .heading-anchor,
+.post-content h2:focus-within .heading-anchor,
+.post-content h3:focus-within .heading-anchor {
+    opacity: 1;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .post-content .heading-anchor {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .post-content .heading-anchor {
+        display: none;
+    }
+}

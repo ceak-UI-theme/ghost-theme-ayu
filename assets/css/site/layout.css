@@ -4,6 +4,10 @@
     min-height: 100vh;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .site-content {
     flex-grow: 1;
     padding: 80px 0 40px;

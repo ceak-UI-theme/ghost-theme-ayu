@@ -210,3 +210,45 @@ function postReadingProgress() {
     window.addEventListener('load', scheduleRender);
     scheduleRender();
 }
+
+function syncStickyHeaderOffset() {
+    'use strict';
+
+    var header = document.getElementById('gh-head');
+    if (!header) {
+        return;
+    }
+
+    var root = document.documentElement;
+    var ticking = false;
+
+    function applyOffset() {
+        var headerHeight = header.offsetHeight;
+        root.style.setProperty('--gh-head-height', String(headerHeight) + 'px');
+    }
+
+    function scheduleOffset() {
+        if (ticking) {
+            return;
+        }
+
+        ticking = true;
+        window.requestAnimationFrame(function () {
+            applyOffset();
+            ticking = false;
+        });
+    }
+
+    window.addEventListener('resize', scheduleOffset);
+    window.addEventListener('orientationchange', scheduleOffset);
+    window.addEventListener('load', scheduleOffset);
+
+    var burger = document.querySelector('.gh-burger');
+    if (burger) {
+        burger.addEventListener('click', function () {
+            window.requestAnimationFrame(scheduleOffset);
+        });
+    }
+
+    scheduleOffset();
+}
