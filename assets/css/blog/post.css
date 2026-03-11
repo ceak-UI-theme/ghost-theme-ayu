@@ -60,6 +60,10 @@
     margin-left: 8px;
 }
 
+.post-reading-time {
+    text-transform: none;
+}
+
 .post-meta-tags .post-tag {
     color: var(--brand-color);
 }

@@ -1,8 +1,10 @@
 <div class="post-meta">
     <span class="post-meta-item post-meta-date">
         <time datetime="{{date format="YYYY-MM-DD"}}">
-            {{date published_at format="DD MMM YYYY"}}
+            {{date format="YYYY.MM.DD"}}
         </time>
+        <span aria-hidden="true"> · </span>
+        <span class="post-reading-time">{{reading_time minute="1 min read" minutes="% min read"}}</span>
     </span>
     {{#if tags}}
         <span class="post-meta-item post-meta-tags">
