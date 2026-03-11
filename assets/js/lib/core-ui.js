@@ -132,3 +132,81 @@ function themeToggle() {
         });
     });
 }
+
+function postReadingProgress() {
+    'use strict';
+
+    if (!document.body || !document.body.classList.contains('post-template')) {
+        return;
+    }
+
+    var header = document.getElementById('gh-head');
+    var progressRoot = header ? header.querySelector('.gh-reading-progress') : null;
+    var progressBar = progressRoot ? progressRoot.querySelector('.gh-reading-progress-bar') : null;
+    var content = document.querySelector('.post-content');
+
+    if (!header || !progressRoot || !progressBar || !content) {
+        return;
+    }
+
+    var ticking = false;
+    var minDistance = 320;
+
+    function clamp(value, min, max) {
+        if (value < min) {
+            return min;
+        }
+        if (value > max) {
+            return max;
+        }
+        return value;
+    }
+
+    function computeMetrics() {
+        var contentRect = content.getBoundingClientRect();
+        var contentTop = contentRect.top + window.scrollY;
+        var contentHeight = content.offsetHeight;
+        var headerHeight = header.offsetHeight;
+        var viewportHeight = window.innerHeight;
+        var start = contentTop - headerHeight;
+        var end = contentTop + contentHeight - (viewportHeight / 2);
+        var distance = end - start;
+
+        return {
+            start: start,
+            end: end,
+            distance: distance
+        };
+    }
+
+    function render() {
+        var metrics = computeMetrics();
+        var shouldShow = metrics.end > metrics.start && metrics.distance >= minDistance;
+        progressRoot.classList.toggle('is-visible', shouldShow);
+
+        if (shouldShow) {
+            var ratio = (window.scrollY - metrics.start) / metrics.distance;
+            var progress = clamp(ratio, 0, 1);
+            progressBar.style.transform = 'scaleX(' + progress + ')';
+        } else {
+            progressBar.style.transform = 'scaleX(0)';
+        }
+    }
+
+    function scheduleRender() {
+        if (ticking) {
+            return;
+        }
+
+        ticking = true;
+        window.requestAnimationFrame(function () {
+            render();
+            ticking = false;
+        });
+    }
+
+    window.addEventListener('scroll', scheduleRender, {passive: true});
+    window.addEventListener('resize', scheduleRender);
+    window.addEventListener('load', scheduleRender);
+    scheduleRender();
+}

@@ -2,6 +2,42 @@
     font-weight: 500;
 }
 
+#gh-head {
+    position: sticky;
+    top: 0;
+    z-index: 70;
+}
+
+.gh-reading-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.gh-reading-progress.is-visible {
+    opacity: 1;
+}
+
+.is-head-open .gh-reading-progress {
+    opacity: 0;
+}
+
+.gh-reading-progress-bar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+}
+
 .gh-theme-toggle {
     background: transparent;
     border: 0;
@@ -17,6 +53,10 @@
 @media (max-width: 767px) {
     .gh-theme-toggle {
         font-size: 2rem;
+    }
+
+    .gh-reading-progress {
+        height: 2px;
     }
 }
 

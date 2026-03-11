@@ -8,6 +8,7 @@ function bootstrapAyuTheme() {
 
     cover();
     themeToggle();
+    postReadingProgress();
     renderAyuPagination();
     renderPrimaryCategories();
     renderSecondaryTags();
