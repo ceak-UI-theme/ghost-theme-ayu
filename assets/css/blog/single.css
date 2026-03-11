@@ -38,47 +38,68 @@
 
 .single .gh-content {
     font-size: 19px;
-    line-height: 1.75;
+    line-height: 1.78;
     letter-spacing: -0.01em;
 }
 
 .single .gh-content p {
-    margin-bottom: 1.6em;
+    margin-bottom: 1.55em;
 }
 
 .single .gh-content h2 {
-    margin-top: 2.5em;
-    margin-bottom: 0.8em;
+    margin-top: 2.6em;
+    margin-bottom: 0.75em;
+    font-size: 1.7em;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
 }
 
 .single .gh-content h3 {
-    margin-top: 2em;
-    margin-bottom: 0.6em;
+    margin-top: 2.1em;
+    margin-bottom: 0.65em;
+    font-size: 1.3em;
+    line-height: 1.4;
+}
+
+.single .gh-content h4 {
+    margin-top: 1.8em;
+    margin-bottom: 0.55em;
+    font-size: 1.08em;
+    line-height: 1.45;
 }
 
 .single .gh-content hr {
     margin: 3em 0;
-    opacity: 0.25;
+    opacity: 0.22;
 }
 
 .single .gh-content ul,
 .single .gh-content ol {
-    margin-bottom: 1.6em;
+    margin: 1.2em 0 1.6em;
+    padding-left: 1.4em;
+}
+
+.single .gh-content li + li {
+    margin-top: 0.45em;
 }
 
 .single .gh-content blockquote {
-    margin: 2em 0;
-    padding-left: 1.2em;
+    margin: 2.2em 0;
+    padding: 0.2em 0 0.2em 1.1em;
     border-left: 3px solid var(--ghost-accent-color);
-    opacity: 0.9;
+    opacity: 0.92;
+}
+
+.single .gh-content blockquote p:last-child {
+    margin-bottom: 0;
 }
 
 .single .gh-content > p:first-of-type {
     font-size: 1.12em;
+    line-height: 1.72;
 }
 
 .single .gh-content img {
-    margin: 40px 0 48px;
     border-radius: 10px;
     transition: transform 0.15s ease;
 }
@@ -88,14 +109,27 @@
 }
 
 .single .gh-content figure {
-    margin: 40px 0 48px;
+    margin: 2.4em 0 2.8em;
 }
 
 .single .gh-content figcaption {
-    margin-top: 10px;
-    font-size: 0.85em;
+    margin-top: 0.8em;
+    font-size: 0.84em;
+    line-height: 1.5;
     opacity: 0.7;
     text-align: center;
+}
+
+.single .gh-content strong {
+    font-weight: 650;
+}
+
+.single > .post-header {
+    margin-bottom: 44px;
+}
+
+.single > .post-header .post-meta {
+    margin-bottom: 14px;
 }
 
 .reading-width-toggle {
@@ -200,6 +234,39 @@ body.post-template[data-reading-width="wide"] .post-content {
 }
 
 @media (max-width: 767px) {
+    .single .gh-content {
+        font-size: 17px;
+        line-height: 1.74;
+    }
+
+    .single .gh-content h2 {
+        margin-top: 2.15em;
+        margin-bottom: 0.7em;
+        font-size: 1.5em;
+    }
+
+    .single .gh-content h3 {
+        margin-top: 1.85em;
+        margin-bottom: 0.6em;
+        font-size: 1.22em;
+    }
+
+    .single .gh-content h4 {
+        margin-top: 1.6em;
+    }
+
+    .single .gh-content > p:first-of-type {
+        font-size: 1.08em;
+    }
+
+    .single .gh-content figure {
+        margin: 2.1em 0 2.4em;
+    }
+
+    .single .gh-content figcaption {
+        font-size: 0.88em;
+    }
+
     .post-content .heading-anchor {
         display: none;
     }
@@ -211,6 +278,12 @@ body.post-template[data-reading-width="wide"] .post-content {
 
     .reading-width-toggle {
         display: none;
+    }
+}
+
+@media (max-width: 1100px) and (min-width: 768px) {
+    .single .gh-content {
+        font-size: 18px;
     }
 }
 
