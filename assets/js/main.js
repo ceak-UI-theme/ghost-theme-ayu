@@ -11,6 +11,7 @@ function bootstrapAyuTheme() {
     syncStickyHeaderOffset();
     postReadingProgress();
     readingWidthToggle();
+    enhancePostCodeBlocks(document);
     renderAyuPagination();
     renderPrimaryCategories();
     renderSecondaryTags();
