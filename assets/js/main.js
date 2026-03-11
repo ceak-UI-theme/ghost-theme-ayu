@@ -19,6 +19,7 @@ function bootstrapAyuTheme() {
     renderSearchPage();
     renderExplorePage();
     injectPromoSlots(document);
+    injectPostMidAd(document);
     normalizePostTaxonomyTags(document);
     normalizeTagHeaderName(document);
 }

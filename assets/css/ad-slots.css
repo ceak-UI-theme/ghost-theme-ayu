@@ -38,9 +38,17 @@
     display: block;
 }
 
+.post-content > .ayu-ad-slot--post-mid {
+    margin: 2.4em 0;
+}
+
 @media (max-width: 767px) {
     .post-ad-slot-wrap {
         margin: 14px 0;
+    }
+
+    .post-content > .ayu-ad-slot--post-mid {
+        margin: 1.8em 0;
     }
 
     .post-promo-wrapper {

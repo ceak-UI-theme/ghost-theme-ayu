@@ -186,3 +186,57 @@ function injectPromoSlots(root) {
         });
     });
 }
+
+function injectPostMidAd(root) {
+    'use strict';
+
+    var scope = root || document;
+    if (!scope || !scope.querySelector) {
+        return;
+    }
+
+    if (!document.body || !document.body.classList.contains('post-template')) {
+        return;
+    }
+
+    var content = scope.querySelector('.post-content');
+    if (!content) {
+        return;
+    }
+
+    if (content.querySelector('.ayu-ad-slot--post-mid')) {
+        return;
+    }
+
+    var contentTextLength = (content.textContent || '').length;
+    if (contentTextLength < 1200) {
+        return;
+    }
+
+    var paragraphs = Array.prototype.slice.call(content.querySelectorAll(':scope > p')).filter(function (paragraph) {
+        return !paragraph.closest('.kg-callout-card, .kg-bookmark-card, .kg-toggle-card');
+    });
+
+    if (paragraphs.length < 4) {
+        return;
+    }
+
+    var targetIndex = 1;
+    var secondLength = ((paragraphs[1] && paragraphs[1].textContent) || '').trim().length;
+    var thirdLength = ((paragraphs[2] && paragraphs[2].textContent) || '').trim().length;
+    if (secondLength > 0 && secondLength < 80 && thirdLength >= 80) {
+        targetIndex = 2;
+    }
+
+    var targetParagraph = paragraphs[targetIndex];
+    if (!targetParagraph || !targetParagraph.parentNode) {
+        return;
+    }
+
+    var adNode = createAdSlotElement('post-top');
+    adNode.classList.remove('ayu-ad-slot--post-top');
+    adNode.classList.add('ayu-ad-slot--post-mid');
+    adNode.setAttribute('data-ad-slot-rendered', 'post-mid');
+
+    targetParagraph.insertAdjacentElement('afterend', adNode);
+}
