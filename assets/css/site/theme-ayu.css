@@ -203,16 +203,9 @@ select:focus {
     opacity: 1;
 }
 
-/* Article readability first */
+/* Article colors only (post rhythm lives in blog/single.css) */
 .gh-content {
     color: var(--text-primary);
-    font-size: 19px;
-    line-height: 1.78;
-    letter-spacing: -0.01em;
-}
-
-.gh-content p {
-    margin-bottom: 1.55em;
 }
 
 .gh-content h1,
@@ -222,43 +215,6 @@ select:focus {
 .gh-content h5,
 .gh-content h6 {
     color: var(--text-strong);
-}
-
-.gh-content h2 {
-    margin-top: 2.6em;
-    margin-bottom: 0.75em;
-    font-size: 1.7em;
-    line-height: 1.3;
-    letter-spacing: -0.02em;
-}
-
-.gh-content h3 {
-    margin-top: 2.1em;
-    margin-bottom: 0.65em;
-    font-size: 1.3em;
-    line-height: 1.4;
-}
-
-.gh-content h4 {
-    margin-top: 1.8em;
-    margin-bottom: 0.55em;
-    font-size: 1.08em;
-    line-height: 1.45;
-}
-
-.gh-content hr {
-    margin: 3em 0;
-    opacity: 0.22;
-}
-
-.gh-content ul,
-.gh-content ol {
-    margin: 1.2em 0 1.6em;
-    padding-left: 1.4em;
-}
-
-.gh-content li + li {
-    margin-top: 0.45em;
 }
 
 .gh-content a {
@@ -288,45 +244,6 @@ code[class*="language-"] {
     color: var(--text-primary);
 }
 
-.gh-content blockquote {
-    margin: 2.2em 0;
-    padding: 0.2em 0 0.2em 1.1em;
-    border-left: 3px solid var(--ghost-accent-color);
-    opacity: 0.92;
-}
-
-.gh-content > p:first-of-type {
-    font-size: 1.12em;
-    line-height: 1.72;
-}
-
-.gh-content figure {
-    width: 100%;
-    margin: 44px 0 52px;
-}
-
-.gh-content figure + p,
-.gh-content p + figure {
-    margin-top: 0;
-}
-
-.gh-content figure img,
-.gh-content > img {
-    display: block;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.02);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
-    transition: transform 0.15s ease;
-}
-
-.gh-content figure img:hover,
-.gh-content > img:hover {
-    transform: translateY(-1px);
-}
-
 .gh-content table,
 .gh-content table:not(.gist table) {
     background: var(--bg-surface-1);
@@ -346,20 +263,7 @@ code[class*="language-"] {
 
 figcaption,
 .gh-content figcaption {
-    max-width: 92%;
-    margin-top: 12px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 8px;
-    font-size: 0.84em;
-    line-height: 1.55;
-    opacity: 0.7;
-    text-align: center;
     color: var(--text-muted);
-}
-
-.gh-content strong {
-    font-weight: 650;
 }
 
 /* Metadata and chips */
