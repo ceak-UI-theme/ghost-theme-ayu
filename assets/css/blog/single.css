@@ -38,34 +38,45 @@
 
 .single .gh-content {
     font-size: 19px;
-    line-height: 1.78;
-    letter-spacing: -0.01em;
+    line-height: 1.8;
+    letter-spacing: -0.004em;
+}
+
+body.post-template .post-content {
+    --content-width: min(690px, calc(100vw - (var(--gap) * 2)));
 }
 
 .single .gh-content p {
-    margin-bottom: 1.55em;
+    margin-bottom: 1.5em;
+    letter-spacing: 0;
+}
+
+.single .gh-content p + p {
+    margin-top: 0;
 }
 
 .single .gh-content h2 {
-    margin-top: 2.6em;
-    margin-bottom: 0.75em;
-    font-size: 1.7em;
-    line-height: 1.3;
-    letter-spacing: -0.02em;
+    margin-top: 2.85em;
+    margin-bottom: 0.82em;
+    font-size: 1.66em;
+    line-height: 1.34;
+    letter-spacing: -0.012em;
 }
 
 .single .gh-content h3 {
-    margin-top: 2.1em;
-    margin-bottom: 0.65em;
-    font-size: 1.3em;
-    line-height: 1.4;
+    margin-top: 2.25em;
+    margin-bottom: 0.72em;
+    font-size: 1.33em;
+    line-height: 1.42;
+    letter-spacing: -0.006em;
 }
 
 .single .gh-content h4 {
-    margin-top: 1.8em;
-    margin-bottom: 0.55em;
-    font-size: 1.08em;
-    line-height: 1.45;
+    margin-top: 1.95em;
+    margin-bottom: 0.62em;
+    font-size: 1.12em;
+    line-height: 1.46;
+    letter-spacing: -0.002em;
 }
 
 .single .gh-content hr {
@@ -75,19 +86,26 @@
 
 .single .gh-content ul,
 .single .gh-content ol {
-    margin: 1.2em 0 1.6em;
+    margin: 1.25em 0 1.75em;
     padding-left: 1.4em;
 }
 
 .single .gh-content li + li {
-    margin-top: 0.45em;
+    margin-top: 0.52em;
+}
+
+.single .gh-content li {
+    letter-spacing: 0;
 }
 
 .single .gh-content blockquote {
-    margin: 2.2em 0;
-    padding: 0.2em 0 0.2em 1.1em;
+    margin: 2.45em 0;
+    padding: 0.5em 0 0.5em 1.25em;
     border-left: 3px solid var(--ghost-accent-color);
-    opacity: 0.92;
+    color: var(--text-secondary);
+    background: color-mix(in srgb, var(--bg-surface-1) 72%, transparent);
+    border-radius: 0 10px 10px 0;
+    letter-spacing: 0;
 }
 
 .single .gh-content blockquote p:last-child {
@@ -95,7 +113,7 @@
 }
 
 .single .gh-content > p:first-of-type {
-    font-size: 1.12em;
+    font-size: 1.1em;
     line-height: 1.72;
 }
 
@@ -128,18 +146,32 @@
 
 .single .gh-content figcaption {
     max-width: 92%;
-    margin-top: 12px;
+    margin-top: 13px;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 8px;
-    font-size: 0.84em;
-    line-height: 1.55;
-    opacity: 0.7;
+    padding: 0 10px;
+    font-size: 0.8em;
+    line-height: 1.62;
+    color: var(--text-muted);
+    opacity: 0.86;
+    letter-spacing: 0.004em;
     text-align: center;
 }
 
 .single .gh-content strong {
-    font-weight: 650;
+    font-weight: 620;
+    color: var(--text-strong);
+}
+
+.single .gh-content a {
+    text-decoration-thickness: 0.07em;
+    text-underline-offset: 0.12em;
+}
+
+.single > .post-header .post-meta,
+.single > .post-header .post-meta .post-meta-item,
+.single > .post-header .post-meta .post-reading-time {
+    letter-spacing: 0.02em;
 }
 
 .single > .post-header {
@@ -200,7 +232,7 @@
 }
 
 body.post-template[data-reading-width="wide"] .post-content {
-    --content-width: min(920px, calc(100vw - (var(--gap) * 2)));
+    --content-width: min(860px, calc(100vw - (var(--gap) * 2)));
 }
 
 @media (max-width: 1100px) and (min-width: 768px) {
@@ -254,27 +286,47 @@ body.post-template[data-reading-width="wide"] .post-content {
 @media (max-width: 767px) {
     .single .gh-content {
         font-size: 17px;
-        line-height: 1.74;
+        line-height: 1.78;
+        letter-spacing: 0;
     }
 
     .single .gh-content h2 {
-        margin-top: 2.15em;
-        margin-bottom: 0.7em;
-        font-size: 1.5em;
+        margin-top: 2.35em;
+        margin-bottom: 0.72em;
+        font-size: 1.45em;
     }
 
     .single .gh-content h3 {
-        margin-top: 1.85em;
-        margin-bottom: 0.6em;
-        font-size: 1.22em;
+        margin-top: 1.95em;
+        margin-bottom: 0.62em;
+        font-size: 1.2em;
     }
 
     .single .gh-content h4 {
-        margin-top: 1.6em;
+        margin-top: 1.72em;
+        margin-bottom: 0.58em;
     }
 
     .single .gh-content > p:first-of-type {
-        font-size: 1.08em;
+        font-size: 1.06em;
+    }
+
+    .single .gh-content p {
+        margin-bottom: 1.42em;
+    }
+
+    .single .gh-content ul,
+    .single .gh-content ol {
+        margin: 1.15em 0 1.55em;
+    }
+
+    .single .gh-content li + li {
+        margin-top: 0.44em;
+    }
+
+    .single .gh-content blockquote {
+        margin: 2.05em 0;
+        padding: 0.46em 0 0.46em 1.05em;
     }
 
     .single .gh-content figure {
@@ -282,8 +334,9 @@ body.post-template[data-reading-width="wide"] .post-content {
     }
 
     .single .gh-content figcaption {
-        font-size: 0.8em;
-        padding: 0 4px;
+        font-size: 0.76em;
+        line-height: 1.58;
+        padding: 0 6px;
     }
 
     .single .gh-content figure img,
