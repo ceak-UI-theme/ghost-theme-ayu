@@ -60,6 +60,20 @@ function renderExplorePage() {
         return String(count) + ' post' + (count === 1 ? '' : 's');
     }
 
+    function resolveTagName(tag) {
+        if (tag && typeof tag.name === 'string' && tag.name.trim()) {
+            var rawName = tag.name.trim();
+            var lowerName = rawName.toLowerCase();
+            if (lowerName.indexOf(AYU_TAG_PREFIX.SERIES) === -1 && lowerName.indexOf(AYU_TAG_PREFIX.CATEGORY) === -1) {
+                return rawName;
+            }
+
+            return AYU_TAG_UTILS.getDisplayName({ slug: tag && tag.slug ? tag.slug : '' }, tag && tag.slug ? tag.slug : '');
+        }
+
+        return AYU_TAG_UTILS.getDisplayName(tag, tag && tag.slug ? tag.slug : '');
+    }
+
     function formatDate(value) {
         if (!value) {
             return '';
@@ -161,7 +175,7 @@ function renderExplorePage() {
             }).map(function (tag) {
                 return {
                     slug: tag.slug,
-                    name: AYU_TAG_UTILS.getDisplayName(tag, tag.slug),
+                    name: resolveTagName(tag),
                     description: tag.description || '',
                     image: tag.feature_image || '',
                     count: tag.count && typeof tag.count.posts === 'number' ? tag.count.posts : 0
@@ -176,7 +190,7 @@ function renderExplorePage() {
                 return {
                     slug: tag.slug,
                     seriesSlug: AYU_TAG_UTILS.extractSeriesSlug(tag),
-                    name: AYU_TAG_UTILS.getDisplayName(tag, tag.slug),
+                    name: resolveTagName(tag),
                     description: tag.description || '',
                     image: tag.feature_image || '',
                     count: tag.count && typeof tag.count.posts === 'number' ? tag.count.posts : 0
@@ -190,7 +204,7 @@ function renderExplorePage() {
             }).map(function (tag) {
                 return {
                     slug: tag.slug,
-                    name: AYU_TAG_UTILS.getDisplayName(tag, tag.slug),
+                    name: resolveTagName(tag),
                     image: tag.feature_image || '',
                     count: tag.count && typeof tag.count.posts === 'number' ? tag.count.posts : 0
                 };

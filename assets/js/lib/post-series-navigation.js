@@ -78,7 +78,17 @@ function renderPostSeriesNavigation() {
     }
 
     function displaySeriesName(tag) {
-        return AYU_TAG_UTILS.getDisplayName(tag, seriesSlug);
+        if (tag && typeof tag.name === 'string' && tag.name.trim()) {
+            var rawName = tag.name.trim();
+            var lowerName = rawName.toLowerCase();
+            if (lowerName.indexOf(AYU_TAG_PREFIX.SERIES) === -1 && lowerName.indexOf(AYU_TAG_PREFIX.CATEGORY) === -1) {
+                return rawName;
+            }
+
+            return AYU_TAG_UTILS.getDisplayName({ slug: seriesTagSlug }, seriesTagSlug);
+        }
+
+        return AYU_TAG_UTILS.getDisplayName(tag, seriesTagSlug);
     }
 
     function postUrl(post) {
