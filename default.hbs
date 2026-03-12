@@ -21,6 +21,10 @@
     </script>
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">
 
+    {{#if @custom.adsense_client}}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{@custom.adsense_client}}" crossorigin="anonymous"></script>
+    {{/if}}
+
     {{ghost_head}}
     {{{block "head"}}}
 </head>
@@ -147,6 +151,14 @@
 </div>
 
 <script id="ayu-content-key" data-key="{{@site.content_api_key}}"></script>
+<script
+    id="ayu-ad-config"
+    type="application/json"
+    data-adsense-client="{{@custom.adsense_client}}"
+    data-ad-slot-list-inline="{{@custom.ad_slot_list_inline}}"
+    data-ad-slot-post-mid="{{@custom.ad_slot_post_mid}}"
+    data-ad-slot-post-bottom="{{@custom.ad_slot_post_bottom}}"
+></script>
 <script src="{{asset "built/main.min.js"}}"></script>
 
 {{{block "scripts"}}}

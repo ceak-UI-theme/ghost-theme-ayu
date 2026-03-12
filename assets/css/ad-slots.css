@@ -26,6 +26,11 @@
     display: block;
 }
 
+.ayu-ad-slot .adsbygoogle {
+    display: block;
+    width: 100%;
+}
+
 .post-feed .ayu-ad-slot--list-inline:hover {
     transform: none;
 }

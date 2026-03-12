@@ -46,6 +46,30 @@
         },
         "card_assets": true,
         "custom": {
+            "adsense_client": {
+                "type": "text",
+                "group": "AdSense",
+                "title": "AdSense Client ID",
+                "description": "Publisher ID (e.g. ca-pub-xxxxxxxxxxxxxxxx)"
+            },
+            "ad_slot_list_inline": {
+                "type": "text",
+                "group": "AdSense",
+                "title": "List Inline Ad Slot ID",
+                "description": "Slot ID for list/feed inline ads"
+            },
+            "ad_slot_post_mid": {
+                "type": "text",
+                "group": "AdSense",
+                "title": "Post Mid Ad Slot ID",
+                "description": "Slot ID for mid-content post ads"
+            },
+            "ad_slot_post_bottom": {
+                "type": "text",
+                "group": "AdSense",
+                "title": "Post Bottom Ad Slot ID",
+                "description": "Slot ID for bottom-of-post ads"
+            },
             "navigation_layout": {
                 "type": "select",
                 "options": [

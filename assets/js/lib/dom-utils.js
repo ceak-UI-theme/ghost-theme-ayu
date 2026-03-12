@@ -19,6 +19,10 @@ var AYU_USER_MESSAGES = {
     SEARCH_UNAVAILABLE: 'Search is currently unavailable. Please try again later.'
 };
 
+var AYU_ADSENSE_LAYOUT_KEYS = {
+    LIST_INLINE: '-fc+5u+6g-jf+cg'
+};
+
 function buildLoadingStateHtml(message) {
     'use strict';
 
@@ -62,27 +66,81 @@ function logAyuWarning(message, error) {
     console.warn('[Ayu Theme] ' + String(message));
 }
 
+function getAyuAdConfig() {
+    'use strict';
+
+    if (window.__ayuAdConfig) {
+        return window.__ayuAdConfig;
+    }
+
+    var configEl = document.getElementById('ayu-ad-config');
+    var config = {
+        adsenseClient: '',
+        slots: {
+            'list-inline': '',
+            'post-mid': '',
+            'post-bottom': ''
+        }
+    };
+
+    if (configEl) {
+        config.adsenseClient = (configEl.getAttribute('data-adsense-client') || '').trim();
+        config.slots['list-inline'] = (configEl.getAttribute('data-ad-slot-list-inline') || '').trim();
+        config.slots['post-mid'] = (configEl.getAttribute('data-ad-slot-post-mid') || '').trim();
+        config.slots['post-bottom'] = (configEl.getAttribute('data-ad-slot-post-bottom') || '').trim();
+    }
+
+    config.enabled = Boolean(config.adsenseClient);
+    window.__ayuAdConfig = config;
+
+    return config;
+}
+
+function canRenderAdSlot(slotType) {
+    'use strict';
+
+    var config = getAyuAdConfig();
+    return Boolean(config.enabled && config.slots[slotType]);
+}
+
+function initializeAdsByGoogle(scope) {
+    'use strict';
+
+    var root = scope && scope.nodeType === 1 ? scope : document;
+    if (!root || !root.querySelectorAll) {
+        return;
+    }
+
+    var blocks = Array.prototype.slice.call(root.querySelectorAll('ins.adsbygoogle[data-ayu-ad-ready="false"]'));
+    if (!blocks.length) {
+        return;
+    }
+
+    blocks.forEach(function (block) {
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            block.setAttribute('data-ayu-ad-ready', 'true');
+        } catch (error) {
+            logAyuWarning('AdSense initialization failed', error);
+        }
+    });
+}
+
 function getAdSlotConfig(slotType) {
     'use strict';
 
     var configs = {
         'list-inline': {
             wrapperTag: 'article',
-            wrapperClass: 'post post-promo ayu-ad-slot ayu-ad-slot--list-inline',
-            label: 'Promo',
-            copy: 'This is a promo slot.'
+            wrapperClass: 'post post-promo ayu-ad-slot ayu-ad-slot--list-inline'
         },
-        'post-top': {
+        'post-mid': {
             wrapperTag: 'aside',
-            wrapperClass: 'post-ad-slot ayu-ad-slot ayu-ad-slot--post-top',
-            label: 'Sponsored',
-            copy: 'Reserved area for post top advertisement.'
+            wrapperClass: 'post-ad-slot ayu-ad-slot ayu-ad-slot--post-mid'
         },
         'post-bottom': {
             wrapperTag: 'aside',
-            wrapperClass: 'post-ad-slot ayu-ad-slot ayu-ad-slot--post-bottom',
-            label: 'Sponsored',
-            copy: 'Reserved area for post bottom advertisement.'
+            wrapperClass: 'post-ad-slot ayu-ad-slot ayu-ad-slot--post-bottom'
         }
     };
 
@@ -92,22 +150,33 @@ function getAdSlotConfig(slotType) {
 function buildAdSlotInnerHtml(slotType) {
     'use strict';
 
-    var config = getAdSlotConfig(slotType);
+    var adConfig = getAyuAdConfig();
+    var slotId = adConfig.slots[slotType] || '';
+    var attributes = [
+        ' class="adsbygoogle"',
+        ' data-ad-client="' + adConfig.adsenseClient + '"',
+        ' data-ad-slot="' + slotId + '"',
+        ' data-ad-format="fluid"',
+        ' data-ayu-ad-ready="false"'
+    ];
 
-    return [
-        '<div class="post-wrapper post-promo-wrapper">',
-        '<div class="post-promo-label">',
-        config.label,
-        '</div>',
-        '<p class="post-promo-copy">',
-        config.copy,
-        '</p>',
-        '</div>'
-    ].join('');
+    if (slotType === 'list-inline') {
+        attributes.push(' style="display:block"');
+        attributes.push(' data-ad-layout-key="' + AYU_ADSENSE_LAYOUT_KEYS.LIST_INLINE + '"');
+    } else {
+        attributes.push(' style="display:block; text-align:center;"');
+        attributes.push(' data-ad-layout="in-article"');
+    }
+
+    return '<ins' + attributes.join('') + '></ins>';
 }
 
 function createAdSlotElement(slotType) {
     'use strict';
+
+    if (!canRenderAdSlot(slotType)) {
+        return null;
+    }
 
     var config = getAdSlotConfig(slotType);
     var element = document.createElement(config.wrapperTag);
@@ -131,7 +200,16 @@ function renderAdSlots(root) {
     var slots = Array.prototype.slice.call(scope.querySelectorAll('.js-ad-slot[data-ad-slot]'));
     slots.forEach(function (slot) {
         var slotType = slot.getAttribute('data-ad-slot');
-        if (!slotType || slot.getAttribute('data-ad-slot-rendered')) {
+        if (!slotType) {
+            return;
+        }
+
+        if (!canRenderAdSlot(slotType)) {
+            slot.remove();
+            return;
+        }
+
+        if (slot.getAttribute('data-ad-slot-rendered')) {
             return;
         }
 
@@ -140,6 +218,7 @@ function renderAdSlots(root) {
         slot.setAttribute('aria-label', 'Advertisement');
         slot.setAttribute('data-ad-slot-rendered', slotType);
         slot.innerHTML = buildAdSlotInnerHtml(slotType);
+        initializeAdsByGoogle(slot);
     });
 }
 
@@ -171,6 +250,10 @@ function injectPromoSlots(root) {
             }
         });
 
+        if (!canRenderAdSlot('list-inline')) {
+            return;
+        }
+
         var posts = Array.prototype.slice.call(feed.children).filter(function (el) {
             return el.classList && el.classList.contains('post') && !el.classList.contains('ayu-ad-slot--list-inline');
         });
@@ -182,7 +265,11 @@ function injectPromoSlots(root) {
             }
 
             var promoNode = createAdSlotElement('list-inline');
+            if (!promoNode) {
+                return;
+            }
             postEl.insertAdjacentElement('afterend', promoNode);
+            initializeAdsByGoogle(promoNode);
         });
     });
 }
@@ -196,6 +283,10 @@ function injectPostMidAd(root) {
     }
 
     if (!document.body || !document.body.classList.contains('post-template')) {
+        return;
+    }
+
+    if (!canRenderAdSlot('post-mid')) {
         return;
     }
 
@@ -233,10 +324,11 @@ function injectPostMidAd(root) {
         return;
     }
 
-    var adNode = createAdSlotElement('post-top');
-    adNode.classList.remove('ayu-ad-slot--post-top');
-    adNode.classList.add('ayu-ad-slot--post-mid');
-    adNode.setAttribute('data-ad-slot-rendered', 'post-mid');
+    var adNode = createAdSlotElement('post-mid');
+    if (!adNode) {
+        return;
+    }
 
     targetParagraph.insertAdjacentElement('afterend', adNode);
+    initializeAdsByGoogle(adNode);
 }

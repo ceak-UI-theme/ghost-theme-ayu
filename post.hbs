@@ -36,14 +36,14 @@
             {{content}}
         </div>
 
-        <div class="gh-canvas post-ad-slot-wrap post-ad-slot-wrap--bottom">
-            <aside class="post-ad-slot js-ad-slot ayu-ad-slot ayu-ad-slot--post-bottom" data-ad-slot="post-bottom">
-                <div class="post-wrapper post-promo-wrapper">
-                    <div class="post-promo-label">Sponsored</div>
-                    <p class="post-promo-copy">Reserved area for post bottom advertisement.</p>
+        {{#if @custom.adsense_client}}
+            {{#if @custom.ad_slot_post_bottom}}
+                <div class="gh-canvas post-ad-slot-wrap post-ad-slot-wrap--bottom">
+                    <aside class="post-ad-slot js-ad-slot ayu-ad-slot ayu-ad-slot--post-bottom" data-ad-slot="post-bottom">
+                    </aside>
                 </div>
-            </aside>
-        </div>
+            {{/if}}
+        {{/if}}
 
         <aside class="post-toc" aria-label="On this page" hidden></aside>
 

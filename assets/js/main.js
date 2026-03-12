@@ -22,6 +22,7 @@ function bootstrapAyuTheme() {
     renderExplorePage();
     injectPromoSlots(document);
     injectPostMidAd(document);
+    renderAdSlots(document);
     normalizePostTaxonomyTags(document);
     normalizeTagHeaderName(document);
 }
