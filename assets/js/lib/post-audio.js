@@ -308,7 +308,7 @@ function bindPostAudioCaptions(playerRoot, subtitlesUrl) {
                     transcriptToggle.setAttribute('aria-label', 'Hide transcript');
                     transcriptPanel.hidden = false;
                 }
-                mediaEl.currentTime = Math.max(cues[cueIndex].start, 0);
+                mediaEl.currentTime = Math.max(cues[cueIndex].start + 0.01, 0);
                 mediaEl.dispatchEvent(new Event('seeked'));
             });
         }
@@ -330,7 +330,7 @@ function bindPostAudioCaptions(playerRoot, subtitlesUrl) {
             var i;
 
             for (i = 0; i < cues.length; i += 1) {
-                if (currentTime >= cues[i].start && currentTime <= cues[i].end) {
+                if (currentTime >= cues[i].start && (i === cues.length - 1 ? currentTime <= cues[i].end : currentTime < cues[i].end)) {
                     activeCue = cues[i];
                     activeCueIndex = i;
                     break;
