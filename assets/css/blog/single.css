@@ -373,6 +373,72 @@ body.post-template .post-content {
     text-shadow: 0 0 0.01px currentColor;
 }
 
+@media (max-width: 767px) {
+    .post-audio {
+        margin-bottom: 20px;
+        max-width: calc(100vw - (var(--gap) * 2));
+    }
+
+    .post-audio-player-wrap {
+        padding: 10px 12px 12px;
+        border-radius: 16px;
+    }
+
+    .post-audio-player {
+        --audio-border-radius: 14px;
+    }
+
+    .post-audio-player .vds-audio-layout {
+        min-height: 60px;
+    }
+
+    .post-audio-player .vds-controls {
+        padding-inline: 6px;
+    }
+
+    .post-audio-player .vds-time-slider {
+        margin-inline: 6px;
+    }
+
+    .post-audio-captions {
+        margin-top: 10px;
+        padding: 9px 11px;
+        border-radius: 12px;
+        font-size: 1.35rem;
+        line-height: 1.5;
+        min-height: 42px;
+    }
+
+    .post-audio-transcript-shell {
+        margin-top: 10px;
+    }
+
+    .post-audio-transcript-toggle {
+        min-width: 32px;
+        width: 32px;
+        min-height: 32px;
+    }
+
+    .post-audio-transcript-toggle svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .post-audio-transcript {
+        margin-top: 10px;
+    }
+
+    .post-audio-transcript-body {
+        max-height: 160px;
+    }
+
+    .post-audio-transcript-line {
+        font-size: 1.35rem;
+        line-height: 1.65;
+        padding: 4px 2px;
+    }
+}
+
 .single > .post-header .post-meta,
 .single > .post-header .post-meta .post-meta-item,
 .single > .post-header .post-meta .post-reading-time {
