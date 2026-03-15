@@ -116,6 +116,7 @@
         "dev": "gulp",
         "test": "gscan .",
         "zip": "gulp zip",
+        "deploy:ghost": "python3 scripts/deploy_theme.py",
         "test:e2e": "playwright test"
     },
     "devDependencies": {

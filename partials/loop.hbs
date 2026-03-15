@@ -1,4 +1,4 @@
-<article class="{{post_class}}" data-id="{{comment_id}}">
+<article class="{{post_class}}" data-id="{{comment_id}}" data-slug="{{slug}}">
     <div class="post-media">
         <div class="u-placeholder square">
             <a href="{{url}}">
@@ -16,6 +16,7 @@
             <h2 class="post-title">
                 <a class="post-title-link" href="{{url}}">{{title}}</a>
             </h2>
+            <div class="post-badge-row" data-post-badge-row></div>
         </header>
         {{#if excerpt}}
             <div class="post-excerpt">

@@ -186,6 +186,193 @@ body.post-template .post-content {
     line-height: 1.45;
 }
 
+.post-audio {
+    display: block;
+    width: 100%;
+    max-width: min(710px, calc(100vw - (var(--gap) * 2)));
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 32px;
+}
+
+.post-audio-player-wrap {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 14px 16px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--bg-surface-2) 86%, transparent), var(--bg-surface-1)),
+        var(--bg-surface-1);
+    box-shadow: var(--shadow-soft);
+}
+
+.post-audio-player {
+    width: 100%;
+    --audio-border-radius: 16px;
+    --audio-border: 1px solid var(--border-default);
+    --audio-bg: color-mix(in srgb, var(--bg-surface-2) 88%, #0f1724 12%);
+    --audio-controls-color: var(--text-strong);
+    --audio-brand: var(--accent-primary);
+    --audio-play-button-bg: var(--accent-primary);
+    --audio-play-button-color: #10151f;
+    --audio-slider-track-bg: color-mix(in srgb, var(--border-strong) 58%, transparent);
+    --audio-slider-progress-bg: color-mix(in srgb, var(--text-strong) 22%, transparent);
+    --audio-focus-ring-color: color-mix(in srgb, var(--state-focus) 60%, transparent);
+    --media-tooltip-bg-color: var(--bg-page);
+    --media-tooltip-color: var(--text-strong);
+    --media-menu-bg: var(--bg-elevated);
+    --media-menu-border: 1px solid var(--border-default);
+    --media-menu-color: var(--text-primary);
+}
+
+.post-audio-player .vds-audio-layout {
+    width: 100%;
+    min-height: 68px;
+    filter: none;
+}
+
+.post-audio-player .vds-controls {
+    padding-inline: 10px;
+}
+
+.post-audio-player .vds-time-slider {
+    margin-inline: 10px;
+}
+
+.post-audio-player .vds-title {
+    color: var(--text-strong);
+}
+
+.post-audio-captions {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--bg-page) 35%, var(--bg-surface-1));
+    color: var(--text-strong);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.6;
+    min-height: 50px;
+    transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.post-audio-captions.is-idle,
+.post-audio-captions.is-empty {
+    color: var(--text-muted);
+}
+
+.post-audio-transcript {
+    margin-top: 14px;
+}
+
+.post-audio-transcript-shell {
+    margin-top: 14px;
+    text-align: center;
+}
+
+.post-audio-transcript-toggle {
+    background: color-mix(in srgb, var(--bg-surface-2) 86%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-default) 88%, transparent);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    min-width: 36px;
+    width: 36px;
+    min-height: 36px;
+    padding: 0;
+    transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+}
+
+.post-audio-transcript-toggle svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.18s ease;
+}
+
+.post-audio-transcript-toggle[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+}
+
+.post-audio-transcript-toggle:hover {
+    color: var(--text-strong);
+    border-color: var(--border-strong);
+    background: color-mix(in srgb, var(--bg-surface-2) 96%, transparent);
+    transform: translateY(-1px);
+}
+
+.post-audio-transcript-toggle:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+}
+
+.post-audio-transcript-body {
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 2px 0;
+    background: transparent;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--accent-primary) 22%, var(--border-default)) transparent;
+}
+
+.post-audio-transcript-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.post-audio-transcript-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.post-audio-transcript-body::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--accent-primary) 18%, var(--border-default));
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+}
+
+.post-audio-transcript-body::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--accent-primary) 28%, var(--border-default));
+    background-clip: padding-box;
+}
+
+.post-audio-transcript-line {
+    margin: 0;
+    color: color-mix(in srgb, var(--text-secondary) 82%, transparent);
+    font-size: 1.5rem;
+    line-height: 1.8;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 6px 2px;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
+    opacity: 0.46;
+}
+
+.post-audio-transcript-line + .post-audio-transcript-line {
+    margin-top: 2px;
+}
+
+.post-audio-transcript-line:hover {
+    background: transparent;
+    color: var(--text-primary);
+    opacity: 0.78;
+}
+
+.post-audio-transcript-line.is-active {
+    background: transparent;
+    color: var(--text-strong);
+    font-weight: 600;
+    transform: none;
+    opacity: 1;
+    text-shadow: 0 0 0.01px currentColor;
+}
+
 .single > .post-header .post-meta,
 .single > .post-header .post-meta .post-meta-item,
 .single > .post-header .post-meta .post-reading-time {

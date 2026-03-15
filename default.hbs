@@ -20,6 +20,9 @@
         }());
     </script>
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack@1.12.13/player/styles/base.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack@1.12.13/player/styles/default/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack@1.12.13/player/styles/default/layouts/audio.css">
 
     {{#if @custom.adsense_client}}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{@custom.adsense_client}}" crossorigin="anonymous"></script>
@@ -159,6 +162,7 @@
     data-ad-slot-post-mid="{{@custom.ad_slot_post_mid}}"
     data-ad-slot-post-bottom="{{@custom.ad_slot_post_bottom}}"
 ></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/vidstack@1.12.13/cdn/with-layouts/vidstack.js"></script>
 <script src="{{asset "built/main.min.js"}}"></script>
 
 {{{block "scripts"}}}

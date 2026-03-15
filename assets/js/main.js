@@ -25,6 +25,15 @@ function bootstrapAyuTheme() {
     renderAdSlots(document);
     normalizePostTaxonomyTags(document);
     normalizeTagHeaderName(document);
+    renderPostAudioPlayers(document);
+    renderPostAudioBadges(document);
+}
+
+function finalizeAyuAsyncRuntime() {
+    'use strict';
+
+    renderPostAudioPlayers(document);
+    renderPostAudioBadges(document);
 }
 
 if (document.readyState === 'loading') {
@@ -32,3 +41,6 @@ if (document.readyState === 'loading') {
 } else {
     bootstrapAyuTheme();
 }
+
+window.setTimeout(finalizeAyuAsyncRuntime, 0);
+window.addEventListener('load', finalizeAyuAsyncRuntime);
