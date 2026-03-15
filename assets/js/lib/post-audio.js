@@ -142,7 +142,7 @@ function renderPostAudioBadges(root) {
     }
 
     cards.forEach(function (card) {
-        var badgeRow = card.querySelector('[data-post-badge-row]');
+        var badgeRow = card.querySelector('.post-media [data-post-badge-row]');
         var slug = card.getAttribute('data-slug');
 
         if (!badgeRow || badgeRow.getAttribute('data-post-audio-ready') === 'true') {
@@ -156,7 +156,7 @@ function renderPostAudioBadges(root) {
                 return;
             }
 
-            badgeRow.innerHTML = '<span class="post-audio-badge" data-post-audio-badge>AUDIO</span>';
+            badgeRow.innerHTML = '<span class="post-audio-badge" data-post-audio-badge><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5.75 11.25a4.25 4.25 0 0 1 0-2.5M8.75 13.75a7.25 7.25 0 0 0 0-7.5M12.25 13.75a7.25 7.25 0 0 1 0-7.5M15.25 11.25a4.25 4.25 0 0 0 0-2.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/></svg><span>AUDIO</span></span>';
         });
     });
 }
