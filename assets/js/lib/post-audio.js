@@ -124,8 +124,199 @@ function renderPostAudioPlayers(root) {
             if (asset.hasSubtitles) {
                 bindPostAudioCaptions(playerRoot, asset.subtitlesUrl);
             }
+
+            bindFloatingAudioPlayer(playerRoot);
         });
     });
+}
+
+function bindFloatingAudioPlayer(playerRoot) {
+    'use strict';
+
+    if (!playerRoot || playerRoot.getAttribute('data-post-audio-floating-ready') === 'true') {
+        return;
+    }
+
+    var playerEl = playerRoot.querySelector('.post-audio-player');
+    var floatingRoot = document.querySelector('[data-post-audio-floating]');
+    var toggleButton = floatingRoot ? floatingRoot.querySelector('[data-post-audio-floating-toggle]') : null;
+    var toggleIcon = floatingRoot ? floatingRoot.querySelector('[data-post-audio-floating-toggle-icon]') : null;
+    var statusEl = floatingRoot ? floatingRoot.querySelector('[data-post-audio-floating-status]') : null;
+    var timeEl = floatingRoot ? floatingRoot.querySelector('[data-post-audio-floating-time]') : null;
+    var titleEl = floatingRoot ? floatingRoot.querySelector('[data-post-audio-floating-title]') : null;
+    var dismissButton = floatingRoot ? floatingRoot.querySelector('[data-post-audio-floating-dismiss]') : null;
+    var hasPlayed = false;
+    var isFloatingDismissed = false;
+    var isMainPlayerVisible = true;
+    var boundMediaEl = null;
+    var mediaEventHandlers = {};
+
+    if (!playerEl || !floatingRoot || !toggleButton || !toggleIcon || !statusEl || !timeEl || !dismissButton) {
+        return;
+    }
+
+    playerRoot.setAttribute('data-post-audio-floating-ready', 'true');
+
+    if (titleEl) {
+        titleEl.textContent = playerRoot.getAttribute('data-title') || document.title || 'Audio';
+    }
+
+    function getMediaEl() {
+        return playerRoot.querySelector('audio') || playerEl;
+    }
+
+    function formatTime(seconds) {
+        var safeSeconds = Math.max(0, Number(seconds) || 0);
+        var hours = Math.floor(safeSeconds / 3600);
+        var minutes = Math.floor((safeSeconds % 3600) / 60);
+        var remainingSeconds = Math.floor(safeSeconds % 60);
+
+        if (hours > 0) {
+            return String(hours) + ':' + String(minutes).padStart(2, '0') + ':' + String(remainingSeconds).padStart(2, '0');
+        }
+
+        return String(minutes).padStart(2, '0') + ':' + String(remainingSeconds).padStart(2, '0');
+    }
+
+    function isActivelyPlaying() {
+        var mediaEl = getMediaEl();
+        return !!mediaEl && !mediaEl.paused && !mediaEl.ended;
+    }
+
+    function setFloatingVisible(visible) {
+        floatingRoot.hidden = !visible;
+        floatingRoot.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    }
+
+    function syncFloatingContent() {
+        var mediaEl = getMediaEl();
+        var duration = mediaEl && Number.isFinite(mediaEl.duration) ? mediaEl.duration : 0;
+        var currentTime = mediaEl ? Number(mediaEl.currentTime) || 0 : 0;
+        var playing = isActivelyPlaying();
+
+        toggleIcon.textContent = playing ? '❚❚' : '▶';
+        toggleButton.setAttribute('aria-label', playing ? 'Pause audio' : 'Play audio');
+        statusEl.textContent = playing ? '듣는 중' : (hasPlayed ? '일시정지' : '준비됨');
+        timeEl.textContent = formatTime(currentTime) + ' / ' + formatTime(duration);
+    }
+
+    function updateFloatingVisibility() {
+        var mediaEl = getMediaEl();
+        var shouldShow = !!mediaEl && hasPlayed && !isMainPlayerVisible && !isFloatingDismissed;
+
+        if (mediaEl && mediaEl.ended) {
+            shouldShow = false;
+        }
+
+        syncFloatingContent();
+        setFloatingVisible(shouldShow);
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.target !== playerRoot) {
+                return;
+            }
+
+            isMainPlayerVisible = entry.isIntersecting && entry.intersectionRatio > 0;
+            updateFloatingVisibility();
+        });
+    }, {
+        threshold: [0, 0.01, 0.5]
+    });
+
+    observer.observe(playerRoot);
+
+    toggleButton.addEventListener('click', function () {
+        var mediaEl = getMediaEl();
+
+        if (!mediaEl) {
+            return;
+        }
+
+        if (mediaEl.paused || mediaEl.ended) {
+            if (mediaEl.ended) {
+                mediaEl.currentTime = 0;
+            }
+            mediaEl.play().catch(function () {
+                return undefined;
+            });
+            return;
+        }
+
+        mediaEl.pause();
+    });
+
+    dismissButton.addEventListener('click', function () {
+        var mediaEl = getMediaEl();
+
+        isFloatingDismissed = true;
+        setFloatingVisible(false);
+
+        if (mediaEl && !mediaEl.paused && !mediaEl.ended) {
+            mediaEl.pause();
+        }
+    });
+
+    function bindMediaEvents(mediaEl) {
+        if (!mediaEl || mediaEl === boundMediaEl) {
+            return;
+        }
+
+        if (boundMediaEl) {
+            Object.keys(mediaEventHandlers).forEach(function (eventName) {
+                boundMediaEl.removeEventListener(eventName, mediaEventHandlers[eventName]);
+            });
+        }
+
+        mediaEventHandlers = {};
+        boundMediaEl = mediaEl;
+
+        ['play', 'pause', 'timeupdate', 'loadedmetadata', 'durationchange', 'ended'].forEach(function (eventName) {
+            mediaEventHandlers[eventName] = function () {
+                if (eventName === 'play') {
+                    hasPlayed = true;
+                }
+
+                if (eventName === 'ended') {
+                    setFloatingVisible(false);
+                }
+
+                updateFloatingVisibility();
+            };
+
+            boundMediaEl.addEventListener(eventName, mediaEventHandlers[eventName]);
+        });
+    }
+
+    function ensureMediaEventsBound() {
+        var mediaEl = getMediaEl();
+
+        if (mediaEl && mediaEl.tagName && mediaEl.tagName.toLowerCase() === 'audio') {
+            bindMediaEvents(mediaEl);
+            return;
+        }
+
+        window.setTimeout(ensureMediaEventsBound, 250);
+    }
+
+    ensureMediaEventsBound();
+
+    ['play', 'pause', 'timeupdate', 'loadedmetadata', 'durationchange', 'ended'].forEach(function (eventName) {
+        playerEl.addEventListener(eventName, function () {
+            if (eventName === 'play') {
+                hasPlayed = true;
+            }
+
+            if (eventName === 'ended') {
+                setFloatingVisible(false);
+            }
+
+            updateFloatingVisibility();
+        });
+    });
+
+    syncFloatingContent();
 }
 
 function renderPostAudioBadges(root) {

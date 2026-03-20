@@ -33,6 +33,21 @@
         </header>
 
         <section class="gh-canvas post-audio" data-post-audio data-slug="{{slug}}" data-title="{{title}}" hidden></section>
+        <div class="post-audio-floating" data-post-audio-floating hidden aria-hidden="true">
+            <div class="post-audio-floating-inner">
+                <button class="post-audio-floating-toggle" type="button" data-post-audio-floating-toggle aria-label="Pause audio">
+                    <span class="post-audio-floating-toggle-icon" data-post-audio-floating-toggle-icon aria-hidden="true">▶</span>
+                </button>
+                <div class="post-audio-floating-copy">
+                    <div class="post-audio-floating-status-row">
+                        <span class="post-audio-floating-status" data-post-audio-floating-status>듣는 중</span>
+                        <span class="post-audio-floating-time" data-post-audio-floating-time>00:00 / 00:00</span>
+                    </div>
+                    <p class="post-audio-floating-title" data-post-audio-floating-title>{{title}}</p>
+                </div>
+                <button class="post-audio-floating-dismiss" type="button" data-post-audio-floating-dismiss aria-label="Hide mini audio player">✕</button>
+            </div>
+        </div>
 
         <div class="post-content gh-content gh-canvas">
             {{content}}
