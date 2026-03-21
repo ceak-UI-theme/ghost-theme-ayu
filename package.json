@@ -109,6 +109,28 @@
             },
             "rss_link": {
                 "type": "text"
+            },
+            "site_locale": {
+                "type": "select",
+                "default": "ko",
+                "options": [
+                    "ko",
+                    "en"
+                ]
+            },
+            "linked_blog_url": {
+                "type": "text"
+            },
+            "linked_blog_locale": {
+                "type": "select",
+                "default": "ko",
+                "options": [
+                    "ko",
+                    "en"
+                ]
+            },
+            "linked_blog_content_api_key": {
+                "type": "text"
             }
         }
     },
