@@ -29,6 +29,15 @@
         <header class="post-header gh-canvas">
             {{> "post-meta" show_width_toggle=true}}
             <h1 class="post-title">{{title}}</h1>
+            <div
+              class="post-language-switch"
+              data-post-language-switch
+              data-current-slug="{{slug}}"
+              data-site-locale="{{@custom.site_locale}}"
+              data-linked-blog-url="{{@custom.linked_blog_url}}"
+              data-linked-blog-locale="{{@custom.linked_blog_locale}}"
+              data-linked-blog-content-api-key="{{@custom.linked_blog_content_api_key}}">
+            </div>
             {{> "feature-image"}}
         </header>
 
