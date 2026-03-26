@@ -8,7 +8,6 @@ function renderSecondaryTags() {
 
     var featuredSection = document.getElementById('secondary-tags-featured');
     var grid = document.getElementById('secondary-tags-grid');
-
     if (!featuredSection || !grid) {
         return;
     }
@@ -129,7 +128,12 @@ function renderSecondaryTags() {
 
             featuredSection.hidden = false;
             featuredSection.innerHTML = featuredHtml(featured);
-            grid.innerHTML = rest.length ? rest.map(gridCardHtml).join('') : '<div class="term-empty">No additional topics.</div>';
+            if (!rest.length) {
+                grid.innerHTML = '<div class="term-empty">No additional topics.</div>';
+                return;
+            }
+
+            grid.innerHTML = rest.map(gridCardHtml).join('');
         })
         .catch(function (error) {
             logAyuWarning('Content hub load failed (secondary-tags)', error);
