@@ -321,35 +321,6 @@ function bindFloatingAudioPlayer(playerRoot) {
 
 function renderPostAudioBadges(root) {
     'use strict';
-
-    var scope = root || document;
-    if (!scope || !scope.querySelectorAll) {
-        return;
-    }
-
-    var cards = Array.prototype.slice.call(scope.querySelectorAll('.post-feed .post[data-slug]'));
-    if (!cards.length) {
-        return;
-    }
-
-    cards.forEach(function (card) {
-        var badgeRow = card.querySelector('.post-media [data-post-badge-row]');
-        var slug = card.getAttribute('data-slug');
-
-        if (!badgeRow || badgeRow.getAttribute('data-post-audio-ready') === 'true') {
-            return;
-        }
-
-        badgeRow.setAttribute('data-post-audio-ready', 'true');
-
-        fetchAudioAssetStatus(slug).then(function (asset) {
-            if (!asset.hasAudio) {
-                return;
-            }
-
-            badgeRow.innerHTML = '<span class="post-audio-badge" data-post-audio-badge><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5.75 11.25a4.25 4.25 0 0 1 0-2.5M8.75 13.75a7.25 7.25 0 0 0 0-7.5M12.25 13.75a7.25 7.25 0 0 1 0-7.5M15.25 11.25a4.25 4.25 0 0 0 0-2.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/></svg><span>AUDIO</span></span>';
-        });
-    });
 }
 
 function parseVttTimestamp(value) {

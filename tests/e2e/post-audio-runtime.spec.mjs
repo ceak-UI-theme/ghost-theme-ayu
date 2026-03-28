@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Post audio runtime', () => {
-  test('shows audio badge and player only when audio assets exist', async ({ page }) => {
+  test('keeps audio player on posts without list badges', async ({ page }) => {
     await page.goto('/');
 
     const withAudioBadge = page.locator('article[data-slug="gaebal6"] [data-post-audio-badge]');
     const withoutAudioBadge = page.locator('article[data-slug="gaebal5"] [data-post-audio-badge]');
 
-    await expect(withAudioBadge).toBeVisible();
+    await expect(withAudioBadge).toHaveCount(0);
     await expect(withoutAudioBadge).toHaveCount(0);
 
     await page.goto('/gaebal6/');
