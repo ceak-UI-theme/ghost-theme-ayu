@@ -163,9 +163,9 @@ function renderSeriesTags() {
         renderPaginatedList(window.__ayuSeriesTagList, nextPage);
     });
 
-    fetchAyuContentApiJson('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all', { contentKey: contentKey })
-        .then(function (data) {
-            var tags = (data.tags || []).filter(function (tag) {
+    fetchAyuContentApiCollection('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all', 'tags', { contentKey: contentKey })
+        .then(function (allTags) {
+            var tags = (allTags || []).filter(function (tag) {
                 return AYU_TAG_UTILS.isSeriesTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
             }).map(function (tag) {
                 return {

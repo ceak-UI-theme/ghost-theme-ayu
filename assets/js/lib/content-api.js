@@ -138,3 +138,44 @@ function fetchAyuContentApiJson(pathOrUrl, options) {
             return data;
         });
 }
+
+function fetchAyuContentApiCollection(pathOrUrl, collectionKey, options) {
+    'use strict';
+
+    var opts = options || {};
+    var key = String(collectionKey || '').trim();
+    if (!key) {
+        return Promise.reject(new Error('Missing Content API collection key'));
+    }
+
+    function mergePageItems(result, data) {
+        var pageItems = data && Array.isArray(data[key]) ? data[key] : [];
+        var meta = data && data.meta && data.meta.pagination ? data.meta.pagination : null;
+
+        return {
+            items: result.items.concat(pageItems),
+            meta: meta
+        };
+    }
+
+    function fetchPage(pageNumber, result) {
+        var input = String(pathOrUrl || '').trim();
+        var separator = input.indexOf('?') === -1 ? '?' : '&';
+        var pagedUrl = input + separator + 'page=' + String(pageNumber);
+
+        return fetchAyuContentApiJson(pagedUrl, opts)
+            .then(function (data) {
+                var nextResult = mergePageItems(result, data);
+                var meta = nextResult.meta;
+                var hasNext = meta && meta.next;
+
+                if (!hasNext) {
+                    return nextResult.items;
+                }
+
+                return fetchPage(meta.next, nextResult);
+            });
+    }
+
+    return fetchPage(1, { items: [], meta: null });
+}

@@ -153,9 +153,9 @@ function renderPrimaryCategories() {
     function fetchPrimaryCategories() {
         var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all';
 
-        return fetchAyuContentApiJson(tagsUrl, { contentKey: contentKey })
-            .then(function (data) {
-                return (data.tags || []).filter(function (tag) {
+        return fetchAyuContentApiCollection(tagsUrl, 'tags', { contentKey: contentKey })
+            .then(function (tags) {
+                return (tags || []).filter(function (tag) {
                     return AYU_TAG_UTILS.isCategoryTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
                 }).map(function (tag) {
                     return {

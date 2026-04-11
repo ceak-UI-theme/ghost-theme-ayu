@@ -3,7 +3,6 @@ function renderExplorePage() {
 
     var EXPLORE_SECTION_MAX = 10;
     var EXPLORE_RECENT_MAX = 5;
-    var EXPLORE_TAG_FETCH_LIMIT = 15;
     var EXPLORE_RECENT_FETCH_LIMIT = 8;
     var isExplorePage = /^\/explore\/?$/.test(window.location.pathname);
     if (!isExplorePage) {
@@ -150,27 +149,20 @@ function renderExplorePage() {
             });
     }
 
-    function fetchTagBatch() {
-        var url = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=' + String(EXPLORE_TAG_FETCH_LIMIT) + '&include=count.posts&order=count.posts%20desc';
-        return fetchAyuContentApiJson(url, { contentKey: contentKey })
-            .then(function (data) {
-                return data.tags || [];
-            });
+    function fetchAllTags() {
+        var url = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all&include=count.posts';
+        return fetchAyuContentApiCollection(url, 'tags', { contentKey: contentKey });
     }
 
     Promise.all([
-        fetchTagBatch(),
-        fetchTagBatch(),
-        fetchTagBatch(),
+        fetchAllTags(),
         fetchRecentPosts()
     ])
         .then(function (results) {
-            var categoryTags = results[0] || [];
-            var seriesTags = results[1] || [];
-            var topicTags = results[2] || [];
-            var recent = results[3] || [];
+            var allTags = results[0] || [];
+            var recent = results[1] || [];
 
-            var categories = categoryTags.filter(function (tag) {
+            var categories = allTags.filter(function (tag) {
                 return AYU_TAG_UTILS.isCategoryTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
             }).map(function (tag) {
                 return {
@@ -184,7 +176,7 @@ function renderExplorePage() {
                 return item.count > 0;
             });
 
-            var series = seriesTags.filter(function (tag) {
+            var series = allTags.filter(function (tag) {
                 return AYU_TAG_UTILS.isSeriesTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
             }).map(function (tag) {
                 return {
@@ -199,7 +191,7 @@ function renderExplorePage() {
                 return item.count > 0;
             });
 
-            var topics = topicTags.filter(function (tag) {
+            var topics = allTags.filter(function (tag) {
                 return AYU_TAG_UTILS.isTopicTag(tag);
             }).map(function (tag) {
                 return {

@@ -110,6 +110,12 @@
             "rss_link": {
                 "type": "text"
             },
+            "content_api_key": {
+                "type": "text",
+                "group": "Integration",
+                "title": "Ghost Content API Key",
+                "description": "Content API key used by category, series, topic, and search pages."
+            },
             "site_locale": {
                 "type": "select",
                 "default": "ko",
