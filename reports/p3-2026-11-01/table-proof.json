@@ -1,0 +1,14 @@
+[
+  {
+    "mode": "before",
+    "gradient": "linear-gradient(90deg, rgb(255, 255, 255) 50%, rgba(255, 255, 255, 0))",
+    "width": 124.453125,
+    "bodyWidth": 350
+  },
+  {
+    "mode": "after",
+    "gradient": "none",
+    "width": 350,
+    "bodyWidth": 350
+  }
+]

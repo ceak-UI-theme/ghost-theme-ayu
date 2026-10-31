@@ -1,0 +1,249 @@
+[
+  {
+    "port": 2368,
+    "hub": "categories",
+    "mode": "before",
+    "status": 200,
+    "badges": 0,
+    "links": 6,
+    "proofCompleted": false,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://172.22.0.199:2368/categories/"
+    ]
+  },
+  {
+    "port": 2368,
+    "hub": "categories",
+    "mode": "off",
+    "status": 200,
+    "badges": 6,
+    "links": 6,
+    "proofCompleted": false,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://172.22.0.199:2368/categories/"
+    ]
+  },
+  {
+    "port": 2368,
+    "hub": "categories",
+    "mode": "ok",
+    "status": 200,
+    "badges": 6,
+    "links": 6,
+    "proofCompleted": true,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://172.22.0.199:2368/categories/"
+    ]
+  },
+  {
+    "port": 2368,
+    "hub": "categories",
+    "mode": "failure",
+    "status": 200,
+    "badges": 6,
+    "links": 6,
+    "proofCompleted": false,
+    "ssrPreserved": true,
+    "canonical": [
+      "http://172.22.0.199:2368/categories/"
+    ]
+  },
+  {
+    "port": 2368,
+    "hub": "series",
+    "mode": "off",
+    "status": 200,
+    "badges": 5,
+    "links": 5,
+    "proofCompleted": false,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://172.22.0.199:2368/series/"
+    ]
+  },
+  {
+    "port": 2368,
+    "hub": "series",
+    "mode": "ok",
+    "status": 200,
+    "badges": 5,
+    "links": 5,
+    "proofCompleted": true,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://172.22.0.199:2368/series/"
+    ]
+  },
+  {
+    "port": 2368,
+    "hub": "series",
+    "mode": "failure",
+    "status": 200,
+    "badges": 5,
+    "links": 5,
+    "proofCompleted": false,
+    "ssrPreserved": true,
+    "canonical": [
+      "http://172.22.0.199:2368/series/"
+    ]
+  },
+  {
+    "port": 2371,
+    "hub": "categories",
+    "mode": "off",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2371/categories/"
+    ]
+  },
+  {
+    "port": 2371,
+    "hub": "categories",
+    "mode": "ok",
+    "status": 200,
+    "badges": 11,
+    "links": 11,
+    "proofCompleted": true,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2371/categories/"
+    ]
+  },
+  {
+    "port": 2371,
+    "hub": "categories",
+    "mode": "failure",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": true,
+    "canonical": [
+      "http://localhost:2371/categories/"
+    ]
+  },
+  {
+    "port": 2371,
+    "hub": "series",
+    "mode": "off",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2371/series/"
+    ]
+  },
+  {
+    "port": 2371,
+    "hub": "series",
+    "mode": "ok",
+    "status": 200,
+    "badges": 11,
+    "links": 11,
+    "proofCompleted": true,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2371/series/"
+    ]
+  },
+  {
+    "port": 2371,
+    "hub": "series",
+    "mode": "failure",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": true,
+    "canonical": [
+      "http://localhost:2371/series/"
+    ]
+  },
+  {
+    "port": 2372,
+    "hub": "categories",
+    "mode": "off",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2372/categories/"
+    ]
+  },
+  {
+    "port": 2372,
+    "hub": "categories",
+    "mode": "ok",
+    "status": 200,
+    "badges": 11,
+    "links": 11,
+    "proofCompleted": true,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2372/categories/"
+    ]
+  },
+  {
+    "port": 2372,
+    "hub": "categories",
+    "mode": "failure",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": true,
+    "canonical": [
+      "http://localhost:2372/categories/"
+    ]
+  },
+  {
+    "port": 2372,
+    "hub": "series",
+    "mode": "off",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2372/series/"
+    ]
+  },
+  {
+    "port": 2372,
+    "hub": "series",
+    "mode": "ok",
+    "status": 200,
+    "badges": 11,
+    "links": 11,
+    "proofCompleted": true,
+    "ssrPreserved": false,
+    "canonical": [
+      "http://localhost:2372/series/"
+    ]
+  },
+  {
+    "port": 2372,
+    "hub": "series",
+    "mode": "failure",
+    "status": 200,
+    "badges": 225,
+    "links": 225,
+    "proofCompleted": false,
+    "ssrPreserved": true,
+    "canonical": [
+      "http://localhost:2372/series/"
+    ]
+  }
+]

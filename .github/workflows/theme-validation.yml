@@ -37,6 +37,8 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Fixture browser regressions (218 cases)
         run: npm run test:fixture-browser
+      - name: Targeted table and taxonomy regressions (29 cases)
+        run: npm run test:p3
       - name: Build and package theme
         run: npm run zip
       - name: Validate and extract actual ZIP

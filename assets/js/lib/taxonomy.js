@@ -235,6 +235,11 @@ function normalizePostTaxonomyTags(root) {
         }
 
         var visibility = (tagEl.getAttribute('data-tag-visibility') || '').trim();
+        // Archive cards also use post-tag for a plain classification label.
+        // It has no tag identity; keep it out of public/private tag filtering.
+        if (tagEl.tagName === 'SPAN' && !slug && !href && !visibility) {
+            return;
+        }
         var isPublic = visibility ? visibility === 'public' : AYU_TAG_UTILS.isPublicTag(slug);
         if (!isPublic) {
             tagEl.remove();
