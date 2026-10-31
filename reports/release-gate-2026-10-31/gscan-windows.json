@@ -1,0 +1,67 @@
+{
+  "platform": "win32",
+  "version": "5.2.5",
+  "files": [
+    {
+      "file": "partials\\hub-category-pages.hbs",
+      "normalized": "partials/hub-category-pages.hbs",
+      "isPartialIn090": false
+    },
+    {
+      "file": "partials\\hub-series-pages.hbs",
+      "normalized": "partials/hub-series-pages.hbs",
+      "isPartialIn090": false
+    },
+    {
+      "file": "partials\\hub-topic-pages.hbs",
+      "normalized": "partials/hub-topic-pages.hbs",
+      "isPartialIn090": false
+    }
+  ],
+  "unmodified": "FAIL",
+  "message": "Failed theme files check",
+  "details": "Maximum call stack size exceeded",
+  "failedCheck": "090-template-syntax.js",
+  "instrumentedDetails": "Maximum call stack size exceeded",
+  "checked": [
+    "001-deprecations.js",
+    "002-comment-id.js",
+    "005-template-compile.js",
+    "010-package-json.js",
+    "020-theme-structure.js",
+    "030-assets.js",
+    "040-ghost-head-foot.js",
+    "050-koenig-css-classes.js",
+    "051-custom-fonts-css-properties.js",
+    "060-js-api-usage.js",
+    "070-theme-translations.js",
+    "080-helper-usage.js",
+    "090-template-syntax.js"
+  ],
+  "repeatedModules": [
+    [
+      "partials\\hub-tag-card.hbs",
+      11451
+    ],
+    [
+      "partials\\hub-category-pages.hbs",
+      5727
+    ],
+    [
+      "partials\\icons\\search.hbs",
+      7
+    ],
+    [
+      "partials\\hub-seo.hbs",
+      5
+    ],
+    [
+      "partials\\icons\\linkedin.hbs",
+      5
+    ],
+    [
+      "partials\\icons\\twitter.hbs",
+      5
+    ]
+  ]
+}

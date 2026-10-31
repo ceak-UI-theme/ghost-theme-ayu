@@ -1,0 +1,104 @@
+{
+  "ghost": "6.73.0",
+  "case": "One unused public tag and one draft-only public tag",
+  "records": [
+    {
+      "page": 1,
+      "items": 100,
+      "pagination": {
+        "page": 1,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": 2,
+        "prev": null
+      },
+      "status": 200
+    },
+    {
+      "page": 2,
+      "items": 100,
+      "pagination": {
+        "page": 2,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": 3,
+        "prev": 1
+      },
+      "status": 200
+    },
+    {
+      "page": 3,
+      "items": 100,
+      "pagination": {
+        "page": 3,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": 4,
+        "prev": 2
+      },
+      "status": 200
+    },
+    {
+      "page": 4,
+      "items": 100,
+      "pagination": {
+        "page": 4,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": 5,
+        "prev": 3
+      },
+      "status": 200
+    },
+    {
+      "page": 5,
+      "items": 100,
+      "pagination": {
+        "page": 5,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": 6,
+        "prev": 4
+      },
+      "status": 200
+    },
+    {
+      "page": 6,
+      "items": 100,
+      "pagination": {
+        "page": 6,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": 7,
+        "prev": 5
+      },
+      "status": 200
+    },
+    {
+      "page": 7,
+      "items": 76,
+      "pagination": {
+        "page": 7,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": null,
+        "prev": 6
+      },
+      "status": 200
+    }
+  ],
+  "currentValidator": "Invalid or incomplete Content API pagination",
+  "beforeAnchors": 50,
+  "afterAnchors": 50,
+  "SSRPreserved": true,
+  "errors": [
+    "[Ayu Theme] Content hub load failed (explore) Error: Invalid or incomplete Content API pagination\n    at validateAyuContentApiPage (http://localhost:2370/assets/built/main.min.js?v=dL-uk1oslXDq9kbN:1:103089)\n    at http://localhost:2370/assets/built/main.min.js?v=dL-uk1oslXDq9kbN:1:103922\n    at async Promise.all (index 0)"
+  ]
+}

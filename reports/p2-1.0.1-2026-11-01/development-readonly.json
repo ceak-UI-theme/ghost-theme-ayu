@@ -1,0 +1,38 @@
+[
+  {
+    "site": "primary",
+    "base": "http://172.22.0.199:2368",
+    "servedJsSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+    "candidateJsMatches": true,
+    "hubStatuses": {
+      "explore": 200,
+      "categories": 200,
+      "series": 200,
+      "secondary-tags": 200
+    }
+  },
+  {
+    "site": "ko6",
+    "base": "http://localhost:2371",
+    "servedJsSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+    "candidateJsMatches": true,
+    "hubStatuses": {
+      "explore": 200,
+      "categories": 200,
+      "series": 200,
+      "secondary-tags": 200
+    }
+  },
+  {
+    "site": "en6",
+    "base": "http://localhost:2372",
+    "servedJsSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+    "candidateJsMatches": true,
+    "hubStatuses": {
+      "explore": 200,
+      "categories": 200,
+      "series": 200,
+      "secondary-tags": 200
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "filesScanned": 98,
+  "sensitiveOrExcludedFiles": [],
+  "suspiciousCredentials": [],
+  "candidate123FilesMatchIndex": true,
+  "regressionCases": 341,
+  "linuxGScan": "PASS",
+  "dependencyChanges": false,
+  "personalFileUnchanged": true
+}

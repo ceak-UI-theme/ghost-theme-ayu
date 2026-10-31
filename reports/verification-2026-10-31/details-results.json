@@ -1,0 +1,38 @@
+[
+  {
+    "lang": "ko",
+    "mobile": false,
+    "open": true,
+    "titleVisible": true,
+    "text": "📚 개발 도구를 공격하는 해커들",
+    "href": "/tag/series-developer-tool-supply-chain-attacks/",
+    "destination": "https://ceak.dev/tag/series-developer-tool-supply-chain-attacks/"
+  },
+  {
+    "lang": "ko",
+    "mobile": true,
+    "open": true,
+    "titleVisible": true,
+    "text": "📚 개발 도구를 공격하는 해커들",
+    "href": "/tag/series-developer-tool-supply-chain-attacks/",
+    "destination": "https://ceak.dev/tag/series-developer-tool-supply-chain-attacks/"
+  },
+  {
+    "lang": "en",
+    "mobile": false,
+    "open": true,
+    "titleVisible": true,
+    "text": "📚 Hackers Targeting Developer Tools",
+    "href": "/tag/series-developer-tool-supply-chain-attacks/",
+    "destination": "https://en-signal.ceak.dev/tag/series-developer-tool-supply-chain-attacks/"
+  },
+  {
+    "lang": "en",
+    "mobile": true,
+    "open": true,
+    "titleVisible": true,
+    "text": "📚 Hackers Targeting Developer Tools",
+    "href": "/tag/series-developer-tool-supply-chain-attacks/",
+    "destination": "https://en-signal.ceak.dev/tag/series-developer-tool-supply-chain-attacks/"
+  }
+]

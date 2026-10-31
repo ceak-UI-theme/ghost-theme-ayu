@@ -87,7 +87,7 @@ function renderSeriesTags() {
         return page;
     }
 
-    function updatePageUrl(page) {
+    function updatePageUrl(page, userAction) {
         var url = new URL(window.location.href);
 
         if (page > 1) {
@@ -96,7 +96,9 @@ function renderSeriesTags() {
             url.searchParams.delete('page');
         }
 
-        window.history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : ''));
+        if (url.href !== window.location.href) {
+            window.history[userAction ? 'pushState' : 'replaceState']({}, '', url.pathname + url.search + url.hash);
+        }
     }
 
     window.addEventListener('popstate', function () {
@@ -130,7 +132,7 @@ function renderSeriesTags() {
         return html.join('');
     }
 
-    function renderPaginatedList(tags, requestedPage) {
+    function renderPaginatedList(tags, requestedPage, userAction) {
         var pageSize = AYU_GLOBALS.PAGINATION_PAGE_SIZE;
         var totalPages = Math.max(1, Math.ceil(tags.length / pageSize));
         var currentPage = typeof requestedPage === 'number' ? requestedPage : getCurrentPage(totalPages);
@@ -141,7 +143,7 @@ function renderSeriesTags() {
         listGrid.innerHTML = pageTags.map(seriesCardHtml).join('');
         injectPromoSlots(listGrid);
         paginationEl.innerHTML = buildPaginationHtml(normalizedPage, totalPages);
-        updatePageUrl(normalizedPage);
+        updatePageUrl(normalizedPage, userAction);
     }
 
     paginationEl.addEventListener('click', function (event) {
@@ -155,10 +157,10 @@ function renderSeriesTags() {
             return;
         }
 
-        renderPaginatedList(window.__ayuSeriesTagList, nextPage);
+        renderPaginatedList(window.__ayuSeriesTagList, nextPage, true);
     });
 
-    fetchAyuContentApiCollection('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all', 'tags', { contentKey: contentKey })
+    fetchAyuContentApiCollection('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all&order=count.posts%20desc,name%20asc,slug%20asc', 'tags', { contentKey: contentKey })
         .then(function (allTags) {
             var tags = (allTags || []).filter(function (tag) {
                 return AYU_TAG_UTILS.isSeriesTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
@@ -179,13 +181,6 @@ function renderSeriesTags() {
                 listGrid.innerHTML = '';
                 return;
             }
-
-            tags.sort(function (a, b) {
-                if (b.count !== a.count) {
-                    return b.count - a.count;
-                }
-                return displayName(a.name, a.slug).localeCompare(displayName(b.name, b.slug));
-            });
 
             var featuredTag = tags[0];
             featuredGrid.innerHTML = seriesCardHtml(featuredTag);

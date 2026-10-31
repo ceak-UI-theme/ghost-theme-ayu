@@ -1,0 +1,24 @@
+[
+  {
+    "ghost": "5.130.6",
+    "node": "v20.20.0",
+    "theme": "1.0.0",
+    "container": "ghostdev_ghost"
+  },
+  {
+    "ghost": "6.73.0",
+    "node": "v22.23.4",
+    "theme": "1.0.0",
+    "sqlite": "3.53.2",
+    "activeTheme": "signal-wave-ayu",
+    "container": "ghostdev_p2_ko"
+  },
+  {
+    "ghost": "6.73.0",
+    "node": "v22.23.4",
+    "theme": "1.0.0",
+    "sqlite": "3.53.2",
+    "activeTheme": "signal-wave-ayu",
+    "container": "ghostdev_p2_en"
+  }
+]

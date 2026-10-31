@@ -78,7 +78,7 @@ function renderPrimaryCategories() {
         return page;
     }
 
-    function updatePageUrl(page) {
+    function updatePageUrl(page, userAction) {
         var url = new URL(window.location.href);
 
         if (page > 1) {
@@ -87,7 +87,9 @@ function renderPrimaryCategories() {
             url.searchParams.delete('page');
         }
 
-        window.history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : ''));
+        if (url.href !== window.location.href) {
+            window.history[userAction ? 'pushState' : 'replaceState']({}, '', url.pathname + url.search + url.hash);
+        }
     }
 
     window.addEventListener('popstate', function () {
@@ -121,7 +123,7 @@ function renderPrimaryCategories() {
         return html.join('');
     }
 
-    function renderPaginatedList(tags, requestedPage) {
+    function renderPaginatedList(tags, requestedPage, userAction) {
         var pageSize = AYU_GLOBALS.PAGINATION_PAGE_SIZE;
         var totalPages = Math.max(1, Math.ceil(tags.length / pageSize));
         var currentPage = typeof requestedPage === 'number' ? requestedPage : getCurrentPage(totalPages);
@@ -132,7 +134,7 @@ function renderPrimaryCategories() {
         listGrid.innerHTML = pageTags.map(cardHtml).join('');
         injectPromoSlots(listGrid);
         paginationEl.innerHTML = buildPaginationHtml(normalizedPage, totalPages);
-        updatePageUrl(normalizedPage);
+        updatePageUrl(normalizedPage, userAction);
     }
 
     paginationEl.addEventListener('click', function (event) {
@@ -146,11 +148,11 @@ function renderPrimaryCategories() {
             return;
         }
 
-        renderPaginatedList(window.__ayuPrimaryCategoryList, nextPage);
+        renderPaginatedList(window.__ayuPrimaryCategoryList, nextPage, true);
     });
 
     function fetchPrimaryCategories() {
-        var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all';
+        var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all&order=name%20asc,slug%20asc';
 
         return fetchAyuContentApiCollection(tagsUrl, 'tags', { contentKey: contentKey })
             .then(function (tags) {
@@ -178,19 +180,16 @@ function renderPrimaryCategories() {
                 return;
             }
 
-            tags.sort(function (a, b) {
-                return b.count - a.count || a.name.localeCompare(b.name);
-            });
+            // API name order is also the SSR list order. Pick the largest count
+            // without re-sorting names in the browser (Ghost owns collation).
+            var featuredTag = tags.reduce(function (best, tag) {
+                return tag.count > best.count ? tag : best;
+            }, tags[0]);
 
-            var featuredTag = tags[0];
             featuredGrid.innerHTML = cardHtml(featuredTag);
 
             var listTags = tags.filter(function (tag) {
                 return tag.slug !== featuredTag.slug;
-            });
-
-            listTags.sort(function (a, b) {
-                return a.name.localeCompare(b.name);
             });
 
             if (!listTags.length) {

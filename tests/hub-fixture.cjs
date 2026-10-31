@@ -8,7 +8,12 @@ for (const prefix of ['category-', 'series-', '']) {
   tags.push({id:prefix+'zero',slug:prefix+'zero',name:'Zero',visibility:'public',count:{posts:0}});
   tags.push({id:prefix+'internal',slug:prefix+'internal',name:'Internal',visibility:'internal',count:{posts:999}});
 }
-const posts = [{slug:'post-1',title:'Stored post',url:'/post-1/',published_at:'2026-10-01'}];
+H.registerHelper('contentFor',()=> '');
+const posts = [{id:'post-1',slug:'post-1',title:'Stored post',url:'/post-1/',published_at:'2026-10-01'}];
+// Complete published-post relations for the existing count.posts fixtures.
+const coveragePosts = Array.from({length:24}, (_,i)=>({id:'coverage-'+i,slug:'coverage-'+i,
+ title:'Coverage '+i,url:'/coverage-'+i+'/',tags:tags.filter(t=>t.visibility==='public' && t.count.posts>i)
+ .map(t=>({id:t.id,name:t.name,slug:t.slug,visibility:t.visibility}))}));
 H.registerHelper('match', function(a,b,c,d) { const o=d||c; return ((d ? b==='>' && a>c : a===b) ? o.fn(this) : o.inverse(this)); });
 H.registerHelper('foreach', function(items,o) {
  const selected=items.slice(Number(o.hash.from||1)-1,o.hash.to?Number(o.hash.to):undefined);
@@ -27,7 +32,7 @@ H.registerHelper('get', function(resource,o) {
  const order=o.hash.order||'';
  data=[...data].sort((a,b)=> {
   if(order.startsWith('count.posts') && b.count.posts!==a.count.posts) return b.count.posts-a.count.posts;
-  return order.includes('name') ? a.name.localeCompare(b.name) : 0;
+  return order.includes('name') ? a.name.localeCompare(b.name) || a.slug.localeCompare(b.slug) : 0;
  });
  const limit=Number(o.hash.limit)||15, page=Number(o.hash.page)||1;
  const next=data.length>page*limit?page+1:null;
@@ -41,6 +46,6 @@ const configs = [
  ['secondary-tags','renderSecondaryTags',['secondary-tags-featured','secondary-tags-grid']],
  ['explore','renderExplorePage',['explore-categories-grid','explore-series-list','explore-topics-grid','explore-recent-list','explore-categories-more','explore-series-more','explore-topics-more']]
 ];
-function render(name,locale) { return H.compile(read('page-'+name+'.hbs'))({}, {data:{custom:{site_locale:locale},site:{url:'https://'+locale+'.example'}}}); }
+function render(name,locale) { return H.compile(read('page-'+name+'.hbs'))({}, {data:{custom:{site_locale:locale},site:{url:'https://'+locale+'.example',title:'Fixture Site'}}}); }
 
-module.exports = {H,tags,posts,configs,render,read};
+module.exports = {H,tags,posts,coveragePosts,configs,render,read};

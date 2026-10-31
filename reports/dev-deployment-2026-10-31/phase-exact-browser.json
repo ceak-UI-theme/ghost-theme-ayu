@@ -1,0 +1,130 @@
+[
+  {
+    "phase": "exact",
+    "lang": "ko",
+    "hub": "explore",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459700129
+      }
+    ],
+    "errors": []
+  },
+  {
+    "phase": "exact",
+    "lang": "ko",
+    "hub": "categories",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459702289
+      }
+    ],
+    "errors": []
+  },
+  {
+    "phase": "exact",
+    "lang": "ko",
+    "hub": "series",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459704197
+      }
+    ],
+    "errors": []
+  },
+  {
+    "phase": "exact",
+    "lang": "ko",
+    "hub": "secondary-tags",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459706475
+      }
+    ],
+    "errors": []
+  },
+  {
+    "phase": "exact",
+    "lang": "en",
+    "hub": "explore",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459708303
+      }
+    ],
+    "errors": []
+  },
+  {
+    "phase": "exact",
+    "lang": "en",
+    "hub": "categories",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459710511
+      }
+    ],
+    "errors": []
+  },
+  {
+    "phase": "exact",
+    "lang": "en",
+    "hub": "series",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459712573
+      }
+    ],
+    "errors": []
+  },
+  {
+    "phase": "exact",
+    "lang": "en",
+    "hub": "secondary-tags",
+    "totals": [
+      676
+    ],
+    "proofs": [
+      {
+        "posts": 112,
+        "activePublicTags": 676,
+        "expiresAt": 1793459714873
+      }
+    ],
+    "errors": []
+  }
+]

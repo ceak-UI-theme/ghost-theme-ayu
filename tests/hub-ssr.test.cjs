@@ -1,11 +1,11 @@
-const {H,tags,posts,configs,render,read} = require('./hub-fixture.cjs');
+const {H,tags,posts,coveragePosts,configs,render,read} = require('./hub-fixture.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 function runtime(name,fn,ids,mode,locale='en',search='') {
  const elements=Object.fromEntries(ids.map(id=>[id,{innerHTML:'<a href="/ssr/">SSR</a>',hidden:false,events:{},addEventListener(n,f){this.events[n]=f;}}]));
  const events={}; const loc=new URL('https://example.com/'+name+'/'+search);
- const window={location:loc,history:{replaceState(a,b,path){ const u=new URL(path,loc);loc.href=u.href;}},addEventListener(n,f){events[n]=f;}};
+ const window={location:loc,history:{pushState(a,b,path){const u=new URL(path,loc);loc.href=u.href;},replaceState(a,b,path){ const u=new URL(path,loc);loc.href=u.href;}},addEventListener(n,f){events[n]=f;}};
  const ctx=vm.createContext({window,document:{getElementById:id=>elements[id],querySelector:selector=>selector==='[data-hub-locale]'?{getAttribute:()=>locale}:selector==='#ayu-content-key'?{getAttribute:()=>mode==='missing'?'':'key'}:null},URL,URLSearchParams,console,
  sessionStorage:{getItem(){return null;},setItem(){}},
  fetch:async input=> {
@@ -14,9 +14,10 @@ function runtime(name,fn,ids,mode,locale='en',search='') {
    if(mode==='partial' && url.pathname.includes('/posts/')) throw new Error('partial failure');
    if(mode==='page2' && url.searchParams.get('page')==='2') throw new Error('page 2 failure');
    if(mode==='malformed') return {ok:true,json:async()=>{throw new Error('invalid JSON');}};
-   const all=mode==='empty'?[]:url.pathname.includes('/tags/')?tags:posts;
-   const page=Number(url.searchParams.get('page')||1), size=20;
-   return {ok:['ok','empty','partial','page2'].includes(mode),status:Number(mode)||200,json:async()=>url.pathname.includes('/tags/')?{tags:all.slice((page-1)*size,page*size),meta:{pagination:{next:all.length>page*size?page+1:null}}}:{posts:all}};
+   const all=mode==='empty'?[]:url.pathname.includes('/tags/')?[...tags].sort((a,b)=>url.searchParams.get('order')?.startsWith('name') ? a.name.localeCompare(b.name)||a.slug.localeCompare(b.slug):b.count.posts-a.count.posts||a.name.localeCompare(b.name)||a.slug.localeCompare(b.slug)):url.searchParams.get('include')==='tags'?coveragePosts:posts;
+   const page=Number(url.searchParams.get('page')||1), size=url.pathname.includes('/tags/')?20:Number(url.searchParams.get('limit')||8);
+   const items=all.slice((page-1)*size,page*size), total=all.length, pages=Math.max(1,Math.ceil(total/size));
+   return {ok:['ok','empty','partial','page2'].includes(mode),status:Number(mode)||200,json:async()=>({[url.pathname.includes('/tags/')?'tags':'posts']:items,meta:{pagination:{page,limit:size,pages,total,next:page<pages?page+1:null,prev:page>1?page-1:null}}})};
  }});
  vm.runInContext(read('assets/js/lib/dom-utils.js')+'\n'+read('assets/js/lib/taxonomy.js')+'\n'+read('assets/js/lib/content-api.js')+'\n'+read('assets/js/lib/hub-ui.js')+'\n'+read('assets/js/lib/'+name+'-page.js'),ctx);
  ctx.logAyuWarning=()=>{};ctx.injectPromoSlots=()=>{};

@@ -115,14 +115,14 @@ function renderExplorePage() {
 
     function fetchRecentPosts() {
         var url = '/ghost/api/content/posts/?key=' + encodeURIComponent(contentKey) + '&fields=id,title,slug,url,published_at&limit=' + String(EXPLORE_RECENT_FETCH_LIMIT) + '&order=published_at%20desc';
-        return fetchAyuContentApiJson(url, { contentKey: contentKey })
+        return fetchAyuContentApiPage(url, 'posts', { contentKey: contentKey })
             .then(function (data) {
                 return data.posts || [];
             });
     }
 
     function fetchAllTags() {
-        var url = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all&include=count.posts';
+        var url = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&limit=all&include=count.posts&order=count.posts%20desc,name%20asc,slug%20asc';
         return fetchAyuContentApiCollection(url, 'tags', { contentKey: contentKey });
     }
 
@@ -174,25 +174,6 @@ function renderExplorePage() {
                 };
             }).filter(function (item) {
                 return item.count > 0;
-            });
-
-            categories.sort(function (a, b) {
-                if (b.count !== a.count) {
-                    return b.count - a.count;
-                }
-                return a.name.localeCompare(b.name);
-            });
-            series.sort(function (a, b) {
-                if (b.count !== a.count) {
-                    return b.count - a.count;
-                }
-                return a.name.localeCompare(b.name);
-            });
-            topics.sort(function (a, b) {
-                if (b.count !== a.count) {
-                    return b.count - a.count;
-                }
-                return a.name.localeCompare(b.name);
             });
 
             categoriesGrid.innerHTML = categories.length ? categories.slice(0, EXPLORE_SECTION_MAX).map(categoryCardHtml).join('') : '<div class="term-empty">' + ayuHubText('No categories yet.', '아직 카테고리가 없습니다.') + '</div>';

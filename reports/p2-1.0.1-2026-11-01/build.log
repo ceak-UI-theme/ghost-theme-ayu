@@ -1,0 +1,10 @@
+Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[00:28:52] Using gulpfile D:\workspace\02.works\ghost-theme-ayu\gulpfile.js
+[00:28:52] Starting 'build'...
+[00:28:52] Starting 'css'...
+[00:28:52] Finished 'css' after 540 ms
+[00:28:52] Starting 'js'...
+[00:28:54] Finished 'js' after 1.65 s
+[00:28:54] Finished 'build' after 2.19 s

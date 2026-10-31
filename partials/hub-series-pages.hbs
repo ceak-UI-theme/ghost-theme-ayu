@@ -1,5 +1,5 @@
 {{! Each query is bounded; additional batches remain accessible without JavaScript. }}
-{{#get "tags" filter="visibility:public+slug:~^'series-'+id:-{{excludedId}}" include="count.posts" order="count.posts desc,name asc" limit="100" page=page}}
+{{#get "tags" filter="visibility:public+slug:~^'series-'+id:-{{excludedId}}" include="count.posts" order="count.posts desc,name asc,slug asc" limit="100" page=page}}
 {{#foreach tags to="10"}}
 {{> "hub-tag-card" fallback="images/fallback/series-tag-default.png" label="Series"}}
 {{/foreach}}

@@ -1,0 +1,6 @@
+PASS evidence consistency, source preservation and redaction checks.
+Production: posts PASS 112/site; tag collector FAIL (100+35 vs KO151 / EN148).
+Published active tag coverage: 135/site, missing/duplicates/count/slug mismatch 0.
+GScan: Linux 5.2.5 v5/v6 and 6.6.1 v6 PASS; Windows 5.2.5 FAIL, 090 partial cache path bug.
+Regression: API21 + SSR58 + Playwright114 + actual Ghost6 ko/en 8 hubs PASS; 225 fixture tags/role accessible without JS.
+Existing source/package/user-file hashes unchanged. Final release decision: BLOCKED.

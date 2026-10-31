@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fixture from './hub-fixture.cjs';
-const {configs,render,read,tags,posts}=fixture;
+const {configs,render,read,tags,posts,coveragePosts}=fixture;
 for(const [name,fn,ids] of configs) for(const locale of ['ko','en']) {
  test(`${name} ${locale}: mobile SSR, enhancement, HTTP failure and history`,async({page})=>{
   const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+read('assets/built/screen.css')+'</style></head><body>'+render(name,locale)+'<script id="ayu-content-key" data-key="key"></script></body></html>';
@@ -19,7 +19,7 @@ for(const [name,fn,ids] of configs) for(const locale of ['ko','en']) {
   // New document prevents duplicate event listeners; a delayed response verifies SSR retention.
   await page.reload();await page.addScriptTag({content:js});
   let release;const gate=new Promise(r=>{release=r;});
-  await page.route('**/ghost/api/content/**',async route=>{await gate;await route.fulfill({contentType:'application/json',body:JSON.stringify(route.request().url().includes('/tags/')?{tags}:{posts})});});
+  await page.route('**/ghost/api/content/**',async route=>{await gate;await route.fulfill({contentType:'application/json',body:JSON.stringify((()=>{const u=new URL(route.request().url()),key=u.pathname.includes('/tags/')?'tags':'posts',all=key==='tags'?[...tags].sort((a,b)=>u.searchParams.get('order')?.startsWith('name')?a.name.localeCompare(b.name)||a.slug.localeCompare(b.slug):b.count.posts-a.count.posts||a.name.localeCompare(b.name)||a.slug.localeCompare(b.slug)):u.searchParams.get('include')==='tags'?coveragePosts:posts,limit=Number(u.searchParams.get('limit'))||100,page=Number(u.searchParams.get('page'))||1,pages=Math.max(1,Math.ceil(all.length/limit));return {[key]:all.slice((page-1)*limit,page*limit),meta:{pagination:{page,limit,pages,total:all.length,next:page<pages?page+1:null,prev:page>1?page-1:null}}}})())});});
   await page.evaluate(fn=>window[fn](),fn);
   expect(await page.locator('main').innerHTML()).toBe(before);
   release();

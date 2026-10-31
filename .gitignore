@@ -16,3 +16,11 @@
 /test-results/
 /playwright-report/
 /blob-report/
+
+# Keep raw verification captures and generated theme bundles local.
+/reports/**/candidate/
+/reports/**/*.zip
+/reports/**/*.png
+/reports/**/*.html
+/reports/**/*.db
+/reports/**/*.sqlite*

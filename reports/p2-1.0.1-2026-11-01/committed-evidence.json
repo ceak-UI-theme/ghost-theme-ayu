@@ -1,0 +1,355 @@
+{
+  "note": "Stage snapshot before adding this manifest and staged-validation.json. Final complete file list is git diff; raw artifacts remain local.",
+  "files": [
+    {
+      "path": "reports/README.md",
+      "bytes": 3524,
+      "sha256": "e32da6233e2d84ce4cb714fdba1fe84bae74f5d33ef3623fffbffba3fbe591bb"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/artifact.json",
+      "bytes": 262,
+      "sha256": "2fc43792a8fead67a1cf693ea9605f3e4f54e4815fe2818f4da4796f4370cbfb"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/backup.json",
+      "bytes": 4640,
+      "sha256": "adcf240fb8d0ca6dbd432a68a88efc52e2bfde06466bd5ab3c6def502d1e7e40"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/candidate-manifest.json",
+      "bytes": 12537,
+      "sha256": "e5ea2ab86777c3c1eebdf63635e6d6e4c50ff08dfa5ee79b63eff447ff58218c"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/deployed-browser-verified.log",
+      "bytes": 9718,
+      "sha256": "fd7ae664ffa5f807a05b0c38f1eb9ba5e8567e1c32284efd6f5772ef9c1451c9"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/deployed-hashes.json",
+      "bytes": 772,
+      "sha256": "9e0aac31f760c13272dd49b1beb72d1701f5c7e1554e852445e8c2fd4b6f589f"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/deployment.json",
+      "bytes": 286,
+      "sha256": "cfa0e7a55e9921643a6991a2d3889a41f909c93a35ade646756419cbdd00aef0"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/desktop-results.json",
+      "bytes": 12138,
+      "sha256": "ea9f20c62af7b63a85c6d481269598f45f04ed56ce828f82c44c6ec51cbae854"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/dev-api-cleanup.summary.json",
+      "bytes": 24443,
+      "sha256": "c7390631f68d89e7cc000e0a8a5a6ed6ce880a33a6e7d8881dbfd71b3b562096"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/dev-api-draft.summary.json",
+      "bytes": 24441,
+      "sha256": "c2b5412709d1a17aac9c9b867a2cdf2c04dac11d6c179ee5578e3b6bd194dc64"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/dev-api-exact.summary.json",
+      "bytes": 24441,
+      "sha256": "c229f6ff45e8c2e406fea4717013a2ec536005aab46054898d92cdb8ece8bfb4"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/dev-api-unused.summary.json",
+      "bytes": 24442,
+      "sha256": "17a4619811a43c1167fa3c69dc3f8a0ecb079f557aac0046ed0b425a5a575070"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/environment.json",
+      "bytes": 3193,
+      "sha256": "e67a3bb49da3723ee94f9fbdcdc02b503eed7f11258af9718c10c982155213f3"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/final-validation.log",
+      "bytes": 125,
+      "sha256": "3f0f959c19ef6bf39760b66a78b50134434376ff5c1c034e9271fd00ee9e1ec1"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/gscan-v6.json",
+      "bytes": 1065,
+      "sha256": "c9cd02317ecad1285f6bb005e96f6242224943650ef480776ea1f826501a821c"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/http-results.json",
+      "bytes": 9996,
+      "sha256": "ac0616813659ed138d613c9d74476f307614918ab46cca98c3a8fec96b751a7b"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/isolated-backups.json",
+      "bytes": 918,
+      "sha256": "31fc78457f9c5c280738a5b01154499070b75d5637e37f1a3c48f49d9793542c"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/key-scan.json",
+      "bytes": 118,
+      "sha256": "b40a4a3e99835321dda37a145ba58a07e5b20ea358abd26e4020f9f7e5afff0f"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/locale-adjustment.json",
+      "bytes": 310,
+      "sha256": "da58be29a5f90604bee845efd92de8b46f9083d7836b6ababb82d1fd3d5e46dd"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/phase-cleanup-browser.json",
+      "bytes": 2036,
+      "sha256": "35e6337f50f8f6b022df41332ca5654866500cec61ed8779da5ead5d73cfee23"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/phase-draft-browser.json",
+      "bytes": 2020,
+      "sha256": "52bcbbc7c4e1ff58377d942bfe7d7ced1c5b7fddb83e82ab4dc4bdd7f6ea3843"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/phase-exact-browser.json",
+      "bytes": 2020,
+      "sha256": "bb6fe6b791aa880b47245761bc08c3e42b75d0414d8750eca07aa9ccc57b6e9f"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/phase-unused-browser.json",
+      "bytes": 2028,
+      "sha256": "bf28bb139c4c5dcf8eb195bfbcfbd8c722290ec8958c6d800ff68b79280e65ff"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/primary-db-after.json",
+      "bytes": 223,
+      "sha256": "7cabc9b1a7628a9e626f4606c39837bb8ece231a55a09440601bd361b404f1ec"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/primary-dev-browser-final.log",
+      "bytes": 2570,
+      "sha256": "c26edcad3cbe9952e752bd3ec88d5f7e795d01a1b108c73680926cd68020f019"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/remote-refs.txt",
+      "bytes": 142,
+      "sha256": "55e883b2f328c3ddda1e8e912f3e138b52ae473c712dbef677403ae0af7cabb2"
+    },
+    {
+      "path": "reports/dev-deployment-2026-10-31/runtimes.json",
+      "bytes": 463,
+      "sha256": "9c2476bb21e652f8be47283eeb9dd8260a25cff17839c20f63d1394c51a18045"
+    },
+    {
+      "path": "reports/ghost-p2-dev-deployment-verification-2026-10-31.md",
+      "bytes": 21808,
+      "sha256": "39b02a49c27dfba9129d0b3693d9ad961981ca88f0ed55be9386d9a41c356b89"
+    },
+    {
+      "path": "reports/ghost-p2-fixes-and-regression-2026-10-31.md",
+      "bytes": 21040,
+      "sha256": "4dfda5999a9453c3e60c9c99dce9d878aa10164eed144ec8fae5a27e43b5bf5d"
+    },
+    {
+      "path": "reports/ghost-p2-release-gate-2026-10-31.md",
+      "bytes": 22415,
+      "sha256": "6d48d09bd8f80d5eb270b83760532833810940df06fb3e70d0d5f671195941a6"
+    },
+    {
+      "path": "reports/ghost-p2-tag-compatibility-2026-10-31.md",
+      "bytes": 12011,
+      "sha256": "a573b0232f732adb4f5b5b8f00f8ccf9563267324ee7e112a4b2f4f2695f522c"
+    },
+    {
+      "path": "reports/ghost-p2-version-1.0.1-2026-11-01.md",
+      "bytes": 5348,
+      "sha256": "431da52096cd6735eeb409772c60b8fd332915adb6b2d66822b0ec390269d7f0"
+    },
+    {
+      "path": "reports/ghost-post-deploy-verification-2026-10-31.md",
+      "bytes": 52824,
+      "sha256": "2488e1560dbf714ecd74665d91c7f64762a09cb2d50d8ee5be39eceedc543708"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/artifact.json",
+      "bytes": 552,
+      "sha256": "c4048e8d080ea3ed86ac33c522a181bfe1ce369b03e7c5dc68e58fb7c69547ac"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/build.log",
+      "bytes": 473,
+      "sha256": "e570818bee5ce755cca52f870c51ed6339216c77c3bb741523d0e6354fadc935"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/candidate-manifest.json",
+      "bytes": 12537,
+      "sha256": "6ba0addb3b7b52b7d9a89e2d2e791e372631b91ed47e27b36bc5da42bf608098"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/content-api.log",
+      "bytes": 75,
+      "sha256": "69f0b8924bee312a32fec656addcb7ee62bc0f60cb59b5e80736e09ce025d7bb"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/development-readonly.json",
+      "bytes": 939,
+      "sha256": "96235abe103fe979180c5cdc054d912a5456b65ec6ec131cad90bd4106bbea8f"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/gscan-v6.json",
+      "bytes": 1065,
+      "sha256": "c9cd02317ecad1285f6bb005e96f6242224943650ef480776ea1f826501a821c"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/hub-browser.log",
+      "bytes": 1666,
+      "sha256": "13bc068eb209b82dd0dd63abab99c9fce487e54cdb49cb0473194ca6e3aede74"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/legacy-smoke.log",
+      "bytes": 764,
+      "sha256": "6db544de4f16124b9aca0ee31985f881cd0fcbc03679ef4d573d889b45060185"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/local-evidence-inventory.json",
+      "bytes": 72612,
+      "sha256": "d7b4922274dbd29855592e26d4aeda29e6aa5c4ff93025dd328c4795f998c1a3"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/p2-browser.log",
+      "bytes": 11431,
+      "sha256": "cad1d91d71c85a53c78718d4d16aa999ab6d7568a6aeffb1c14731cadf0fef89"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/ssr.log",
+      "bytes": 124,
+      "sha256": "fcd0cee1cf8c595c648811e90ab8cb4af5d5c5c74f156ddb5a924ce38eb62fde"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/tag-browser.log",
+      "bytes": 9043,
+      "sha256": "15956b5f33029ca025725e81a271068a51e0eaea15c9f5319e9627cfb541d3b1"
+    },
+    {
+      "path": "reports/p2-1.0.1-2026-11-01/tag-unit.log",
+      "bytes": 89,
+      "sha256": "37d721c55c45fbae47ba871c0c7f8be05ef448afae4d44f5c1f11d6eb5c1a0c7"
+    },
+    {
+      "path": "reports/p2-fixes-2026-10-31/ghost-inconsistent-pagination.json",
+      "bytes": 633,
+      "sha256": "848d87d31c7b05467bebd9f7a014606ab6fae791396731c65e51a9794ce7419f"
+    },
+    {
+      "path": "reports/p2-fixes-2026-10-31/gscan-baseline.log",
+      "bytes": 58,
+      "sha256": "a3adaa2f6166c804218b22f351ce1a88986c9bcc0864d582cadbd87556e7763b"
+    },
+    {
+      "path": "reports/p2-fixes-2026-10-31/gscan-debug.log",
+      "bytes": 1600,
+      "sha256": "91effc8b0288a3572cf7fcfe7f10af7532f8a995c618bbd2ab507ea2ccd3908a"
+    },
+    {
+      "path": "reports/p2-fixes-2026-10-31/gscan-isolation.log",
+      "bytes": 592,
+      "sha256": "dea44c8d2fd576a6ff87a120706e87bb5ebcfcfdfe6c37f8cc7cf6a6df750245"
+    },
+    {
+      "path": "reports/p2-fixes-2026-10-31/gscan-v5-final.log",
+      "bytes": 58,
+      "sha256": "4ed3a00be1f80fbac62943cea7f8b0d2ae29dbea16fba84ae3e4bfe8a700e381"
+    },
+    {
+      "path": "reports/p2-fixes-2026-10-31/validation.log",
+      "bytes": 244,
+      "sha256": "98f747f3a83315b518eebfb00d240fd4a7e026c715ebaf4c344dd190832770be"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/gscan-5-v5.json",
+      "bytes": 1065,
+      "sha256": "a6e12a639350dbb22818c05e632b534fc8e8a342721d64c2d777ea6868d4030d"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/gscan-5-v6.json",
+      "bytes": 1065,
+      "sha256": "2946e84d8a0c95aed013f4d9c9aedd55d5994f131649cc8b51be4c3638ceb6fe"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/gscan-6-v6.json",
+      "bytes": 1065,
+      "sha256": "c9cd02317ecad1285f6bb005e96f6242224943650ef480776ea1f826501a821c"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/gscan-linux.cjs",
+      "bytes": 871,
+      "sha256": "ad44091f0e2ffb594b8c305f5dbc077c587a824a91d3629459397ef0d632b8f5"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/gscan-windows.json",
+      "bytes": 1501,
+      "sha256": "0415ea5a4dbbdeff3f905f030c712ac5954bcaf8881a3eebf060c7027fd62f1f"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/local-ghost-visibility-edge.json",
+      "bytes": 2151,
+      "sha256": "f9a96c269fb7f769a50d4cbbfc04a6a300442ca33650b6b53fc9e26e93a5deb3"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/production-api.summary.json",
+      "bytes": 12874,
+      "sha256": "740b2c43f5017ddccdb59b60b9ff07fe36a611d37243b530a8561864be9f1667"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/public-data-coverage.json",
+      "bytes": 3040,
+      "sha256": "00d5504f13127942b0eebbfbaa74887df54b38a8388503944bec4b566d8745fb"
+    },
+    {
+      "path": "reports/release-gate-2026-10-31/validation.log",
+      "bytes": 530,
+      "sha256": "076297c43a9a6583dbf3715eb255fc6430214d3bab651741b0e249271d09c6a6"
+    },
+    {
+      "path": "reports/tag-compatibility-2026-10-31/final-validation.log",
+      "bytes": 118,
+      "sha256": "7aa069da6b5ffe15704e2c1c486149b59f1c27e9f07501d367082b845fb45291"
+    },
+    {
+      "path": "reports/tag-compatibility-2026-10-31/gscan-6-v6.json",
+      "bytes": 1065,
+      "sha256": "c9cd02317ecad1285f6bb005e96f6242224943650ef480776ea1f826501a821c"
+    },
+    {
+      "path": "reports/tag-compatibility-2026-10-31/local-server-evidence.json",
+      "bytes": 657,
+      "sha256": "46232504f6e1d9d6a8507de945da3650485412e662acb6bf589b9febb5141969"
+    },
+    {
+      "path": "reports/tag-compatibility-2026-10-31/local-versions.json",
+      "bytes": 53,
+      "sha256": "f53d41c5d99d4beeae0e1ecc49c6377f2ee2d8f017902361a5fca0b58d822432"
+    },
+    {
+      "path": "reports/tag-compatibility-2026-10-31/production-api.cjs",
+      "bytes": 4869,
+      "sha256": "e1ed11892eb8b9a7b570e6397e50d361d327efa7e2f52db5465656d46715b4e3"
+    },
+    {
+      "path": "reports/tag-compatibility-2026-10-31/production-api.summary.json",
+      "bytes": 15311,
+      "sha256": "bec1c905d79f669590c7a0f71d49244ec16b9244ef5893a161aed735ce02f734"
+    },
+    {
+      "path": "reports/verification-2026-10-31/checks.json",
+      "bytes": 14785,
+      "sha256": "001314915c48cf0f5e69655aad319e9d6995c6c5a9ede874131b6ae1d8b01995"
+    },
+    {
+      "path": "reports/verification-2026-10-31/details-results.json",
+      "bytes": 1216,
+      "sha256": "13f9baae1155cafe6cf97d21d3cf115eb3bbbe5b92849ed8c87e122642f6ddba"
+    },
+    {
+      "path": "reports/verification-2026-10-31/validation.log",
+      "bytes": 333,
+      "sha256": "2e6c9d5b4e1bd7a9ac6da94dd6553f016af2a6739821694137eb88f980ab2d8a"
+    }
+  ]
+}

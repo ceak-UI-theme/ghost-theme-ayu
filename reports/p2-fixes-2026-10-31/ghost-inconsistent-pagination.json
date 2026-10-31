@@ -1,0 +1,22 @@
+{
+  "api": [
+    {
+      "status": 200,
+      "items": 36,
+      "pagination": {
+        "page": 1,
+        "limit": 100,
+        "pages": 1,
+        "total": 38,
+        "next": null,
+        "prev": null
+      }
+    }
+  ],
+  "errors": [
+    "[Ayu Theme] Content hub load failed (explore) Error: Invalid or incomplete Content API pagination\n    at validateAyuContentApiPage (http://localhost:2369/assets/built/main.min.js?v=ce8f3c307f:1:103089)\n    at http://localhost:2369/assets/built/main.min.js?v=ce8f3c307f:1:103922\n    at async Promise.all (index 0)"
+  ],
+  "SSRLinkCount": 32,
+  "afterLinkCount": 32,
+  "preserved": true
+}

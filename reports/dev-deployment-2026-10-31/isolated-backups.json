@@ -1,0 +1,24 @@
+[
+  {
+    "lang": "ko",
+    "backup": "/mnt/d/workspace/02.works/ghost-dev-p2/backups/ko",
+    "dbSha256": "fbdc270c6e605f7266407afe35ca55fe5db57000333726c83bdb71e400b9d869",
+    "previousActiveTheme": "source",
+    "previousThemeVersion": "1.7.6",
+    "previousThemeFileCount": 87,
+    "previousThemeArchiveSha256": "c5972b3dafca01b4ceda08c7429faddc99e387c34f119a9d83abd07258a60544",
+    "restoreHashesMatch": true,
+    "baselineDatabaseIntegrity": "ok"
+  },
+  {
+    "lang": "en",
+    "backup": "/mnt/d/workspace/02.works/ghost-dev-p2/backups/en",
+    "dbSha256": "4ba0a1a334154872eaa853265ec554545351dd6a664d9cff29eca25f5a65d622",
+    "previousActiveTheme": "source",
+    "previousThemeVersion": "1.7.6",
+    "previousThemeFileCount": 87,
+    "previousThemeArchiveSha256": "31b8b848fa92fb2cc4f76d74d3ac2b0a6710d97d3d07b0a9b6fc9499be465d37",
+    "restoreHashesMatch": true,
+    "baselineDatabaseIntegrity": "ok"
+  }
+]

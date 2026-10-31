@@ -86,7 +86,7 @@ function renderSecondaryTags() {
         ].join('');
     }
 
-    fetchAyuContentApiCollection('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all', 'tags', { contentKey: contentKey })
+    fetchAyuContentApiCollection('/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all&order=count.posts%20desc,name%20asc,slug%20asc', 'tags', { contentKey: contentKey })
         .then(function (allTags) {
             var tags = (allTags || []).filter(function (tag) {
                 return AYU_TAG_UTILS.isTopicTag(tag);
@@ -108,14 +108,6 @@ function renderSecondaryTags() {
                 grid.innerHTML = '';
                 return;
             }
-
-            tags.sort(function (a, b) {
-                if (b.count !== a.count) {
-                    return b.count - a.count;
-                }
-
-                return a.name.localeCompare(b.name);
-            });
 
             var featured = tags[0];
             var rest = tags.slice(1);

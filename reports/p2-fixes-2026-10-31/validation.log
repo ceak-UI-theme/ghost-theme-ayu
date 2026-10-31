@@ -1,0 +1,2 @@
+PASS evidence consistency: API 21, SSR 58, browser 16+98, real Ghost 8 hubs/16 mobile screenshots; GScan FAIL independently confirmed against baseline.
+Final main.min.js SHA-256: 74bfae935a2c9570eaf646cd456437a3ad917992da3257638b2f94a343983b7d

@@ -1,4 +1,12 @@
 {{!< default}}
+{{#contentFor "hub-title"}}{{#match @custom.site_locale "ko"}}시리즈{{else}}Series{{/match}} | {{@site.title}}{{/contentFor}}
+{{#contentFor "hub-meta"}}
+{{#match @custom.site_locale "ko"}}
+{{> "hub-seo" title="시리즈" description="하나의 주제를 깊이 다루는 연재와 연결된 글을 순서대로 만나보세요." path="/series/"}}
+{{else}}
+{{> "hub-seo" title="Series" description="Explore in-depth series and read connected posts in sequence." path="/series/"}}
+{{/match}}
+{{/contentFor}}
 <div class="gh-outer">
 <main data-hub-locale="{{@custom.site_locale}}" class="site-main gh-inner">
     <section id="series-list-header" class="term term-tag-header">
@@ -11,7 +19,7 @@
 
     <section id="series-list-featured" class="category-featured" aria-label="{{#match @custom.site_locale "ko"}}대표 시리즈{{else}}Featured series{{/match}}">
         <h2 class="category-featured-title">{{#match @custom.site_locale "ko"}}대표 시리즈{{else}}Featured series{{/match}}</h2>
-        <div id="series-featured-grid" class="post-feed gh-feed">{{#get "tags" filter="visibility:public+slug:~^'series-'" include="count.posts" order="count.posts desc,name asc" limit="1"}}
+        <div id="series-featured-grid" class="post-feed gh-feed">{{#get "tags" filter="visibility:public+slug:~^'series-'" include="count.posts" order="count.posts desc,name asc,slug asc" limit="1"}}
 {{#foreach tags}}
 {{> "hub-tag-card" fallback="images/fallback/series-tag-default.png" label="Series"}}
 {{else}}<p class="term-empty">{{#match @custom.site_locale "ko"}}아직 항목이 없습니다.{{else}}No items yet.{{/match}}</p>{{/foreach}}
@@ -20,7 +28,7 @@
 
     <section id="series-list-all" class="category-post-list" aria-label="{{#match @custom.site_locale "ko"}}시리즈 목록{{else}}Series list{{/match}}">
         <h2 class="category-post-list-title">{{#match @custom.site_locale "ko"}}전체 시리즈{{else}}All series{{/match}}</h2>
-        <div id="series-list-grid" class="post-feed gh-feed js-promo-feed">{{#get "tags" filter="visibility:public+slug:~^'series-'" include="count.posts" order="count.posts desc,name asc" limit="1"}}
+        <div id="series-list-grid" class="post-feed gh-feed js-promo-feed">{{#get "tags" filter="visibility:public+slug:~^'series-'" include="count.posts" order="count.posts desc,name asc,slug asc" limit="1"}}
 {{#foreach tags}}
 {{#match count.posts ">" 0}}{{> "hub-series-pages" excludedId=id page=1}}{{/match}}
 {{else}}<p class="term-empty">{{#match @custom.site_locale "ko"}}아직 항목이 없습니다.{{else}}No items yet.{{/match}}</p>{{/foreach}}

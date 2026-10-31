@@ -1,0 +1,18 @@
+
+Checking theme compatibility...
+
+✓ Your theme is compatible with Ghost 5.x
+
+Recommendations
+---------------
+- Recommendation: [36mpackage.json[39m objects defined in [36m"config.custom"[39m should have a known [36m"group"[39m.
+
+Details: Only use the following groups: [36m"post"[39m, [36m"homepage"[39m.
+Check the [36mpackage.json[39m documentation (https://ghost.org/docs/themes/structure/#package-json) for further information.
+
+Affected Files:
+package.json
+
+
+Get more help at https://ghost.org/docs/themes/
+You can also check theme compatibility at https://gscan.ghost.org/

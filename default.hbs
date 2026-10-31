@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{meta_title}}</title>
+    <title>{{#if (block "hub-title")}}{{{block "hub-title"}}}{{else}}{{meta_title}}{{/if}}</title>
     <script>
         (function () {
             try {
@@ -28,7 +28,13 @@
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{@custom.adsense_client}}" crossorigin="anonymous"></script>
     {{/if}}
 
-    {{ghost_head}}
+    {{#if (block "hub-title")}}
+        {{! Ghost keeps canonical, existing description, icon, schema and injections. }}
+        {{ghost_head exclude="social_data"}}
+        {{{block "hub-meta"}}}
+    {{else}}
+        {{ghost_head}}
+    {{/if}}
     {{{block "head"}}}
 </head>
 

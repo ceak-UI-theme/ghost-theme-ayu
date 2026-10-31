@@ -1,0 +1,121 @@
+[
+  {
+    "name": "ghostdev_ghost",
+    "image": "ghost:5-alpine",
+    "startedAt": "2026-10-31T15:01:07.974502978Z",
+    "id": "bffdfa0d1a183b35c60b0c6143ea347af99448d6774590ad22a5f4b05b288775",
+    "ports": {
+      "2368/tcp": [
+        {
+          "HostIp": "",
+          "HostPort": "2368"
+        }
+      ]
+    },
+    "mounts": [
+      {
+        "source": "/mnt/d/workspace/02.works/ghost-dev/content",
+        "target": "/var/lib/ghost/content"
+      }
+    ],
+    "safeEnvironment": {
+      "database__connection__database": "ghost",
+      "url": "http://172.22.0.199:2368",
+      "database__client": "mysql",
+      "database__connection__host": "mysql",
+      "NODE_ENV": "production"
+    },
+    "composeProject": "ghost-dev"
+  },
+  {
+    "name": "ghostdev_mysql",
+    "image": "mysql:8.0",
+    "startedAt": "2026-10-24T01:45:34.268673682Z",
+    "id": "2e6d92bd4b5dc7eaba8609ee0dadca3656fc37d5bcf6204075019e75e90ef6bd",
+    "ports": {},
+    "mounts": [
+      {
+        "source": "/var/lib/docker/volumes/ghost-dev_mysql_data/_data",
+        "target": "/var/lib/mysql"
+      }
+    ],
+    "safeEnvironment": {},
+    "composeProject": "ghost-dev"
+  },
+  {
+    "name": "ghostdev_p2_ko",
+    "image": "ghost:6-alpine",
+    "startedAt": "2026-10-31T14:57:41.591195411Z",
+    "id": "8683a125a581433ad4eca4e28c3c539447939037c2debd579d9defd7821af865",
+    "ports": {
+      "2368/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "2371"
+        }
+      ]
+    },
+    "mounts": [
+      {
+        "source": "/mnt/d/workspace/02.works/ghost-dev-p2/ko/content",
+        "target": "/var/lib/ghost/content"
+      }
+    ],
+    "safeEnvironment": {
+      "url": "http://localhost:2371",
+      "NODE_ENV": "development",
+      "database__client": "sqlite3",
+      "database__connection__filename": "/var/lib/ghost/content/data/gate.db"
+    },
+    "composeProject": null
+  },
+  {
+    "name": "ghostdev_p2_en",
+    "image": "ghost:6-alpine",
+    "startedAt": "2026-10-31T14:57:42.794245002Z",
+    "id": "7b05561ba89e425f83545e1042e8ac2012f18a89441a1bcb0fb7eab9e24887ab",
+    "ports": {
+      "2368/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "2372"
+        }
+      ]
+    },
+    "mounts": [
+      {
+        "source": "/mnt/d/workspace/02.works/ghost-dev-p2/en/content",
+        "target": "/var/lib/ghost/content"
+      }
+    ],
+    "safeEnvironment": {
+      "database__connection__filename": "/var/lib/ghost/content/data/gate.db",
+      "url": "http://localhost:2372",
+      "NODE_ENV": "development",
+      "database__client": "sqlite3"
+    },
+    "composeProject": null
+  },
+  {
+    "name": "whatapt-backend-postgres-1",
+    "image": "postgres:18.6-bookworm",
+    "startedAt": "2026-10-24T05:12:40.891625779Z",
+    "id": "f361a9459ef43f1bb5552841b1ff98f8d7e35becfab7dbab16865e55bc0bf633",
+    "ports": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "54329"
+        }
+      ]
+    },
+    "mounts": [
+      {
+        "source": "/var/lib/docker/volumes/whatapt-backend_postgres_data/_data",
+        "target": "/var/lib/postgresql"
+      }
+    ],
+    "safeEnvironment": {},
+    "composeProject": "whatapt-backend"
+  }
+]

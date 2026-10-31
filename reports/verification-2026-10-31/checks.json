@@ -1,0 +1,594 @@
+{
+  "pages": [
+    {
+      "lang": "ko",
+      "name": "explore",
+      "regions": {
+        "explore-categories-grid": {
+          "ssrUnique": 5,
+          "placeholder": false
+        },
+        "explore-series-list": {
+          "ssrUnique": 10,
+          "placeholder": false
+        },
+        "explore-topics-grid": {
+          "ssrUnique": 10,
+          "placeholder": false
+        },
+        "explore-recent-list": {
+          "ssrUnique": 5,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "jsDesktop": {
+        "explore-categories-grid": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "explore-series-list": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://ceak.dev/tag/series-ai-era-software-production-structure/"
+          ],
+          "added": [
+            "https://ceak.dev/tag/series-developer-tool-supply-chain-attacks/"
+          ]
+        },
+        "explore-topics-grid": {
+          "unique": 10,
+          "setEqual": true,
+          "orderEqual": false,
+          "removed": [],
+          "added": []
+        },
+        "explore-recent-list": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      },
+      "jsMobile": {
+        "explore-categories-grid": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "explore-series-list": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://ceak.dev/tag/series-ai-era-software-production-structure/"
+          ],
+          "added": [
+            "https://ceak.dev/tag/series-developer-tool-supply-chain-attacks/"
+          ]
+        },
+        "explore-topics-grid": {
+          "unique": 10,
+          "setEqual": true,
+          "orderEqual": false,
+          "removed": [],
+          "added": []
+        },
+        "explore-recent-list": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      }
+    },
+    {
+      "lang": "ko",
+      "name": "categories",
+      "regions": {
+        "primary-featured-grid": {
+          "ssrUnique": 1,
+          "placeholder": false
+        },
+        "primary-list-grid": {
+          "ssrUnique": 4,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "featuredListOverlap": [],
+      "jsDesktop": {
+        "primary-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "primary-list-grid": {
+          "unique": 4,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      },
+      "paginationUnionEqualsSSR": true,
+      "jsMobile": {
+        "primary-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "primary-list-grid": {
+          "unique": 4,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      }
+    },
+    {
+      "lang": "ko",
+      "name": "series",
+      "regions": {
+        "series-featured-grid": {
+          "ssrUnique": 1,
+          "placeholder": false
+        },
+        "series-list-grid": {
+          "ssrUnique": 12,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "featuredListOverlap": [],
+      "jsDesktop": {
+        "series-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "series-list-grid": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://ceak.dev/tag/series-ai-dev-tools-text-editor-evolution/",
+            "https://ceak.dev/tag/series-season3-incidents-that-broke-the-internet/"
+          ],
+          "added": []
+        }
+      },
+      "paginationUnionEqualsSSR": true,
+      "jsMobile": {
+        "series-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "series-list-grid": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://ceak.dev/tag/series-ai-dev-tools-text-editor-evolution/",
+            "https://ceak.dev/tag/series-season3-incidents-that-broke-the-internet/"
+          ],
+          "added": []
+        }
+      }
+    },
+    {
+      "lang": "ko",
+      "name": "secondary-tags",
+      "regions": {
+        "secondary-tags-featured": {
+          "ssrUnique": 1,
+          "placeholder": false
+        },
+        "secondary-tags-grid": {
+          "ssrUnique": 111,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "featuredListOverlap": [],
+      "topicsWithRolePrefix": [],
+      "jsDesktop": {
+        "secondary-tags-featured": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "secondary-tags-grid": {
+          "unique": 111,
+          "setEqual": true,
+          "orderEqual": false,
+          "removed": [],
+          "added": []
+        }
+      },
+      "jsMobile": {
+        "secondary-tags-featured": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "secondary-tags-grid": {
+          "unique": 111,
+          "setEqual": true,
+          "orderEqual": false,
+          "removed": [],
+          "added": []
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "name": "explore",
+      "regions": {
+        "explore-categories-grid": {
+          "ssrUnique": 5,
+          "placeholder": false
+        },
+        "explore-series-list": {
+          "ssrUnique": 10,
+          "placeholder": false
+        },
+        "explore-topics-grid": {
+          "ssrUnique": 10,
+          "placeholder": false
+        },
+        "explore-recent-list": {
+          "ssrUnique": 5,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "jsDesktop": {
+        "explore-categories-grid": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "explore-series-list": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://en-signal.ceak.dev/tag/series-ai-dev-tools-text-editor-evolution/"
+          ],
+          "added": [
+            "https://en-signal.ceak.dev/tag/series-ai-era-software-production-structure/"
+          ]
+        },
+        "explore-topics-grid": {
+          "unique": 10,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "explore-recent-list": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      },
+      "jsMobile": {
+        "explore-categories-grid": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "explore-series-list": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://en-signal.ceak.dev/tag/series-ai-dev-tools-text-editor-evolution/"
+          ],
+          "added": [
+            "https://en-signal.ceak.dev/tag/series-ai-era-software-production-structure/"
+          ]
+        },
+        "explore-topics-grid": {
+          "unique": 10,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "explore-recent-list": {
+          "unique": 5,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "name": "categories",
+      "regions": {
+        "primary-featured-grid": {
+          "ssrUnique": 1,
+          "placeholder": false
+        },
+        "primary-list-grid": {
+          "ssrUnique": 4,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "featuredListOverlap": [],
+      "jsDesktop": {
+        "primary-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "primary-list-grid": {
+          "unique": 4,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      },
+      "paginationUnionEqualsSSR": true,
+      "jsMobile": {
+        "primary-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "primary-list-grid": {
+          "unique": 4,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "name": "series",
+      "regions": {
+        "series-featured-grid": {
+          "ssrUnique": 1,
+          "placeholder": false
+        },
+        "series-list-grid": {
+          "ssrUnique": 12,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "featuredListOverlap": [],
+      "jsDesktop": {
+        "series-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "series-list-grid": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://en-signal.ceak.dev/tag/series-developer-tool-supply-chain-attacks/",
+            "https://en-signal.ceak.dev/tag/series-season3-incidents-that-broke-the-internet/"
+          ],
+          "added": []
+        }
+      },
+      "paginationUnionEqualsSSR": true,
+      "jsMobile": {
+        "series-featured-grid": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "series-list-grid": {
+          "unique": 10,
+          "setEqual": false,
+          "orderEqual": false,
+          "removed": [
+            "https://en-signal.ceak.dev/tag/series-developer-tool-supply-chain-attacks/",
+            "https://en-signal.ceak.dev/tag/series-season3-incidents-that-broke-the-internet/"
+          ],
+          "added": []
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "name": "secondary-tags",
+      "regions": {
+        "secondary-tags-featured": {
+          "ssrUnique": 1,
+          "placeholder": false
+        },
+        "secondary-tags-grid": {
+          "ssrUnique": 111,
+          "placeholder": false
+        }
+      },
+      "crossHost": [],
+      "featuredListOverlap": [],
+      "topicsWithRolePrefix": [],
+      "jsDesktop": {
+        "secondary-tags-featured": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "secondary-tags-grid": {
+          "unique": 111,
+          "setEqual": true,
+          "orderEqual": false,
+          "removed": [],
+          "added": []
+        }
+      },
+      "jsMobile": {
+        "secondary-tags-featured": {
+          "unique": 1,
+          "setEqual": true,
+          "orderEqual": true,
+          "removed": [],
+          "added": []
+        },
+        "secondary-tags-grid": {
+          "unique": 111,
+          "setEqual": true,
+          "orderEqual": false,
+          "removed": [],
+          "added": []
+        }
+      }
+    }
+  ],
+  "api": [
+    {
+      "lang": "ko",
+      "tagTotal": 130,
+      "zeroPublic": [],
+      "positiveRoles": {
+        "categories": 5,
+        "series": 13,
+        "topics": 112
+      }
+    },
+    {
+      "lang": "en",
+      "tagTotal": 130,
+      "zeroPublic": [],
+      "positiveRoles": {
+        "categories": 5,
+        "series": 13,
+        "topics": 112
+      }
+    }
+  ],
+  "tagCounts": [
+    {
+      "lang": "ko",
+      "kind": "category",
+      "url": "https://ceak.dev/tag/category-essays/",
+      "last": "https://ceak.dev/tag/category-essays/page/7/",
+      "totalPages": 7,
+      "firstCount": 10,
+      "lastCount": 9,
+      "calculatedTotal": 69,
+      "status": 200,
+      "apiCount": 69,
+      "matches": true
+    },
+    {
+      "lang": "ko",
+      "kind": "series",
+      "url": "https://ceak.dev/tag/series-software-history-key-moments/",
+      "last": "https://ceak.dev/tag/series-software-history-key-moments/page/2/",
+      "totalPages": 2,
+      "firstCount": 10,
+      "lastCount": 6,
+      "calculatedTotal": 16,
+      "status": 200,
+      "apiCount": 16,
+      "matches": true
+    },
+    {
+      "lang": "ko",
+      "kind": "topic",
+      "url": "https://ceak.dev/tag/linux/",
+      "last": "https://ceak.dev/tag/linux/page/3/",
+      "totalPages": 3,
+      "firstCount": 10,
+      "lastCount": 7,
+      "calculatedTotal": 27,
+      "status": 200,
+      "apiCount": 27,
+      "matches": true
+    },
+    {
+      "lang": "en",
+      "kind": "category",
+      "url": "https://en-signal.ceak.dev/tag/category-essays/",
+      "last": "https://en-signal.ceak.dev/tag/category-essays/page/7/",
+      "totalPages": 7,
+      "firstCount": 10,
+      "lastCount": 9,
+      "calculatedTotal": 69,
+      "status": 200,
+      "apiCount": 69,
+      "matches": true
+    },
+    {
+      "lang": "en",
+      "kind": "series",
+      "url": "https://en-signal.ceak.dev/tag/series-software-history-key-moments/",
+      "last": "https://en-signal.ceak.dev/tag/series-software-history-key-moments/page/2/",
+      "totalPages": 2,
+      "firstCount": 10,
+      "lastCount": 6,
+      "calculatedTotal": 16,
+      "status": 200,
+      "apiCount": 16,
+      "matches": true
+    },
+    {
+      "lang": "en",
+      "kind": "topic",
+      "url": "https://en-signal.ceak.dev/tag/linux/",
+      "last": "https://en-signal.ceak.dev/tag/linux/page/3/",
+      "totalPages": 3,
+      "firstCount": 10,
+      "lastCount": 7,
+      "calculatedTotal": 27,
+      "status": 200,
+      "apiCount": 27,
+      "matches": true
+    }
+  ]
+}
