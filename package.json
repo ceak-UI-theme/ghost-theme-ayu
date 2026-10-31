@@ -145,7 +145,10 @@
         "test": "gscan .",
         "zip": "gulp zip",
         "deploy:ghost": "python3 scripts/deploy_theme.py",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "test:smoke": "node tests/theme-smoke.test.mjs",
+        "test:unit": "node tests/content-api-validation.test.cjs && node tests/hub-ssr.test.cjs && node tests/tag-coverage.test.cjs",
+        "test:fixture-browser": "playwright test --config tests/hub-playwright.config.mjs && playwright test --config tests/p2-playwright.config.mjs && playwright test --config tests/tag-coverage-playwright.config.mjs"
     },
     "devDependencies": {
         "@playwright/test": "^1.58.2",

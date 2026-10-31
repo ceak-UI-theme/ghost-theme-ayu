@@ -21,6 +21,7 @@ ZIP·스크린샷·원본 HTML·DB·임시 seed/deployment/rollback 실행 스�
 의존성은 package-lock.json을 사용한다. 아래 테스트는 운영/개발 DB를 변경하지 않고 fixture 브라우저에서 실행된다.
 
 ```sh
+npm run test:smoke
 node tests/content-api-validation.test.cjs
 node tests/hub-ssr.test.cjs
 node tests/tag-coverage.test.cjs
@@ -30,6 +31,6 @@ node node_modules/@playwright/test/cli.js test --config tests/tag-coverage-playw
 node node_modules/gulp/bin/gulp.js build
 ```
 
-합계341개(21+58+44+16+98+104). Playwright Chromium이 설치되어 있어야 한다. GScan은 Linux에서 Ghost6의 원본 GScan을 `checkVersion:v6`로 실행한다. `release-gate-2026-10-31/gscan-linux.cjs`는 `/theme`를 검사하는 원본 라이브러리 호출 어댑터이며 규칙을 수정하거나 우회하지 않는다. Docker를 사용할 경우 실제 테마 후보를 `/theme:ro`, 이 저장소를 `/deps:ro`로 마운트해 `node /deps/reports/release-gate-2026-10-31/gscan-linux.cjs /var/lib/ghost/current/node_modules/gscan v6`를 실행할 수 있다.
+기존 회귀341개(21+58+44+16+98+104)에 현대화된 Smoke18개를 더해 총359개다. Playwright Chromium이 설치되어 있어야 한다. GScan은 Linux에서 Ghost6의 원본 GScan을 `checkVersion:v6`로 실행한다. `release-gate-2026-10-31/gscan-linux.cjs`는 `/theme`를 검사하는 원본 라이브러리 호출 어댑터이며 규칙을 수정하거나 우회하지 않는다. Docker를 사용할 경우 실제 테마 후보를 `/theme:ro`, 이 저장소를 `/deps:ro`로 마운트해 `node /deps/reports/release-gate-2026-10-31/gscan-linux.cjs /var/lib/ghost/current/node_modules/gscan v6`를 실행할 수 있다.
 
-기존 `tests/theme-smoke.test.mjs`는 main에서도 사라진 categories.hbs/series.hbs를 읽는 별도의 오래된 검사다. 필수341개에 포함되지 않으며 현재 실행은 FAIL이다. 이를 숨기거나341개가 전체 저장소의 모든 테스트라는 뜻으로 해석하지 않는다. Linux GScan 게이트와 실제 Ghost 검증 결과는 보고서에서 별도로 구분한다.
+`tests/theme-smoke.test.mjs`의 과거 삭제 템플릿 참조 실패는 현행 SSR 구조를 검사하는18개 Smoke로 정비했다. 기존341개는 대체·축소하지 않았다. 최신 PR/CI 결과는 [PR readiness](ghost-p2-pr-readiness-2026-11-01.md), 전체 실행 체계는 [Testing guide](../docs/developer/Testing.md)를 참고한다. 과거 보고서의 FAIL은 당시 결과로 유지한다.

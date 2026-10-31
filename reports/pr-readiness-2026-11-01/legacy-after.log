@@ -1,0 +1,26 @@
+✔ tag detail keeps featured, latest, fallback and pagination (6.9513ms)
+✔ legacy archive/ad styles and current shared promo placement remain (0.6464ms)
+✔ categories: current route, blocks, taxonomy and partial graph (5.8985ms)
+✔ categories: compiled SSR exposes real public links in ko/en (62.2647ms)
+✔ series: current route, blocks, taxonomy and partial graph (1.5704ms)
+✔ series: compiled SSR exposes real public links in ko/en (23.5236ms)
+✔ secondary-tags: current route, blocks, taxonomy and partial graph (1.8897ms)
+✔ secondary-tags: compiled SSR exposes real public links in ko/en (35.5159ms)
+✔ explore: current route, blocks, taxonomy and partial graph (3.6949ms)
+✔ explore: compiled SSR exposes real public links in ko/en (31.9714ms)
+✔ categories: enhancement uses validated data and preserves SSR on failure (0.7235ms)
+✔ series: enhancement uses validated data and preserves SSR on failure (0.443ms)
+✔ secondary-tags: enhancement uses validated data and preserves SSR on failure (0.3473ms)
+✔ explore: enhancement uses validated data and preserves SSR on failure (0.3635ms)
+✔ hub SEO keeps Ghost canonical/schema while replacing social metadata (2.3086ms)
+✔ shared Content API contract retains completeness proof and collection caps (0.6044ms)
+✔ search and paginated hubs initialize query restoration and user history (1.4981ms)
+✔ theme bootstrap still initializes every hub and search (0.3647ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 189.6938

@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "steps": 10,
+  "triggers": [
+    "pull_request main",
+    "push main",
+    "workflow_dispatch"
+  ],
+  "readOnlyPermissions": true,
+  "productionSecrets": false,
+  "usesLiveGhost": false
+}
