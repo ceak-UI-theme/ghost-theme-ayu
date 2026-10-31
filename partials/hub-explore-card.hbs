@@ -1,0 +1,7 @@
+{{#match count.posts ">" 0}}
+{{#match kind "topic"}}
+<a class="explore-topic-card" href="{{url}}"><span class="explore-topic-icon"><img loading="lazy" src="{{#if feature_image}}{{img_url feature_image size="xs"}}{{else}}{{asset fallback}}{{/if}}" alt="{{name}}"></span><span class="explore-topic-name">{{name}}</span><span class="explore-topic-count">{{count.posts}} {{#match @custom.site_locale "ko"}}개 글{{else}}posts{{/match}}</span></a>
+{{else}}
+<article class="explore-card explore-card-{{kind}}"><a class="explore-card-media" href="{{url}}"><img class="explore-card-image" loading="lazy" src="{{#if feature_image}}{{img_url feature_image size="s"}}{{else}}{{asset fallback}}{{/if}}" alt="{{name}}"></a><div class="explore-card-body"><h3 class="explore-card-title"><a href="{{url}}">{{name}}</a></h3><p class="explore-card-desc">{{#if description}}{{description}}{{else}}{{#match kind "category"}}{{#match @custom.site_locale "ko"}}카테고리 글 모음{{else}}Category archive.{{/match}}{{else}}{{#match @custom.site_locale "ko"}}시리즈 글 모음{{else}}Series archive.{{/match}}{{/match}}{{/if}}</p><p class="explore-card-count">{{count.posts}} {{#match @custom.site_locale "ko"}}개 글{{else}}posts{{/match}}</p></div></article>
+{{/match}}
+{{/match}}

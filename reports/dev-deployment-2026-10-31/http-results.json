@@ -1,0 +1,350 @@
+[
+  {
+    "site": "primary",
+    "url": "http://172.22.0.199:2368/explore/",
+    "status": 200,
+    "finalURL": "http://172.22.0.199:2368/explore/",
+    "bytes": 25237,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://172.22.0.199:2368/explore/"
+      ],
+      "description": [
+        "카테고리, 시리즈, 주제 태그와 최근 글을 한곳에서 살펴보세요."
+      ],
+      "og:title": [
+        "탐색 | Signal Over Noise"
+      ],
+      "og:description": [
+        "카테고리, 시리즈, 주제 태그와 최근 글을 한곳에서 살펴보세요."
+      ],
+      "og:url": [
+        "http://172.22.0.199:2368/explore/"
+      ],
+      "title": "탐색 | Signal Over Noise",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 21,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "primary",
+    "url": "http://172.22.0.199:2368/categories/",
+    "status": 200,
+    "finalURL": "http://172.22.0.199:2368/categories/",
+    "bytes": 17939,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://172.22.0.199:2368/categories/"
+      ],
+      "description": [
+        "주제별 카테고리와 대표 글 모음을 찾아 관심 있는 분야의 글을 읽어보세요."
+      ],
+      "og:title": [
+        "카테고리 | Signal Over Noise"
+      ],
+      "og:description": [
+        "주제별 카테고리와 대표 글 모음을 찾아 관심 있는 분야의 글을 읽어보세요."
+      ],
+      "og:url": [
+        "http://172.22.0.199:2368/categories/"
+      ],
+      "title": "카테고리 | Signal Over Noise",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 6,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "primary",
+    "url": "http://172.22.0.199:2368/series/",
+    "status": 200,
+    "finalURL": "http://172.22.0.199:2368/series/",
+    "bytes": 17454,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://172.22.0.199:2368/series/"
+      ],
+      "description": [
+        "하나의 주제를 깊이 다루는 연재와 연결된 글을 순서대로 만나보세요."
+      ],
+      "og:title": [
+        "시리즈 | Signal Over Noise"
+      ],
+      "og:description": [
+        "하나의 주제를 깊이 다루는 연재와 연결된 글을 순서대로 만나보세요."
+      ],
+      "og:url": [
+        "http://172.22.0.199:2368/series/"
+      ],
+      "title": "시리즈 | Signal Over Noise",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 5,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "primary",
+    "url": "http://172.22.0.199:2368/secondary-tags/",
+    "status": 200,
+    "finalURL": "http://172.22.0.199:2368/secondary-tags/",
+    "bytes": 20110,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://172.22.0.199:2368/secondary-tags/"
+      ],
+      "description": [
+        "카테고리와 시리즈를 넘어 다양한 세부 주제의 태그와 관련 글을 찾아보세요."
+      ],
+      "og:title": [
+        "주제 태그 | Signal Over Noise"
+      ],
+      "og:description": [
+        "카테고리와 시리즈를 넘어 다양한 세부 주제의 태그와 관련 글을 찾아보세요."
+      ],
+      "og:url": [
+        "http://172.22.0.199:2368/secondary-tags/"
+      ],
+      "title": "주제 태그 | Signal Over Noise",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 17,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "ko",
+    "url": "http://localhost:2371/explore/",
+    "status": 200,
+    "finalURL": "http://localhost:2371/explore/",
+    "bytes": 28568,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2371/explore/"
+      ],
+      "description": [
+        "카테고리, 시리즈, 주제 태그와 최근 글을 한곳에서 살펴보세요."
+      ],
+      "og:title": [
+        "탐색 | Ghost"
+      ],
+      "og:description": [
+        "카테고리, 시리즈, 주제 태그와 최근 글을 한곳에서 살펴보세요."
+      ],
+      "og:url": [
+        "http://localhost:2371/explore/"
+      ],
+      "title": "탐색 | Ghost",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 30,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "ko",
+    "url": "http://localhost:2371/categories/",
+    "status": 200,
+    "finalURL": "http://localhost:2371/categories/",
+    "bytes": 158975,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2371/categories/"
+      ],
+      "description": [
+        "주제별 카테고리와 대표 글 모음을 찾아 관심 있는 분야의 글을 읽어보세요."
+      ],
+      "og:title": [
+        "카테고리 | Ghost"
+      ],
+      "og:description": [
+        "주제별 카테고리와 대표 글 모음을 찾아 관심 있는 분야의 글을 읽어보세요."
+      ],
+      "og:url": [
+        "http://localhost:2371/categories/"
+      ],
+      "title": "카테고리 | Ghost",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 225,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "ko",
+    "url": "http://localhost:2371/series/",
+    "status": 200,
+    "finalURL": "http://localhost:2371/series/",
+    "bytes": 155231,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2371/series/"
+      ],
+      "description": [
+        "하나의 주제를 깊이 다루는 연재와 연결된 글을 순서대로 만나보세요."
+      ],
+      "og:title": [
+        "시리즈 | Ghost"
+      ],
+      "og:description": [
+        "하나의 주제를 깊이 다루는 연재와 연결된 글을 순서대로 만나보세요."
+      ],
+      "og:url": [
+        "http://localhost:2371/series/"
+      ],
+      "title": "시리즈 | Ghost",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 225,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "ko",
+    "url": "http://localhost:2371/secondary-tags/",
+    "status": 200,
+    "finalURL": "http://localhost:2371/secondary-tags/",
+    "bytes": 95189,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2371/secondary-tags/"
+      ],
+      "description": [
+        "카테고리와 시리즈를 넘어 다양한 세부 주제의 태그와 관련 글을 찾아보세요."
+      ],
+      "og:title": [
+        "주제 태그 | Ghost"
+      ],
+      "og:description": [
+        "카테고리와 시리즈를 넘어 다양한 세부 주제의 태그와 관련 글을 찾아보세요."
+      ],
+      "og:url": [
+        "http://localhost:2371/secondary-tags/"
+      ],
+      "title": "주제 태그 | Ghost",
+      "lang": "ko"
+    },
+    "mainUniqueTagLinks": 226,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "en",
+    "url": "http://localhost:2372/explore/",
+    "status": 200,
+    "finalURL": "http://localhost:2372/explore/",
+    "bytes": 28284,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2372/explore/"
+      ],
+      "description": [
+        "Discover categories, series, topics and the latest posts in one place."
+      ],
+      "og:title": [
+        "Explore | Ghost"
+      ],
+      "og:description": [
+        "Discover categories, series, topics and the latest posts in one place."
+      ],
+      "og:url": [
+        "http://localhost:2372/explore/"
+      ],
+      "title": "Explore | Ghost",
+      "lang": "en"
+    },
+    "mainUniqueTagLinks": 30,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "en",
+    "url": "http://localhost:2372/categories/",
+    "status": 200,
+    "finalURL": "http://localhost:2372/categories/",
+    "bytes": 155896,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2372/categories/"
+      ],
+      "description": [
+        "Browse categories and featured collections to find posts in your areas of interest."
+      ],
+      "og:title": [
+        "Categories | Ghost"
+      ],
+      "og:description": [
+        "Browse categories and featured collections to find posts in your areas of interest."
+      ],
+      "og:url": [
+        "http://localhost:2372/categories/"
+      ],
+      "title": "Categories | Ghost",
+      "lang": "en"
+    },
+    "mainUniqueTagLinks": 225,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "en",
+    "url": "http://localhost:2372/series/",
+    "status": 200,
+    "finalURL": "http://localhost:2372/series/",
+    "bytes": 152585,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2372/series/"
+      ],
+      "description": [
+        "Explore in-depth series and read connected posts in sequence."
+      ],
+      "og:title": [
+        "Series | Ghost"
+      ],
+      "og:description": [
+        "Explore in-depth series and read connected posts in sequence."
+      ],
+      "og:url": [
+        "http://localhost:2372/series/"
+      ],
+      "title": "Series | Ghost",
+      "lang": "en"
+    },
+    "mainUniqueTagLinks": 225,
+    "wrongProductionMainLinks": []
+  },
+  {
+    "site": "en",
+    "url": "http://localhost:2372/secondary-tags/",
+    "status": 200,
+    "finalURL": "http://localhost:2372/secondary-tags/",
+    "bytes": 94520,
+    "contentType": "text/html; charset=utf-8",
+    "head": {
+      "canonical": [
+        "http://localhost:2372/secondary-tags/"
+      ],
+      "description": [
+        "Find supporting topic tags and related posts beyond categories and series."
+      ],
+      "og:title": [
+        "Topics | Ghost"
+      ],
+      "og:description": [
+        "Find supporting topic tags and related posts beyond categories and series."
+      ],
+      "og:url": [
+        "http://localhost:2372/secondary-tags/"
+      ],
+      "title": "Topics | Ghost",
+      "lang": "en"
+    },
+    "mainUniqueTagLinks": 226,
+    "wrongProductionMainLinks": []
+  }
+]

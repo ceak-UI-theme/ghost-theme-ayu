@@ -1,50 +1,59 @@
 {{!< default}}
-{{#contentFor "head"}}
-    <meta property="og:title" content="{{meta_title}}">
-    <meta property="og:description" content="{{meta_description}}">
-    {{#if @site.cover_image}}
-        <meta property="og:image" content="{{img_url @site.cover_image size="l" absolute="true"}}">
-    {{else}}
-        <meta property="og:image" content="{{@site.url}}/assets/images/fallback/post-default.png">
-    {{/if}}
-    <link rel="canonical" href="{{url absolute="true"}}">
+{{#contentFor "hub-title"}}{{#match @custom.site_locale "ko"}}탐색{{else}}Explore{{/match}} | {{@site.title}}{{/contentFor}}
+{{#contentFor "hub-meta"}}
+{{#match @custom.site_locale "ko"}}
+{{> "hub-seo" title="탐색" description="카테고리, 시리즈, 주제 태그와 최근 글을 한곳에서 살펴보세요." path="/explore/"}}
+{{else}}
+{{> "hub-seo" title="Explore" description="Discover categories, series, topics and the latest posts in one place." path="/explore/"}}
+{{/match}}
 {{/contentFor}}
-
 <div class="gh-outer">
-<main class="site-main gh-inner explore-page">
+<main data-hub-locale="{{@custom.site_locale}}" class="site-main gh-inner explore-page">
     <section class="term term-tag-header explore-header">
-        <h1 class="term-name">Explore</h1>
-        <div class="term-description">Discover categories, series, topics and writing.</div>
+        <h1 class="term-name">{{#match @custom.site_locale "ko"}}탐색{{else}}Explore{{/match}}</h1>
+        <div class="term-description">{{#match @custom.site_locale "ko"}}카테고리, 시리즈, 주제와 최근 글을 살펴보세요.{{else}}Discover categories, series, topics and writing.{{/match}}</div>
     </section>
 
-    <nav class="explore-quick-links" aria-label="Explore sections">
-        <a href="#explore-categories">Categories</a>
-        <a href="#explore-series">Series</a>
-        <a href="#explore-topics">Topics</a>
-        <a href="#explore-recent">Recent</a>
+    <nav class="explore-quick-links" aria-label="{{#match @custom.site_locale "ko"}}탐색 영역{{else}}Explore sections{{/match}}">
+        <a href="#explore-categories">{{#match @custom.site_locale "ko"}}카테고리{{else}}Categories{{/match}}</a>
+        <a href="#explore-series">{{#match @custom.site_locale "ko"}}시리즈{{else}}Series{{/match}}</a>
+        <a href="#explore-topics">{{#match @custom.site_locale "ko"}}주제 태그{{else}}Topics{{/match}}</a>
+        <a href="#explore-recent">{{#match @custom.site_locale "ko"}}최근 글{{else}}Recent{{/match}}</a>
     </nav>
 
-    <section id="explore-categories" class="explore-section" aria-label="Categories">
-        <h2 class="explore-section-title">Categories</h2>
-        <div id="explore-categories-grid" class="explore-grid explore-grid-two"></div>
-        <a id="explore-categories-more" class="explore-section-more gh-btn" href="/categories/" hidden>More categories</a>
+    <section id="explore-categories" class="explore-section" aria-label="{{#match @custom.site_locale "ko"}}카테고리{{else}}Categories{{/match}}">
+        <h2 class="explore-section-title">{{#match @custom.site_locale "ko"}}카테고리{{else}}Categories{{/match}}</h2>
+        <div id="explore-categories-grid" class="explore-grid explore-grid-two">{{#get "tags" filter="visibility:public+slug:~^'category-'" include="count.posts" order="count.posts desc,name asc,slug asc" limit="10"}}
+{{#foreach tags}}
+{{> "hub-explore-card" kind="category" fallback="images/fallback/primary-tag-default.png"}}
+{{else}}<p class="term-empty">{{#match @custom.site_locale "ko"}}아직 항목이 없습니다.{{else}}No items yet.{{/match}}</p>{{/foreach}}
+{{/get}}</div>
+        <a id="explore-categories-more" class="explore-section-more gh-btn" href="{{@site.url}}/categories/">{{#match @custom.site_locale "ko"}}카테고리 더 보기{{else}}More categories{{/match}}</a>
     </section>
 
-    <section id="explore-series" class="explore-section" aria-label="Series">
-        <h2 class="explore-section-title">Series</h2>
-        <div id="explore-series-list" class="explore-series-list"></div>
-        <a id="explore-series-more" class="explore-section-more gh-btn" href="/series/" hidden>More series</a>
+    <section id="explore-series" class="explore-section" aria-label="{{#match @custom.site_locale "ko"}}시리즈{{else}}Series{{/match}}">
+        <h2 class="explore-section-title">{{#match @custom.site_locale "ko"}}시리즈{{else}}Series{{/match}}</h2>
+        <div id="explore-series-list" class="explore-series-list">{{#get "tags" filter="visibility:public+slug:~^'series-'" include="count.posts" order="count.posts desc,name asc,slug asc" limit="10"}}
+{{#foreach tags}}
+{{> "hub-explore-card" kind="series" fallback="images/fallback/series-tag-default.png"}}
+{{else}}<p class="term-empty">{{#match @custom.site_locale "ko"}}아직 항목이 없습니다.{{else}}No items yet.{{/match}}</p>{{/foreach}}
+{{/get}}</div>
+        <a id="explore-series-more" class="explore-section-more gh-btn" href="{{@site.url}}/series/">{{#match @custom.site_locale "ko"}}시리즈 더 보기{{else}}More series{{/match}}</a>
     </section>
 
-    <section id="explore-topics" class="explore-section" aria-label="Topics">
-        <h2 class="explore-section-title">Topics</h2>
-        <div id="explore-topics-grid" class="explore-grid explore-grid-two explore-topics-grid"></div>
-        <a id="explore-topics-more" class="explore-section-more gh-btn" href="/secondary-tags/" hidden>More topics</a>
+    <section id="explore-topics" class="explore-section" aria-label="{{#match @custom.site_locale "ko"}}주제 태그{{else}}Topics{{/match}}">
+        <h2 class="explore-section-title">{{#match @custom.site_locale "ko"}}주제 태그{{else}}Topics{{/match}}</h2>
+        <div id="explore-topics-grid" class="explore-grid explore-grid-two explore-topics-grid">{{#get "tags" filter="visibility:public+slug:-~^'category-'+slug:-~^'series-'" include="count.posts" order="count.posts desc,name asc,slug asc" limit="10"}}
+{{#foreach tags}}
+{{> "hub-explore-card" kind="topic" fallback="images/fallback/secondary-tag-default.png"}}
+{{else}}<p class="term-empty">{{#match @custom.site_locale "ko"}}아직 항목이 없습니다.{{else}}No items yet.{{/match}}</p>{{/foreach}}
+{{/get}}</div>
+        <a id="explore-topics-more" class="explore-section-more gh-btn" href="{{@site.url}}/secondary-tags/">{{#match @custom.site_locale "ko"}}주제 더 보기{{else}}More topics{{/match}}</a>
     </section>
 
-    <section id="explore-recent" class="explore-section" aria-label="Recent posts">
-        <h2 class="explore-section-title">Recent posts</h2>
-        <ul id="explore-recent-list" class="explore-recent-list"></ul>
+    <section id="explore-recent" class="explore-section" aria-label="{{#match @custom.site_locale "ko"}}최근 글{{else}}Recent posts{{/match}}">
+        <h2 class="explore-section-title">{{#match @custom.site_locale "ko"}}최근 글{{else}}Recent posts{{/match}}</h2>
+        <ul id="explore-recent-list" class="explore-recent-list">{{#get "posts" limit="5" order="published_at desc"}}{{#foreach posts}}<li class="explore-recent-item"><a class="explore-recent-link" href="{{url}}"><span class="explore-recent-arrow" aria-hidden="true">&rarr;</span><span class="explore-recent-title">{{title}}</span><time class="explore-recent-date" datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY-MM-DD"}}</time></a></li>{{else}}<li class="term-empty">{{#match @custom.site_locale "ko"}}최근 글이 없습니다.{{else}}No recent posts.{{/match}}</li>{{/foreach}}{{/get}}</ul>
     </section>
 </main>
 </div>

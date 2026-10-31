@@ -1,0 +1,941 @@
+{
+  "sourceEvidence": "reports/dev-deployment-2026-10-31/dev-api-draft.json",
+  "sourceSha256": "f4a6d1951cf3e28d40f745002edbae36362e33d1a9bdb82e3a6121a18aef85a0",
+  "started": "2026-10-31T15:06:48.047Z",
+  "finished": "2026-10-31T15:06:51.788Z",
+  "sourceSha256OfCollector": "da8ac8424ef3cdb2dde3af25912bf2fee4013b91404714ccae94aac2e213bb40",
+  "sites": [
+    {
+      "lang": "ko",
+      "host": "http://localhost:2371",
+      "htmlStatus": 200,
+      "profiles": [
+        {
+          "name": "search",
+          "status": "PASS",
+          "items": 112,
+          "networkRequests": 2,
+          "uniqueIds": 112,
+          "duplicates": 0
+        },
+        {
+          "name": "categories",
+          "status": "PASS",
+          "items": 676,
+          "verification": {
+            "posts": 112,
+            "activePublicTags": 676,
+            "expiresAt": 1793459809229
+          },
+          "networkRequests": 9,
+          "uniqueIds": 676,
+          "duplicates": 0,
+          "positiveRoles": {
+            "categories": 225,
+            "series": 225,
+            "topics": 226
+          },
+          "zeroPublic": []
+        },
+        {
+          "name": "series-topics",
+          "status": "PASS",
+          "items": 676,
+          "verification": {
+            "posts": 112,
+            "activePublicTags": 676,
+            "expiresAt": 1793459809229
+          },
+          "networkRequests": 7,
+          "uniqueIds": 676,
+          "duplicates": 0,
+          "positiveRoles": {
+            "categories": 225,
+            "series": 225,
+            "topics": 226
+          },
+          "zeroPublic": []
+        },
+        {
+          "name": "explore-tags",
+          "status": "PASS",
+          "items": 676,
+          "verification": {
+            "posts": 112,
+            "activePublicTags": 676,
+            "expiresAt": 1793459809229
+          },
+          "networkRequests": 0,
+          "uniqueIds": 676,
+          "duplicates": 0,
+          "positiveRoles": {
+            "categories": 225,
+            "series": 225,
+            "topics": 226
+          },
+          "zeroPublic": []
+        },
+        {
+          "name": "explore-recent",
+          "status": "PASS",
+          "items": 8,
+          "networkRequests": 1,
+          "uniqueIds": 8,
+          "duplicates": 0
+        }
+      ],
+      "generator": "Ghost 6.73",
+      "proofPersisted": false,
+      "allCollectionsCompatible": true,
+      "requests": [
+        {
+          "profile": "search",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+            "include": "tags,authors",
+            "limit": "100",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "search",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+            "include": "tags,authors",
+            "limit": "100",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 12,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": null,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 3,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "3"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 3,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 4,
+            "prev": 2
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "4"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 4,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 5,
+            "prev": 3
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "5"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 5,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 6,
+            "prev": 4
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "6"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 6,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 7,
+            "prev": 5
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "7"
+          },
+          "status": 200,
+          "arrayLength": 76,
+          "pagination": {
+            "page": 7,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": null,
+            "prev": 6
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url",
+            "include": "tags",
+            "limit": "100",
+            "order": "id asc",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url",
+            "include": "tags",
+            "limit": "100",
+            "order": "id asc",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 12,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": null,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 3,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "3"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 3,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 4,
+            "prev": 2
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "4"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 4,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 5,
+            "prev": 3
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "5"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 5,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 6,
+            "prev": 4
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "6"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 6,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 7,
+            "prev": 5
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "7"
+          },
+          "status": 200,
+          "arrayLength": 76,
+          "pagination": {
+            "page": 7,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": null,
+            "prev": 6
+          }
+        },
+        {
+          "profile": "explore-recent",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url,published_at",
+            "limit": "8",
+            "order": "published_at desc"
+          },
+          "status": 200,
+          "arrayLength": 8,
+          "pagination": {
+            "page": 1,
+            "limit": 8,
+            "pages": 14,
+            "total": 112,
+            "next": 2,
+            "prev": null
+          }
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "host": "http://localhost:2372",
+      "htmlStatus": 200,
+      "profiles": [
+        {
+          "name": "search",
+          "status": "PASS",
+          "items": 112,
+          "networkRequests": 2,
+          "uniqueIds": 112,
+          "duplicates": 0
+        },
+        {
+          "name": "categories",
+          "status": "PASS",
+          "items": 676,
+          "verification": {
+            "posts": 112,
+            "activePublicTags": 676,
+            "expiresAt": 1793459811044
+          },
+          "networkRequests": 9,
+          "uniqueIds": 676,
+          "duplicates": 0,
+          "positiveRoles": {
+            "categories": 225,
+            "series": 225,
+            "topics": 226
+          },
+          "zeroPublic": []
+        },
+        {
+          "name": "series-topics",
+          "status": "PASS",
+          "items": 676,
+          "verification": {
+            "posts": 112,
+            "activePublicTags": 676,
+            "expiresAt": 1793459811044
+          },
+          "networkRequests": 7,
+          "uniqueIds": 676,
+          "duplicates": 0,
+          "positiveRoles": {
+            "categories": 225,
+            "series": 225,
+            "topics": 226
+          },
+          "zeroPublic": []
+        },
+        {
+          "name": "explore-tags",
+          "status": "PASS",
+          "items": 676,
+          "verification": {
+            "posts": 112,
+            "activePublicTags": 676,
+            "expiresAt": 1793459811044
+          },
+          "networkRequests": 0,
+          "uniqueIds": 676,
+          "duplicates": 0,
+          "positiveRoles": {
+            "categories": 225,
+            "series": 225,
+            "topics": 226
+          },
+          "zeroPublic": []
+        },
+        {
+          "name": "explore-recent",
+          "status": "PASS",
+          "items": 8,
+          "networkRequests": 1,
+          "uniqueIds": 8,
+          "duplicates": 0
+        }
+      ],
+      "generator": "Ghost 6.73",
+      "proofPersisted": false,
+      "allCollectionsCompatible": true,
+      "requests": [
+        {
+          "profile": "search",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+            "include": "tags,authors",
+            "limit": "100",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "search",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+            "include": "tags,authors",
+            "limit": "100",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 12,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": null,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 3,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "3"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 3,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 4,
+            "prev": 2
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "4"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 4,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 5,
+            "prev": 3
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "5"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 5,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 6,
+            "prev": 4
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "6"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 6,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 7,
+            "prev": 5
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "name asc,slug asc",
+            "page": "7"
+          },
+          "status": 200,
+          "arrayLength": 76,
+          "pagination": {
+            "page": 7,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": null,
+            "prev": 6
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url",
+            "include": "tags",
+            "limit": "100",
+            "order": "id asc",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "categories",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url",
+            "include": "tags",
+            "limit": "100",
+            "order": "id asc",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 12,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 2,
+            "total": 112,
+            "next": null,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "1"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 1,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 2,
+            "prev": null
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "2"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 2,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 3,
+            "prev": 1
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "3"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 3,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 4,
+            "prev": 2
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "4"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 4,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 5,
+            "prev": 3
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "5"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 5,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 6,
+            "prev": 4
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "6"
+          },
+          "status": 200,
+          "arrayLength": 100,
+          "pagination": {
+            "page": 6,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": 7,
+            "prev": 5
+          }
+        },
+        {
+          "profile": "series-topics",
+          "path": "/ghost/api/content/tags/",
+          "query": {
+            "include": "count.posts",
+            "limit": "100",
+            "order": "count.posts desc,name asc,slug asc",
+            "page": "7"
+          },
+          "status": 200,
+          "arrayLength": 76,
+          "pagination": {
+            "page": 7,
+            "limit": 100,
+            "pages": 7,
+            "total": 678,
+            "next": null,
+            "prev": 6
+          }
+        },
+        {
+          "profile": "explore-recent",
+          "path": "/ghost/api/content/posts/",
+          "query": {
+            "fields": "id,title,slug,url,published_at",
+            "limit": "8",
+            "order": "published_at desc"
+          },
+          "status": 200,
+          "arrayLength": 8,
+          "pagination": {
+            "page": 1,
+            "limit": 8,
+            "pages": 14,
+            "total": 112,
+            "next": 2,
+            "prev": null
+          }
+        }
+      ]
+    }
+  ]
+}

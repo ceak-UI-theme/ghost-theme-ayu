@@ -1,0 +1,3 @@
+{{#match count.posts ">" 0}}
+<a class="secondary-tag-card" href="{{url}}" title="{{name}}"><span class="secondary-tag-thumb"><img class="secondary-tag-thumb-image" loading="lazy" src="{{#if feature_image}}{{img_url feature_image size="xs"}}{{else}}{{asset "images/fallback/secondary-tag-default.png"}}{{/if}}" alt="{{name}}"></span><span class="secondary-tag-name">{{name}}</span><span class="explore-topic-count">{{count.posts}} {{#match @custom.site_locale "ko"}}개 글{{else}}posts{{/match}}</span></a>
+{{/match}}

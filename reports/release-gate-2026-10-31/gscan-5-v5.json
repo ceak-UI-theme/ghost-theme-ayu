@@ -1,0 +1,37 @@
+{
+  "platform": "linux",
+  "node": "v22.23.4",
+  "gscan": "5.2.5",
+  "checkVersion": "v5",
+  "errors": [],
+  "warnings": [],
+  "recommendations": [
+    {
+      "fatal": false,
+      "level": "recommendation",
+      "rule": "<code>package.json</code> objects defined in <code>\"config.custom\"</code> should have a known <code>\"group\"</code>.",
+      "details": "Only use the following groups: <code>\"post\"</code>, <code>\"homepage\"</code>.<br>Check the <a href=\"https://ghost.org/docs/themes/structure/#package-json\" target=_blank><code>package.json</code> documentation</a> for further information.",
+      "failures": [
+        {
+          "ref": "package.json"
+        }
+      ],
+      "code": "GS010-PJ-CUST-THEME-SETTINGS-GROUP"
+    }
+  ],
+  "partialFiles": [
+    {
+      "file": "partials/hub-category-pages.hbs",
+      "isPartialIn090": true
+    },
+    {
+      "file": "partials/hub-series-pages.hbs",
+      "isPartialIn090": true
+    },
+    {
+      "file": "partials/hub-topic-pages.hbs",
+      "isPartialIn090": true
+    }
+  ],
+  "status": "PASS"
+}

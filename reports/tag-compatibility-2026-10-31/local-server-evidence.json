@@ -1,0 +1,33 @@
+{
+  "pages": [
+    {
+      "status": 200,
+      "page": 1,
+      "items": 100,
+      "pagination": {
+        "page": 1,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": 2,
+        "prev": null
+      }
+    },
+    {
+      "status": 200,
+      "page": 7,
+      "items": 76,
+      "pagination": {
+        "page": 7,
+        "limit": 100,
+        "pages": 7,
+        "total": 678,
+        "next": null,
+        "prev": 6
+      }
+    }
+  ],
+  "servedJsSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+  "localJsSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+  "same": true
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1.0.1",
+  "zip": "dist/signal-wave-ayu-1.0.1.zip",
+  "zipSha256": "6a6f4ef78e15197740df456e761b605a5c87a30388fcc881a888b0b92b53b351",
+  "jsSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+  "developmentZipSha256": "281bda59f8099558131937b444b9029facb10c33770aeaa89bc13c2c849ea67d",
+  "developmentJsSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+  "changedArchiveFiles": [
+    "package.json"
+  ],
+  "packageOnlyVersionChanged": true,
+  "sameFunctionality": true,
+  "files": 123
+}

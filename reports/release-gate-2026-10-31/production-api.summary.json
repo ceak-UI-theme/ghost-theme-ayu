@@ -1,0 +1,450 @@
+{
+  "sourceEvidence": "reports/release-gate-2026-10-31/production-api.json",
+  "note": "ID/slug arrays omitted; collection uniqueness/coverage results and pagination preserved",
+  "sourceFileSha256": "e7655d33cd122adf5dda974cccd8b57b0ca1229e714d1cc2f562348d8979277a",
+  "data": {
+    "started": "2026-10-31T10:11:55.269Z",
+    "sourceSha256": "f5b026a256e577f28dfe1aed2fb306c0cea4fdb6c9ed0c3920f2fbcb6faf45b8",
+    "sites": [
+      {
+        "lang": "ko",
+        "host": "https://ceak.dev",
+        "htmlStatus": 200,
+        "profiles": [
+          {
+            "name": "search",
+            "status": "PASS",
+            "items": 112,
+            "uniqueIds": 112,
+            "duplicates": 0
+          },
+          {
+            "name": "categories",
+            "status": "FAIL",
+            "error": "Invalid or incomplete Content API pagination"
+          },
+          {
+            "name": "series-topics",
+            "status": "FAIL",
+            "error": "Invalid or incomplete Content API pagination"
+          },
+          {
+            "name": "explore-tags",
+            "status": "FAIL",
+            "error": "Invalid or incomplete Content API pagination"
+          },
+          {
+            "name": "explore-recent",
+            "status": "PASS",
+            "items": 8,
+            "uniqueIds": 8,
+            "duplicates": 0
+          }
+        ],
+        "requests": [
+          {
+            "profile": "search",
+            "path": "/ghost/api/content/posts/",
+            "query": {
+              "include": "tags,authors",
+              "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+              "limit": "100",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 112,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "search",
+            "path": "/ghost/api/content/posts/",
+            "query": {
+              "include": "tags,authors",
+              "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+              "limit": "100",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 12,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 112,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "categories",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "name asc,slug asc",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 151,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "categories",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "name asc,slug asc",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 35,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 151,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "series-topics",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 151,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "series-topics",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 35,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 151,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "explore-tags",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "limit": "100",
+              "include": "count.posts",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 151,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "explore-tags",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "limit": "100",
+              "include": "count.posts",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 35,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 151,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "explore-recent",
+            "path": "/ghost/api/content/posts/",
+            "query": {
+              "fields": "id,title,slug,url,published_at",
+              "limit": "8",
+              "order": "published_at desc"
+            },
+            "status": 200,
+            "arrayLength": 8,
+            "pagination": {
+              "page": 1,
+              "limit": 8,
+              "pages": 14,
+              "total": 112,
+              "next": 2,
+              "prev": null
+            }
+          }
+        ],
+        "generator": "Ghost 6.69",
+        "allCollectionsCompatible": false
+      },
+      {
+        "lang": "en",
+        "host": "https://en-signal.ceak.dev",
+        "htmlStatus": 200,
+        "profiles": [
+          {
+            "name": "search",
+            "status": "PASS",
+            "items": 112,
+            "uniqueIds": 112,
+            "duplicates": 0
+          },
+          {
+            "name": "categories",
+            "status": "FAIL",
+            "error": "Invalid or incomplete Content API pagination"
+          },
+          {
+            "name": "series-topics",
+            "status": "FAIL",
+            "error": "Invalid or incomplete Content API pagination"
+          },
+          {
+            "name": "explore-tags",
+            "status": "FAIL",
+            "error": "Invalid or incomplete Content API pagination"
+          },
+          {
+            "name": "explore-recent",
+            "status": "PASS",
+            "items": 8,
+            "uniqueIds": 8,
+            "duplicates": 0
+          }
+        ],
+        "requests": [
+          {
+            "profile": "search",
+            "path": "/ghost/api/content/posts/",
+            "query": {
+              "include": "tags,authors",
+              "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+              "limit": "100",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 112,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "search",
+            "path": "/ghost/api/content/posts/",
+            "query": {
+              "include": "tags,authors",
+              "fields": "id,title,slug,url,published_at,excerpt,custom_excerpt,feature_image,feature_image_alt",
+              "limit": "100",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 12,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 112,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "categories",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "name asc,slug asc",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 148,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "categories",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "name asc,slug asc",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 35,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 148,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "series-topics",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 148,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "series-topics",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "include": "count.posts",
+              "limit": "100",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 35,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 148,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "explore-tags",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "limit": "100",
+              "include": "count.posts",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "1"
+            },
+            "status": 200,
+            "arrayLength": 100,
+            "pagination": {
+              "page": 1,
+              "limit": 100,
+              "pages": 2,
+              "total": 148,
+              "next": 2,
+              "prev": null
+            }
+          },
+          {
+            "profile": "explore-tags",
+            "path": "/ghost/api/content/tags/",
+            "query": {
+              "limit": "100",
+              "include": "count.posts",
+              "order": "count.posts desc,name asc,slug asc",
+              "page": "2"
+            },
+            "status": 200,
+            "arrayLength": 35,
+            "pagination": {
+              "page": 2,
+              "limit": 100,
+              "pages": 2,
+              "total": 148,
+              "next": null,
+              "prev": 1
+            }
+          },
+          {
+            "profile": "explore-recent",
+            "path": "/ghost/api/content/posts/",
+            "query": {
+              "fields": "id,title,slug,url,published_at",
+              "limit": "8",
+              "order": "published_at desc"
+            },
+            "status": 200,
+            "arrayLength": 8,
+            "pagination": {
+              "page": 1,
+              "limit": 8,
+              "pages": 14,
+              "total": 112,
+              "next": 2,
+              "prev": null
+            }
+          }
+        ],
+        "generator": "Ghost 6.69",
+        "allCollectionsCompatible": false
+      }
+    ],
+    "finished": "2026-10-31T10:12:26.551Z"
+  }
+}

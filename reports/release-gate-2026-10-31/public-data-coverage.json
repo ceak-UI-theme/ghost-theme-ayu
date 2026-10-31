@@ -1,0 +1,154 @@
+[
+  {
+    "lang": "ko",
+    "host": "https://ceak.dev",
+    "tagsPages": [
+      {
+        "status": 200,
+        "page": 1,
+        "arrayLength": 100,
+        "pagination": {
+          "page": 1,
+          "limit": 100,
+          "pages": 2,
+          "total": 151,
+          "next": 2,
+          "prev": null
+        }
+      },
+      {
+        "status": 200,
+        "page": 2,
+        "arrayLength": 35,
+        "pagination": {
+          "page": 2,
+          "limit": 100,
+          "pages": 2,
+          "total": 151,
+          "next": null,
+          "prev": 1
+        }
+      }
+    ],
+    "postsPages": [
+      {
+        "status": 200,
+        "page": 1,
+        "arrayLength": 100,
+        "pagination": {
+          "page": 1,
+          "limit": 100,
+          "pages": 2,
+          "total": 112,
+          "next": 2,
+          "prev": null
+        }
+      },
+      {
+        "status": 200,
+        "page": 2,
+        "arrayLength": 12,
+        "pagination": {
+          "page": 2,
+          "limit": 100,
+          "pages": 2,
+          "total": 112,
+          "next": null,
+          "prev": 1
+        }
+      }
+    ],
+    "posts": 112,
+    "uniquePosts": 112,
+    "returnedTags": 135,
+    "uniqueTags": 135,
+    "publishedPublicTagIds": 135,
+    "missingActiveIds": [],
+    "unreferencedPositiveIds": [],
+    "countMismatches": [],
+    "slugMismatches": [],
+    "positiveRoles": {
+      "categories": 5,
+      "series": 14,
+      "topics": 116
+    },
+    "zeroPublic": 0,
+    "coverageMatches": true
+  },
+  {
+    "lang": "en",
+    "host": "https://en-signal.ceak.dev",
+    "tagsPages": [
+      {
+        "status": 200,
+        "page": 1,
+        "arrayLength": 100,
+        "pagination": {
+          "page": 1,
+          "limit": 100,
+          "pages": 2,
+          "total": 148,
+          "next": 2,
+          "prev": null
+        }
+      },
+      {
+        "status": 200,
+        "page": 2,
+        "arrayLength": 35,
+        "pagination": {
+          "page": 2,
+          "limit": 100,
+          "pages": 2,
+          "total": 148,
+          "next": null,
+          "prev": 1
+        }
+      }
+    ],
+    "postsPages": [
+      {
+        "status": 200,
+        "page": 1,
+        "arrayLength": 100,
+        "pagination": {
+          "page": 1,
+          "limit": 100,
+          "pages": 2,
+          "total": 112,
+          "next": 2,
+          "prev": null
+        }
+      },
+      {
+        "status": 200,
+        "page": 2,
+        "arrayLength": 12,
+        "pagination": {
+          "page": 2,
+          "limit": 100,
+          "pages": 2,
+          "total": 112,
+          "next": null,
+          "prev": 1
+        }
+      }
+    ],
+    "posts": 112,
+    "uniquePosts": 112,
+    "returnedTags": 135,
+    "uniqueTags": 135,
+    "publishedPublicTagIds": 135,
+    "missingActiveIds": [],
+    "unreferencedPositiveIds": [],
+    "countMismatches": [],
+    "slugMismatches": [],
+    "positiveRoles": {
+      "categories": 5,
+      "series": 14,
+      "topics": 116
+    },
+    "zeroPublic": 0,
+    "coverageMatches": true
+  }
+]

@@ -1,0 +1,21 @@
+
+Running 16 tests using 1 worker
+
+  ok  1 tests\hub-browser.spec.mjs:5:2 › categories ko: mobile SSR, enhancement, HTTP failure and history (739ms)
+  ok  2 tests\hub-browser.spec.mjs:37:2 › categories ko: JavaScript disabled (168ms)
+  ok  3 tests\hub-browser.spec.mjs:5:2 › categories en: mobile SSR, enhancement, HTTP failure and history (548ms)
+  ok  4 tests\hub-browser.spec.mjs:37:2 › categories en: JavaScript disabled (190ms)
+  ok  5 tests\hub-browser.spec.mjs:5:2 › series ko: mobile SSR, enhancement, HTTP failure and history (527ms)
+  ok  6 tests\hub-browser.spec.mjs:37:2 › series ko: JavaScript disabled (218ms)
+  ok  7 tests\hub-browser.spec.mjs:5:2 › series en: mobile SSR, enhancement, HTTP failure and history (483ms)
+  ok  8 tests\hub-browser.spec.mjs:37:2 › series en: JavaScript disabled (168ms)
+  ok  9 tests\hub-browser.spec.mjs:5:2 › secondary-tags ko: mobile SSR, enhancement, HTTP failure and history (473ms)
+  ok 10 tests\hub-browser.spec.mjs:37:2 › secondary-tags ko: JavaScript disabled (161ms)
+  ok 11 tests\hub-browser.spec.mjs:5:2 › secondary-tags en: mobile SSR, enhancement, HTTP failure and history (421ms)
+  ok 12 tests\hub-browser.spec.mjs:37:2 › secondary-tags en: JavaScript disabled (177ms)
+  ok 13 tests\hub-browser.spec.mjs:5:2 › explore ko: mobile SSR, enhancement, HTTP failure and history (497ms)
+  ok 14 tests\hub-browser.spec.mjs:37:2 › explore ko: JavaScript disabled (120ms)
+  ok 15 tests\hub-browser.spec.mjs:5:2 › explore en: mobile SSR, enhancement, HTTP failure and history (432ms)
+  ok 16 tests\hub-browser.spec.mjs:37:2 › explore en: JavaScript disabled (117ms)
+
+  16 passed (7.5s)

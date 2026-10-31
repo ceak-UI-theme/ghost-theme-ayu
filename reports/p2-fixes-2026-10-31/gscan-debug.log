@@ -1,0 +1,26 @@
+RangeError: Maximum call stack size exceeded
+    at Object.checkAll [as check] (D:\workspace\02.works\ghost-theme-ayu\node_modules\gscan\lib\checker.js:67:15)
+    at D:\workspace\02.works\ghost-theme-ayu\node_modules\gscan\lib\ast-linter\rules\base.js:82:50
+    at D:\workspace\02.works\ghost-theme-ayu\node_modules\gscan\lib\ast-linter\rules\base.js:98:53
+    at Array.forEach (<anonymous>)
+    at visitor.<computed> (D:\workspace\02.works\ghost-theme-ayu\node_modules\gscan\lib\ast-linter\rules\base.js:98:39)
+    at D:\workspace\02.works\ghost-theme-ayu\node_modules\gscan\lib\ast-linter\linter.js:86:51
+    at Array.forEach (<anonymous>)
+    at Scanner.<computed> [as BlockStatement] (D:\workspace\02.works\ghost-theme-ayu\node_modules\gscan\lib\ast-linter\linter.js:84:30)
+    at Scanner.accept (D:\workspace\02.works\ghost-theme-ayu\node_modules\handlebars\dist\cjs\handlebars\compiler\visitor.js:72:32)
+    at Scanner.acceptKey (D:\workspace\02.works\ghost-theme-ayu\node_modules\handlebars\dist\cjs\handlebars\compiler\visitor.js:22:22)
+    at Scanner.acceptArray (D:\workspace\02.works\ghost-theme-ayu\node_modules\handlebars\dist\cjs\handlebars\compiler\visitor.js:47:12) {
+  statusCode: 422,
+  errorType: 'ValidationError',
+  level: 'normal',
+  id: 'a36e67b0-d4ef-11f1-8c6b-79b12829cc64',
+  context: undefined,
+  help: 'Your theme file structure is corrupted or contains errors',
+  errorDetails: 'Maximum call stack size exceeded',
+  code: null,
+  property: null,
+  redirect: null,
+  hideStack: false,
+  message: 'Failed theme files check',
+  name: 'ValidationError'
+} undefined undefined

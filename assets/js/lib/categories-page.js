@@ -16,13 +16,8 @@ function renderPrimaryCategories() {
 
     var contentKey = getAyuContentApiKey();
 
-    featuredGrid.innerHTML = buildLoadingStateHtml();
-    listGrid.innerHTML = buildSkeletonCards(2);
-
     if (!contentKey) {
         logAyuWarning('Content hub load failed: missing Content API key (categories)');
-        featuredGrid.innerHTML = buildTermErrorHtml();
-        listGrid.innerHTML = '';
         return;
     }
 
@@ -36,7 +31,7 @@ function renderPrimaryCategories() {
     }
 
     function cardHtml(tagInfo) {
-        var desc = tagInfo.description ? escapeHtml(tagInfo.description) : 'Category archive';
+        var desc = tagInfo.description ? escapeHtml(tagInfo.description) : ayuHubText('Category archive', '카테고리 글 모음');
 
         return [
             '<article class="post category-post">',
@@ -51,9 +46,9 @@ function renderPrimaryCategories() {
             '</div>',
             '<div class="post-wrapper">',
             '<header class="post-header">',
-            '<div class="post-meta"><span class="post-tag">Category</span> | ',
+            '<div class="post-meta"><span class="post-tag">' + ayuHubText('Category', '카테고리') + '</span> | ',
             String(tagInfo.count),
-            ' posts</div>',
+            ayuHubText(' posts</div>', '개 글</div>'),
             '<h3 class="post-title"><a class="post-title-link" href="/tag/',
             encodeURIComponent(tagInfo.slug),
             '/">',
@@ -83,7 +78,7 @@ function renderPrimaryCategories() {
         return page;
     }
 
-    function updatePageUrl(page) {
+    function updatePageUrl(page, userAction) {
         var url = new URL(window.location.href);
 
         if (page > 1) {
@@ -92,8 +87,14 @@ function renderPrimaryCategories() {
             url.searchParams.delete('page');
         }
 
-        window.history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : ''));
+        if (url.href !== window.location.href) {
+            window.history[userAction ? 'pushState' : 'replaceState']({}, '', url.pathname + url.search + url.hash);
+        }
     }
+
+    window.addEventListener('popstate', function () {
+        if (window.__ayuPrimaryCategoryList) { renderPaginatedList(window.__ayuPrimaryCategoryList); }
+    });
 
     function buildPaginationHtml(currentPage, totalPages) {
         var html = [];
@@ -104,7 +105,7 @@ function renderPrimaryCategories() {
         }
 
         if (currentPage > 1) {
-            html.push('<button class="ayu-page-link" type="button" data-page="' + String(currentPage - 1) + '">&lt;</button>');
+            html.push('<button class="ayu-page-link" type="button" aria-label="' + ayuHubText('Previous page', '이전 페이지') + '" data-page="' + String(currentPage - 1) + '">&lt;</button>');
         }
 
         for (page = 1; page <= totalPages; page += 1) {
@@ -116,13 +117,13 @@ function renderPrimaryCategories() {
         }
 
         if (currentPage < totalPages) {
-            html.push('<button class="ayu-page-link" type="button" data-page="' + String(currentPage + 1) + '">&gt;</button>');
+            html.push('<button class="ayu-page-link" type="button" aria-label="' + ayuHubText('Next page', '다음 페이지') + '" data-page="' + String(currentPage + 1) + '">&gt;</button>');
         }
 
         return html.join('');
     }
 
-    function renderPaginatedList(tags, requestedPage) {
+    function renderPaginatedList(tags, requestedPage, userAction) {
         var pageSize = AYU_GLOBALS.PAGINATION_PAGE_SIZE;
         var totalPages = Math.max(1, Math.ceil(tags.length / pageSize));
         var currentPage = typeof requestedPage === 'number' ? requestedPage : getCurrentPage(totalPages);
@@ -133,7 +134,7 @@ function renderPrimaryCategories() {
         listGrid.innerHTML = pageTags.map(cardHtml).join('');
         injectPromoSlots(listGrid);
         paginationEl.innerHTML = buildPaginationHtml(normalizedPage, totalPages);
-        updatePageUrl(normalizedPage);
+        updatePageUrl(normalizedPage, userAction);
     }
 
     paginationEl.addEventListener('click', function (event) {
@@ -147,15 +148,15 @@ function renderPrimaryCategories() {
             return;
         }
 
-        renderPaginatedList(window.__ayuPrimaryCategoryList, nextPage);
+        renderPaginatedList(window.__ayuPrimaryCategoryList, nextPage, true);
     });
 
     function fetchPrimaryCategories() {
-        var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all';
+        var tagsUrl = '/ghost/api/content/tags/?key=' + encodeURIComponent(contentKey) + '&include=count.posts&limit=all&order=name%20asc,slug%20asc';
 
-        return fetchAyuContentApiJson(tagsUrl, { contentKey: contentKey })
-            .then(function (data) {
-                return (data.tags || []).filter(function (tag) {
+        return fetchAyuContentApiCollection(tagsUrl, 'tags', { contentKey: contentKey })
+            .then(function (tags) {
+                return (tags || []).filter(function (tag) {
                     return AYU_TAG_UTILS.isCategoryTag(tag) && AYU_TAG_UTILS.isPublicTag(tag);
                 }).map(function (tag) {
                     return {
@@ -174,28 +175,25 @@ function renderPrimaryCategories() {
     fetchPrimaryCategories()
         .then(function (tags) {
             if (!tags.length) {
-                featuredGrid.innerHTML = '<div class="term-empty">No categories found.</div>';
+                featuredGrid.innerHTML = '<div class="term-empty">' + ayuHubText('No categories found.', '카테고리가 없습니다.') + '</div>';
                 listGrid.innerHTML = '';
                 return;
             }
 
-            tags.sort(function (a, b) {
-                return b.count - a.count;
-            });
+            // API name order is also the SSR list order. Pick the largest count
+            // without re-sorting names in the browser (Ghost owns collation).
+            var featuredTag = tags.reduce(function (best, tag) {
+                return tag.count > best.count ? tag : best;
+            }, tags[0]);
 
-            var featuredTag = tags[0];
             featuredGrid.innerHTML = cardHtml(featuredTag);
 
             var listTags = tags.filter(function (tag) {
                 return tag.slug !== featuredTag.slug;
             });
 
-            listTags.sort(function (a, b) {
-                return a.name.localeCompare(b.name);
-            });
-
             if (!listTags.length) {
-                listGrid.innerHTML = '<div class="term-empty">No additional categories.</div>';
+                listGrid.innerHTML = '<div class="term-empty">' + ayuHubText('No additional categories.', '추가 카테고리가 없습니다.') + '</div>';
                 paginationEl.innerHTML = '';
                 return;
             }
@@ -205,8 +203,5 @@ function renderPrimaryCategories() {
         })
         .catch(function (error) {
             logAyuWarning('Content hub load failed (categories)', error);
-            featuredGrid.innerHTML = buildTermErrorHtml();
-            listGrid.innerHTML = '';
-            paginationEl.innerHTML = '';
         });
 }

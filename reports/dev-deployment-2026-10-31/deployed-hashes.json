@@ -1,0 +1,23 @@
+[
+  {
+    "site": "primary",
+    "path": "/mnt/d/workspace/02.works/ghost-dev/content/themes/signal-wave-ayu",
+    "fileCount": 123,
+    "exactFileSetAndHashes": true,
+    "mainSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22"
+  },
+  {
+    "site": "ko",
+    "path": "/mnt/d/workspace/02.works/ghost-dev-p2/ko/content/themes/signal-wave-ayu",
+    "fileCount": 123,
+    "exactFileSetAndHashes": true,
+    "mainSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22"
+  },
+  {
+    "site": "en",
+    "path": "/mnt/d/workspace/02.works/ghost-dev-p2/en/content/themes/signal-wave-ayu",
+    "fileCount": 123,
+    "exactFileSetAndHashes": true,
+    "mainSha256": "9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22"
+  }
+]

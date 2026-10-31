@@ -1,0 +1,10 @@
+{
+  "container": "ghostdev_ghost",
+  "database": "ghost (development mysql)",
+  "table": "settings",
+  "key": "locale",
+  "before": "en",
+  "after": "ko",
+  "reason": "Align Ghost HTML language with existing theme site_locale=ko",
+  "rollback": "restore settings.locale to en and restart ghostdev_ghost only"
+}

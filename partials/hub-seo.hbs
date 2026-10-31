@@ -1,0 +1,10 @@
+{{! Only supply a description when Ghost has not already supplied one. }}
+{{#unless meta_description}}<meta name="description" content="{{description}}">{{/unless}}
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{title}} | {{@site.title}}">
+<meta property="og:description" content="{{#if meta_description}}{{meta_description}}{{else}}{{description}}{{/if}}">
+<meta property="og:url" content="{{@site.url}}{{path}}">
+{{#if @site.cover_image}}<meta property="og:image" content="{{@site.cover_image}}">{{/if}}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{title}} | {{@site.title}}">
+<meta name="twitter:description" content="{{#if meta_description}}{{meta_description}}{{else}}{{description}}{{/if}}">

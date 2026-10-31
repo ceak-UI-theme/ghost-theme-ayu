@@ -1,44 +1,49 @@
 {{!< default}}
-{{#contentFor "head"}}
-    <meta property="og:title" content="{{meta_title}}">
-    <meta property="og:description" content="{{meta_description}}">
-    {{#if @site.cover_image}}
-        <meta property="og:image" content="{{img_url @site.cover_image size="l" absolute="true"}}">
-    {{else}}
-        <meta property="og:image" content="{{@site.url}}/assets/images/fallback/post-default.png">
-    {{/if}}
-    <link rel="canonical" href="{{url absolute="true"}}">
+{{#contentFor "hub-title"}}{{#match @custom.site_locale "ko"}}카테고리{{else}}Categories{{/match}} | {{@site.title}}{{/contentFor}}
+{{#contentFor "hub-meta"}}
+{{#match @custom.site_locale "ko"}}
+{{> "hub-seo" title="카테고리" description="주제별 카테고리와 대표 글 모음을 찾아 관심 있는 분야의 글을 읽어보세요." path="/categories/"}}
+{{else}}
+{{> "hub-seo" title="Categories" description="Browse categories and featured collections to find posts in your areas of interest." path="/categories/"}}
+{{/match}}
 {{/contentFor}}
-
 <div class="gh-outer">
-<main class="site-main gh-inner">
+<main data-hub-locale="{{@custom.site_locale}}" class="site-main gh-inner">
     <section class="term term-tag-header">
         <div class="tag-header-image-wrap">
-            <img class="tag-header-image" src="{{asset "images/hub/categories-hero.png"}}" alt="Categories">
+            <img class="tag-header-image" src="{{asset "images/hub/categories-hero.png"}}" alt="{{#match @custom.site_locale "ko"}}카테고리{{else}}Categories{{/match}}">
         </div>
-        <h1 class="term-name">Categories</h1>
-        <div class="term-description">Explore posts organized by topic.</div>
+        <h1 class="term-name">{{#match @custom.site_locale "ko"}}카테고리{{else}}Categories{{/match}}</h1>
+        <div class="term-description">{{#match @custom.site_locale "ko"}}주제별로 정리한 글을 확인하세요.{{else}}Explore posts organized by topic.{{/match}}</div>
     </section>
 
     
-    <section class="category-hub-links" aria-label="Additional hubs">
+    <section class="category-hub-links" aria-label="{{#match @custom.site_locale "ko"}}추가 탐색{{else}}Additional hubs{{/match}}">
         <a class="category-hub-link" href="{{@site.url}}/secondary-tags/">
-            <span class="category-hub-link-title">Topics</span>
-            <span class="category-hub-link-description">Browse topics beyond categories and series.</span>
+            <span class="category-hub-link-title">{{#match @custom.site_locale "ko"}}주제 태그{{else}}Topics{{/match}}</span>
+            <span class="category-hub-link-description">{{#match @custom.site_locale "ko"}}카테고리와 시리즈 밖의 세부 주제를 살펴보세요.{{else}}Browse topics beyond categories and series.{{/match}}</span>
         </a>
     </section>
 
-    <section class="category-featured" aria-label="Featured category">
-        <h2 class="category-featured-title">Featured category</h2>
-        <div id="primary-featured-grid" class="post-feed gh-feed"></div>
+    <section class="category-featured" aria-label="{{#match @custom.site_locale "ko"}}대표 카테고리{{else}}Featured category{{/match}}">
+        <h2 class="category-featured-title">{{#match @custom.site_locale "ko"}}대표 카테고리{{else}}Featured category{{/match}}</h2>
+        <div id="primary-featured-grid" class="post-feed gh-feed">{{#get "tags" filter="visibility:public+slug:~^'category-'" include="count.posts" order="count.posts desc,name asc,slug asc" limit="1"}}
+{{#foreach tags}}
+{{> "hub-tag-card" fallback="images/fallback/primary-tag-default.png" label="Category"}}
+{{else}}<p class="term-empty">{{#match @custom.site_locale "ko"}}아직 항목이 없습니다.{{else}}No items yet.{{/match}}</p>{{/foreach}}
+{{/get}}</div>
     </section>
 
-    <section class="category-post-list" aria-label="Categories list">
-        <h2 class="category-post-list-title">All categories</h2>
-        <div id="primary-list-grid" class="post-feed gh-feed js-promo-feed"></div>
+    <section class="category-post-list" aria-label="{{#match @custom.site_locale "ko"}}카테고리 목록{{else}}Categories list{{/match}}">
+        <h2 class="category-post-list-title">{{#match @custom.site_locale "ko"}}전체 카테고리{{else}}All categories{{/match}}</h2>
+        <div id="primary-list-grid" class="post-feed gh-feed js-promo-feed">{{#get "tags" filter="visibility:public+slug:~^'category-'" include="count.posts" order="count.posts desc,name asc,slug asc" limit="1"}}
+{{#foreach tags}}
+{{#match count.posts ">" 0}}{{> "hub-category-pages" excludedId=id page=1}}{{/match}}
+{{else}}<p class="term-empty">{{#match @custom.site_locale "ko"}}아직 항목이 없습니다.{{else}}No items yet.{{/match}}</p>{{/foreach}}
+{{/get}}</div>
     </section>
 
-    <nav id="primary-list-pagination" class="ayu-pagination" aria-label="Categories pagination"></nav>
+    <nav id="primary-list-pagination" class="ayu-pagination" aria-label="{{#match @custom.site_locale "ko"}}카테고리 페이지{{else}}Categories pagination{{/match}}"></nav>
 </main>
 </div>
 

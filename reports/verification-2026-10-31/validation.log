@@ -1,0 +1,3 @@
+PASS: evidence coverage and outcome consistency; this does not mean the sites passed all functional requirements.
+GET 8, browser renders 32, failure preservation cases 48, empty JSON cases 16, timeout rejection cases 8, no-JS clicks 16, expanded series clicks 4, tag count samples 6, search omission reproductions 2.
+Screenshots: 62

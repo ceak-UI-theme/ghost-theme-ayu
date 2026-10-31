@@ -1,7 +1,7 @@
 {
     "name": "signal-wave-ayu",
     "description": "Signal Wave Ayu Ghost theme",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "private": true,
     "engines": {
         "ghost": ">=5.0.0"
@@ -110,6 +110,12 @@
             "rss_link": {
                 "type": "text"
             },
+            "content_api_key": {
+                "type": "text",
+                "group": "Integration",
+                "title": "Ghost Content API Key",
+                "description": "Content API key used by category, series, topic, and search pages."
+            },
             "site_locale": {
                 "type": "select",
                 "default": "ko",
@@ -139,7 +145,10 @@
         "test": "gscan .",
         "zip": "gulp zip",
         "deploy:ghost": "python3 scripts/deploy_theme.py",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "test:smoke": "node tests/theme-smoke.test.mjs",
+        "test:unit": "node tests/content-api-validation.test.cjs && node tests/hub-ssr.test.cjs && node tests/tag-coverage.test.cjs",
+        "test:fixture-browser": "playwright test --config tests/hub-playwright.config.mjs && playwright test --config tests/p2-playwright.config.mjs && playwright test --config tests/tag-coverage-playwright.config.mjs"
     },
     "devDependencies": {
         "@playwright/test": "^1.58.2",
