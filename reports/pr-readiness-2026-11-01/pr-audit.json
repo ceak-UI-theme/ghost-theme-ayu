@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "sourceHead": "5116f3ddd091f3aacd3c2b8093f5102276eb0623",
+  "main": "9d140b5cd239a1d115ab66acd5df2a8d2a534c69",
+  "apiAndGitFilesMatch": true,
+  "changedFiles": 131,
+  "largeFiles": [
+    "package-lock.json"
+  ],
+  "unexpectedBinariesOrCredentials": false,
+  "runtimeSourceAndExistingTestsPreserved": true,
+  "privateFilePreserved": true,
+  "fileListSha256": "e65700e4bff68c8b67ff91d01270aabe217f69b69beac605139275ba5d457a60"
+}

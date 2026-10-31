@@ -1,6 +1,6 @@
 # Ghost P2 v1.0.1 Legacy Smoke 및 PR 최종 검증 — 2026-11-01
 
-현재 판정: **CONDITIONAL — 로컬359개·빌드·Linux GScan PASS, PR/CI 완료 확인 전.** 이 문서는 PR 생성 및 최종 HEAD의 CI 완료 후 갱신한다. 운영 배포·main 병합·Release·Tag는 수행하지 않는다.
+최종 판정: **READY — 로컬 및 GitHub Actions에서359개·빌드·Linux GScan PASS, PR 충돌 없음.** 검증한 기능/CI 커밋과 후속 문서 전용 커밋을 구분한다. 문서 갱신 뒤에도 최종 PR HEAD의 CI를 확인하고 종료한다. 운영 배포·main 병합·Release·Tag는 수행하지 않았다.
 
 ## 1. 시작 기준
 
@@ -66,9 +66,13 @@ P2 assets/js, HBS, CSS 기능 소스 및 기존341개는 변경하지 않았다.
 
 ## 6. CI 및 PR 상태
 
-PR URL/번호: **NOT RUN — 생성 전**.
+PR: **[#2](https://github.com/ceak-UI-theme/ghost-theme-ayu/pull/2)** — PASS. Base=main, head=codex/fix-content-api-pagination, open/미병합/auto-merge 없음.
 
-CI: **NOT RUN — PR 생성 후 실제 실행 예정**. CI가 없었으므로 최소 workflow 하나만 추가했다. main 대상 pull_request, main push, workflow_dispatch를 처리한다. contents:read, checkout persist-credentials:false, 배포/운영 secret 없음, pull_request_target 없음.
+테스트·CI 커밋: `5116f3ddd091f3aacd3c2b8093f5102276eb0623` (`test: modernize legacy smoke checks for P2 1.0.1`). 일반 Commit/Push 후 원격 HEAD 일치를 확인했다. force push/history rewrite는 하지 않았다. GitHub mergeable=true로 충돌 없음을 확인했다.
+
+CI: **PASS — [Theme validation run #1](https://github.com/ceak-UI-theme/ghost-theme-ayu/actions/runs/41217354368)**. Completed/success, 모든 setup/test/build/check/post 단계success. Smoke18+단위123+Chromium218=359, ZIP124파일, CI JS hash도 기준과 동일, GScan6.6.1 errors0/warnings0이다. [실제 CI 증거](pr-readiness-2026-11-01/ci-evidence.json). 이 실행은 위 기능/CI 커밋을 검증했다. 문서 전용 후속 HEAD는 실행 코드 동일성을 확인하며 [PR Checks](https://github.com/ceak-UI-theme/ghost-theme-ayu/pull/2/checks)에서 최종 재실행 상태를 확인한다.
+
+ CI가 없었으므로 최소 workflow 하나만 추가했다. main 대상 pull_request, main push, workflow_dispatch를 처리한다. contents:read, checkout persist-credentials:false, 배포/운영 secret 없음, pull_request_target 없음.
 
 브라우저는 fixture.test 요청을 가로채며 공개 운영 API·Admin·DB를 호출하지 않는다. Chromium 시스템 의존성을 공식 Playwright 방법으로 설치하고 각 suite는 worker1이다. GScan은 이전 로컬 gate와 같은 immutable Ghost digest `4195f6c405e40230cd10c0770425cf500c1f542a96e9f6584c11649c150e5a89`의6.6.1을 사용한다. ZIP을 별도 경로로 압축 해제한 뒤 checker만 `--network none`·read-only mount로 실행하고 Ghost 서버를 시작하지 않는다.
 
@@ -78,6 +82,8 @@ CI: **NOT RUN — PR 생성 후 실제 실행 예정**. CI가 없었으므로 �
 
 기존 실서버 e2e는 controlled Ghost dataset 및 특정 게시물에 의존해 이번 fixture CI에는 넣지 않았다. 테스트 파일과 기존 명령은 보존했으며 CI PASS로 표기하지 않는다. 현행 전체 테스트 목록은 Testing guide에 있다.
 
-커밋·Push·PR 생성 후 base/head/최종 SHA·충돌·변경 파일·CI 완료를 확인한다. 현재 로컬 PASS만으로 최종 READY라고 하지 않는다. PR 병합·Release·Tag·운영 변경은 하지 않는다.
+PR의131개 변경 파일이 로컬 main 대비 목록과 정확히 일치했다. 원격 blob의 키/개인 파일/DB/ZIP/대용량 비정상 추가를 검사했고, 큰 파일은 이전부터 있던 package-lock.json뿐이다. [PR 파일 검증](pr-readiness-2026-11-01/pr-audit.json). 기존341개 테스트와 제품 런타임 변경이 없음을 확인했다. 후속 문서 커밋이 이 CI 증거와 audit JSON을 추가하므로 최종 PR 파일 수는133개다. 최종 원격 HEAD와 PR HEAD 일치 및 최신 Actions 완료를 별도 확인하고 종료한다.
+
+P2 main 병합 가능: **PASS / READY**. 새 기능 차단 문제 없음. 실제 병합은 수행하지 않는다. 별도 리뷰 승인 등 저장소 정책을 우회하지 않는다. PR 병합·Release·Tag·운영 변경은 하지 않았다.
 
 공식 참고: [Playwright CI](https://playwright.dev/docs/ci), [GitHub workflow 문법](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax).

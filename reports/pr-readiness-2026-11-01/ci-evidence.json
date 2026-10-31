@@ -1,0 +1,121 @@
+{
+  "sourceHead": "5116f3ddd091f3aacd3c2b8093f5102276eb0623",
+  "runId": 41217354368,
+  "runUrl": "https://github.com/ceak-UI-theme/ghost-theme-ayu/actions/runs/41217354368",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 124584571241,
+      "name": "P2 tests, build and Linux GScan v6",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 41217354368,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Install locked dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Legacy smoke (18 cases)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Content API, SSR and tag coverage units (123 cases)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Install Chromium and system dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Fixture browser regressions (218 cases)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Build and package theme",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Validate and extract actual ZIP",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Linux GScan v6 on extracted ZIP",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        }
+      ]
+    }
+  ],
+  "logSummary": [
+    "2026-10-31T15:58:25.3421033Z # tests 18",
+    "2026-10-31T15:58:25.3422257Z # pass 18",
+    "2026-10-31T15:58:25.4896257Z PASS: 21 Content API completeness/schema/zero/cap/cache recovery scenarios",
+    "2026-10-31T15:58:26.0169747Z PASS: 58 hub SSR/JS fixture scenarios; HBS syntax, real NQL, classification, escaping, fallback, query/pagination/popstate.",
+    "2026-10-31T15:58:26.1948884Z PASS: 44 new tag coverage, strict posts, mismatch, cache, sharing and recovery scenarios",
+    "2026-10-31T15:58:52.4584709Z   16 passed (7.4s)",
+    "2026-10-31T15:59:14.4531931Z   98 passed (21.1s)",
+    "2026-10-31T15:59:41.7304308Z   104 passed (26.3s)",
+    "2026-10-31T15:59:45.9018233Z PASS: ZIP 124 files, CRC/extraction/source bytes; JS SHA-256 9e2b987be6fd3097a04d8c965e13e65c72e38d420ca2f379132817961645af22",
+    "2026-10-31T16:00:26.1939665Z   \"gscan\": \"6.6.1\",",
+    "2026-10-31T16:00:26.1941450Z   \"errors\": [],",
+    "2026-10-31T16:00:26.1942240Z   \"warnings\": [],",
+    "2026-10-31T16:00:26.1959403Z   \"status\": \"PASS\"",
+    "2026-10-31T16:00:26.7569536Z (node:5406) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities."
+  ],
+  "cases": 359,
+  "rawLogStored": false
+}
