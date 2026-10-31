@@ -23,26 +23,8 @@ function renderExplorePage() {
 
     var contentKey = getAyuContentApiKey();
 
-    categoriesGrid.innerHTML = buildLoadingStateHtml();
-    seriesList.innerHTML = buildLoadingStateHtml();
-    topicsGrid.innerHTML = buildLoadingStateHtml();
-    recentList.innerHTML = '<li class="term-loading" role="status" aria-live="polite">' + AYU_USER_MESSAGES.HUB_LOADING + '</li>';
-    if (categoriesMore) {
-        categoriesMore.hidden = true;
-    }
-    if (seriesMore) {
-        seriesMore.hidden = true;
-    }
-    if (topicsMore) {
-        topicsMore.hidden = true;
-    }
-
     if (!contentKey) {
         logAyuWarning('Content hub load failed: missing Content API key (explore)');
-        categoriesGrid.innerHTML = buildTermErrorHtml();
-        seriesList.innerHTML = buildTermErrorHtml();
-        topicsGrid.innerHTML = buildTermErrorHtml();
-        recentList.innerHTML = buildTermErrorListItemHtml();
         return;
     }
 
@@ -56,21 +38,11 @@ function renderExplorePage() {
     }
 
     function pluralPosts(count) {
-        return String(count) + ' post' + (count === 1 ? '' : 's');
+        return String(count) + ayuHubText(' post' + (count === 1 ? '' : 's'), '개 글');
     }
 
     function resolveTagName(tag) {
-        if (tag && typeof tag.name === 'string' && tag.name.trim()) {
-            var rawName = tag.name.trim();
-            var lowerName = rawName.toLowerCase();
-            if (lowerName.indexOf(AYU_TAG_PREFIX.SERIES) === -1 && lowerName.indexOf(AYU_TAG_PREFIX.CATEGORY) === -1) {
-                return rawName;
-            }
-
-            return AYU_TAG_UTILS.getDisplayName({ slug: tag && tag.slug ? tag.slug : '' }, tag && tag.slug ? tag.slug : '');
-        }
-
-        return AYU_TAG_UTILS.getDisplayName(tag, tag && tag.slug ? tag.slug : '');
+        return AYU_TAG_UTILS.getDisplayName(tag, tag && tag.slug);
     }
 
     function formatDate(value) {
@@ -97,7 +69,7 @@ function renderExplorePage() {
             '</a>',
             '<div class="explore-card-body">',
             '<h3 class="explore-card-title"><a href="/tag/', encodeURIComponent(item.slug), '/">', escapeHtml(item.name), '</a></h3>',
-            '<p class="explore-card-desc">', escapeHtml(item.description || 'Category archive.'), '</p>',
+            '<p class="explore-card-desc">', escapeHtml(item.description || ayuHubText('Category archive.', '카테고리 글 모음')), '</p>',
             '<p class="explore-card-count">', pluralPosts(item.count), '</p>',
             '</div>',
             '</article>'
@@ -112,7 +84,7 @@ function renderExplorePage() {
             '</a>',
             '<div class="explore-card-body">',
             '<h3 class="explore-card-title"><a href="/tag/', encodeURIComponent(item.slug), '/">', escapeHtml(item.name), '</a></h3>',
-            '<p class="explore-card-desc">', escapeHtml(item.description || 'Series archive.'), '</p>',
+            '<p class="explore-card-desc">', escapeHtml(item.description || ayuHubText('Series archive.', '시리즈 글 모음')), '</p>',
             '<p class="explore-card-count">', pluralPosts(item.count), '</p>',
             '</div>',
             '</article>'
@@ -134,7 +106,7 @@ function renderExplorePage() {
             '<li class="explore-recent-item">',
             '<a class="explore-recent-link" href="', escapeHtml(postUrl(post)), '">',
             '<span class="explore-recent-arrow" aria-hidden="true">&rarr;</span>',
-            '<span class="explore-recent-title">', escapeHtml(post.title || 'Untitled'), '</span>',
+            '<span class="explore-recent-title">', escapeHtml(post.title || ayuHubText('Untitled', '제목 없음')), '</span>',
             '<time class="explore-recent-date" datetime="', escapeHtml((post.published_at || '').slice(0, 10)), '">', escapeHtml(formatDate(post.published_at)), '</time>',
             '</a>',
             '</li>'
@@ -223,10 +195,10 @@ function renderExplorePage() {
                 return a.name.localeCompare(b.name);
             });
 
-            categoriesGrid.innerHTML = categories.length ? categories.slice(0, EXPLORE_SECTION_MAX).map(categoryCardHtml).join('') : '<div class="term-empty">No categories yet.</div>';
-            seriesList.innerHTML = series.length ? series.slice(0, EXPLORE_SECTION_MAX).map(seriesCardHtml).join('') : '<div class="term-empty">No series yet.</div>';
-            topicsGrid.innerHTML = topics.length ? topics.slice(0, EXPLORE_SECTION_MAX).map(topicCardHtml).join('') : '<div class="term-empty">No topics yet.</div>';
-            recentList.innerHTML = recent.length ? recent.slice(0, EXPLORE_RECENT_MAX).map(recentItemHtml).join('') : '<li class="term-empty">No recent posts.</li>';
+            categoriesGrid.innerHTML = categories.length ? categories.slice(0, EXPLORE_SECTION_MAX).map(categoryCardHtml).join('') : '<div class="term-empty">' + ayuHubText('No categories yet.', '아직 카테고리가 없습니다.') + '</div>';
+            seriesList.innerHTML = series.length ? series.slice(0, EXPLORE_SECTION_MAX).map(seriesCardHtml).join('') : '<div class="term-empty">' + ayuHubText('No series yet.', '아직 시리즈가 없습니다.') + '</div>';
+            topicsGrid.innerHTML = topics.length ? topics.slice(0, EXPLORE_SECTION_MAX).map(topicCardHtml).join('') : '<div class="term-empty">' + ayuHubText('No topics yet.', '아직 주제가 없습니다.') + '</div>';
+            recentList.innerHTML = recent.length ? recent.slice(0, EXPLORE_RECENT_MAX).map(recentItemHtml).join('') : '<li class="term-empty">' + ayuHubText('No recent posts.', '최근 글이 없습니다.') + '</li>';
 
             if (categoriesMore) {
                 categoriesMore.hidden = categories.length <= EXPLORE_SECTION_MAX;
@@ -240,9 +212,5 @@ function renderExplorePage() {
         })
         .catch(function (error) {
             logAyuWarning('Content hub load failed (explore)', error);
-            categoriesGrid.innerHTML = buildTermErrorHtml();
-            seriesList.innerHTML = buildTermErrorHtml();
-            topicsGrid.innerHTML = buildTermErrorHtml();
-            recentList.innerHTML = buildTermErrorListItemHtml();
         });
 }

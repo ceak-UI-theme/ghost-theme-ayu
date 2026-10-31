@@ -1,0 +1,21 @@
+{{! Each query is bounded; additional batches remain accessible without JavaScript. }}
+{{#get "tags" filter="visibility:public+slug:-~^'category-'+slug:-~^'series-'+id:-{{excludedId}}" include="count.posts" order="count.posts desc,name asc" limit="100" page=page}}
+{{#foreach tags to="10"}}
+{{> "hub-topic-card"}}
+{{/foreach}}
+{{#if tags.[10]}}
+<details class="hub-more-tags"><summary>{{#match @custom.site_locale "ko"}}더 많은 항목{{else}}More items{{/match}}</summary>
+<div class="secondary-tags-grid">
+{{#foreach tags from="11"}}
+{{> "hub-topic-card"}}
+{{/foreach}}
+</div></details>
+{{/if}}
+{{#if pagination.next}}
+<details class="hub-more-tags"><summary>{{#match @custom.site_locale "ko"}}더 많은 항목{{else}}More items{{/match}}</summary>
+<div class="secondary-tags-grid">
+{{> "hub-topic-pages" excludedId=../excludedId page=pagination.next}}
+</div>
+</details>
+{{/if}}
+{{/get}}

@@ -1,0 +1,9 @@
+{{#match count.posts ">" 0}}
+<article class="post category-post">
+    <div class="post-media"><div class="u-placeholder square"><a href="{{url}}"><img class="post-image u-object-fit" loading="lazy" src="{{#if feature_image}}{{img_url feature_image size="s"}}{{else}}{{asset fallback}}{{/if}}" alt="{{name}}"></a></div></div>
+    <div class="post-wrapper"><header class="post-header">
+        <div class="post-meta"><span class="post-tag">{{#match label "Category"}}{{#match @custom.site_locale "ko"}}카테고리{{else}}Category{{/match}}{{else}}{{#match @custom.site_locale "ko"}}시리즈{{else}}Series{{/match}}{{/match}}</span> | {{count.posts}} {{#match @custom.site_locale "ko"}}개 글{{else}}posts{{/match}}</div>
+        <h3 class="post-title"><a class="post-title-link" href="{{url}}">{{name}}</a></h3>
+    </header><div class="post-excerpt">{{#if description}}{{description}}{{else}}{{#match label "Category"}}{{#match @custom.site_locale "ko"}}카테고리 글 모음{{else}}Category archive{{/match}}{{else}}{{#match @custom.site_locale "ko"}}시리즈 글 모음{{else}}Series archive{{/match}}{{/match}}{{/if}}</div></div>
+</article>
+{{/match}}

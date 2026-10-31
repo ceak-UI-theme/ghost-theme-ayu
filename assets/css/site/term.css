@@ -403,3 +403,13 @@
     }
 }
 
+
+/* Keep the no-JavaScript archive disclosure across the whole card grid. */
+.hub-more-tags {
+    grid-column: 1 / -1;
+    min-width: 0;
+}
+.hub-more-tags > summary {
+    cursor: pointer;
+    margin: 16px 0;
+}

@@ -14,14 +14,8 @@ function renderSecondaryTags() {
 
     var contentKey = getAyuContentApiKey();
 
-    featuredSection.hidden = false;
-    featuredSection.innerHTML = buildLoadingStateHtml();
-    grid.innerHTML = buildSkeletonCards(8);
-
     if (!contentKey) {
         logAyuWarning('Content hub load failed: missing Content API key (secondary-tags)');
-        featuredSection.innerHTML = buildTermErrorHtml();
-        grid.innerHTML = '';
         return;
     }
 
@@ -60,7 +54,7 @@ function renderSecondaryTags() {
             escapeHtml(tagInfo.name),
             '</a></h2>',
             '<div class="term-description">',
-            escapeHtml(tagInfo.description || 'Most-used topic archive.'),
+            escapeHtml(tagInfo.description || ayuHubText('Most-used topic archive.', '가장 많이 사용된 주제의 글 모음')),
             '</div>',
             '</div>'
         ].join('');
@@ -110,7 +104,7 @@ function renderSecondaryTags() {
 
             if (!tags.length) {
                 featuredSection.hidden = false;
-                featuredSection.innerHTML = '<div class="term-empty">No topics found.</div>';
+                featuredSection.innerHTML = '<div class="term-empty">' + ayuHubText('No topics found.', '주제가 없습니다.') + '</div>';
                 grid.innerHTML = '';
                 return;
             }
@@ -129,7 +123,7 @@ function renderSecondaryTags() {
             featuredSection.hidden = false;
             featuredSection.innerHTML = featuredHtml(featured);
             if (!rest.length) {
-                grid.innerHTML = '<div class="term-empty">No additional topics.</div>';
+                grid.innerHTML = '<div class="term-empty">' + ayuHubText('No additional topics.', '추가 주제가 없습니다.') + '</div>';
                 return;
             }
 
@@ -137,7 +131,5 @@ function renderSecondaryTags() {
         })
         .catch(function (error) {
             logAyuWarning('Content hub load failed (secondary-tags)', error);
-            featuredSection.innerHTML = buildTermErrorHtml();
-            grid.innerHTML = '';
         });
 }

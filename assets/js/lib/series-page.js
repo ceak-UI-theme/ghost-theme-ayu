@@ -16,17 +16,8 @@ function renderSeriesTags() {
 
     var contentKey = typeof getAyuContentApiKey === 'function' ? getAyuContentApiKey() : '';
 
-    featuredGrid.innerHTML = buildLoadingStateHtml();
-    listGrid.innerHTML = buildSkeletonCards(2);
-
     if (!contentKey) {
-        if (typeof logAyuWarning === 'function') {
-            logAyuWarning('Content hub load failed: missing Content API key (series)');
-        } else {
-            console.warn('[Ayu Theme] Content hub load failed: missing Content API key (series)');
-        }
-        featuredGrid.innerHTML = '<div class="term-empty">Content could not be loaded. Please try again later.</div>';
-        listGrid.innerHTML = '';
+        logAyuWarning('Content hub load failed: missing Content API key (series)');
         return;
     }
 
@@ -45,7 +36,7 @@ function renderSeriesTags() {
 
     function seriesCardHtml(tagInfo) {
         var title = displayName(tagInfo.name, tagInfo.slug);
-        var desc = tagInfo.description ? escapeHtml(tagInfo.description) : 'Series archive';
+        var desc = tagInfo.description ? escapeHtml(tagInfo.description) : ayuHubText('Series archive', '시리즈 글 모음');
         var detailUrl = '/tag/' + encodeURIComponent(tagInfo.slug) + '/';
 
         var defaults = (typeof AYU_DEFAULT_IMAGES !== 'undefined' && AYU_DEFAULT_IMAGES) ? AYU_DEFAULT_IMAGES : {};
@@ -64,9 +55,9 @@ function renderSeriesTags() {
             '</div>',
             '<div class="post-wrapper">',
             '<header class="post-header">',
-            '<div class="post-meta"><span class="post-tag">Series</span> | ',
+            '<div class="post-meta"><span class="post-tag">' + ayuHubText('Series', '시리즈') + '</span> | ',
             String(tagInfo.count),
-            ' posts</div>',
+            ayuHubText(' posts</div>', '개 글</div>'),
             '<h3 class="post-title"><a class="post-title-link" href="',
             detailUrl,
             '">',
@@ -108,6 +99,10 @@ function renderSeriesTags() {
         window.history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : ''));
     }
 
+    window.addEventListener('popstate', function () {
+        if (window.__ayuSeriesTagList) { renderPaginatedList(window.__ayuSeriesTagList); }
+    });
+
     function buildPaginationHtml(currentPage, totalPages) {
         var html = [];
         var page;
@@ -117,7 +112,7 @@ function renderSeriesTags() {
         }
 
         if (currentPage > 1) {
-            html.push('<button class="ayu-page-link" type="button" data-page="' + String(currentPage - 1) + '">&lt;</button>');
+            html.push('<button class="ayu-page-link" type="button" aria-label="' + ayuHubText('Previous page', '이전 페이지') + '" data-page="' + String(currentPage - 1) + '">&lt;</button>');
         }
 
         for (page = 1; page <= totalPages; page += 1) {
@@ -129,7 +124,7 @@ function renderSeriesTags() {
         }
 
         if (currentPage < totalPages) {
-            html.push('<button class="ayu-page-link" type="button" data-page="' + String(currentPage + 1) + '">&gt;</button>');
+            html.push('<button class="ayu-page-link" type="button" aria-label="' + ayuHubText('Next page', '다음 페이지') + '" data-page="' + String(currentPage + 1) + '">&gt;</button>');
         }
 
         return html.join('');
@@ -180,7 +175,7 @@ function renderSeriesTags() {
             });
 
             if (!tags.length) {
-                featuredGrid.innerHTML = '<div class="term-empty">No series found.</div>';
+                featuredGrid.innerHTML = '<div class="term-empty">' + ayuHubText('No series found.', '시리즈가 없습니다.') + '</div>';
                 listGrid.innerHTML = '';
                 return;
             }
@@ -197,7 +192,7 @@ function renderSeriesTags() {
 
             var listTags = tags.slice(1);
             if (!listTags.length) {
-                listGrid.innerHTML = '<div class="term-empty">No additional series.</div>';
+                listGrid.innerHTML = '<div class="term-empty">' + ayuHubText('No additional series.', '추가 시리즈가 없습니다.') + '</div>';
                 paginationEl.innerHTML = '';
                 return;
             }
@@ -211,8 +206,5 @@ function renderSeriesTags() {
             } else {
                 console.error('[Ayu Theme] Content hub load failed (series)', error);
             }
-            featuredGrid.innerHTML = '<div class="term-empty">Content could not be loaded. Please try again later.</div>';
-            listGrid.innerHTML = '';
-            paginationEl.innerHTML = '';
         });
 }
