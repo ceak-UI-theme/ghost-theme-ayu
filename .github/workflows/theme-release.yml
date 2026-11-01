@@ -1,0 +1,147 @@
+
+name: Theme release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag (e.g. v1.0.2)"
+        required: true
+        type: string
+      dry_run:
+        description: "Validate only, do not publish release"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: theme-release-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Validate, package and optionally publish
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    env:
+      RELEASE_TAG: ${{ inputs.version }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Validate branch and version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "::error::Release must run from main"
+            exit 1
+          fi
+
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid release tag"
+            exit 1
+          fi
+
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          if [[ "$RELEASE_TAG" != "v${PACKAGE_VERSION}" ]]; then
+            echo "::error::Tag and package.json version mismatch"
+            exit 1
+          fi
+
+      - name: Prevent duplicate release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if git ls-remote --tags origin "refs/tags/${RELEASE_TAG}" | grep -q .; then
+            echo "::error::Tag already exists"
+            exit 1
+          fi
+
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            echo "::error::Release already exists"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Smoke tests
+        run: npm run test:smoke
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser regression tests
+        run: npm run test:fixture-browser
+
+      - name: P3 regression tests
+        run: npm run test:p3
+
+      - name: Build Ghost theme ZIP
+        run: npm run zip
+
+      - name: Validate ZIP
+        run: |
+          python3 tests/verify-theme-zip.py \
+            dist/signal-wave-ayu.zip \
+            --extract "$RUNNER_TEMP/ayu-theme" \
+            --report dist/zip-validation.json
+
+      - name: Linux GScan v6
+        run: >-
+          docker run --rm --network none
+          --mount "type=bind,source=$GITHUB_WORKSPACE,target=/deps,readonly"
+          --mount "type=bind,source=$RUNNER_TEMP/ayu-theme,target=/theme,readonly"
+          ghost@sha256:4195f6c405e40230cd10c0770425cf500c1f542a96e9f6584c11649c150e5a89
+          node /deps/reports/release-gate-2026-10-31/gscan-linux.cjs
+          /var/lib/ghost/current/node_modules/gscan v6
+
+      - name: Generate SHA256 checksum
+        run: |
+          cd dist
+          sha256sum signal-wave-ayu.zip > SHA256SUMS
+
+      - name: Upload validated build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghost-theme-${{ inputs.version }}
+          path: |
+            dist/signal-wave-ayu.zip
+            dist/SHA256SUMS
+            dist/zip-validation.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Publish GitHub Release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$RELEASE_TAG" \
+            dist/signal-wave-ayu.zip \
+            dist/SHA256SUMS \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "signal-wave-ayu $RELEASE_TAG" \
+            --generate-notes \
+            --latest \
+            --fail-on-no-commits
