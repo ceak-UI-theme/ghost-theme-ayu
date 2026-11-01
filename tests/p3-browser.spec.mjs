@@ -2,16 +2,33 @@ import {test, expect} from '@playwright/test';
 import fixture from './hub-fixture.cjs';
 const {read,render,tags,coveragePosts}=fixture;
 const css=read('assets/built/screen.css');
-const tableBody='<main class="gh-outer"><article class="gh-inner"><div class="gh-content"><p id="before">본문 / Article text</p><table id="short"><thead><tr><th>한글</th><th>English</th></tr></thead><tbody><tr><td>가</td><td>One</td></tr><tr><td>나</td><td>Two</td></tr></tbody></table><table id="wide"><thead><tr>'+Array.from({length:12},(_,i)=>'<th>Column '+i+'</th>').join('')+'</tr></thead><tbody><tr>'+Array.from({length:12},()=>'<td>긴 내용 Long content without wrapping</td>').join('')+'</tr></tbody></table><p id="after">본문 / Article text</p><div class="gist"><table><tr><td style="background-image:linear-gradient(red,blue)">Gist</td></tr></table></div></div></article></main>';
-for(const theme of ['dark','light'])for(const width of [390,1440])test(`table ${theme} ${width}: no fades, full width, isolated horizontal scroll`,async({page})=>{
- await page.setViewportSize({width,height:844});await page.setContent(`<html data-theme="${theme}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body class="post-template">${tableBody}</body></html>`);
- const result=await page.evaluate(()=>{
-  const short=document.querySelector('#short'),wide=document.querySelector('#wide'),before=document.querySelector('#before'),after=document.querySelector('#after');
-  wide.scrollLeft=200;
-  return {fade:[...document.querySelectorAll('#short td,#wide td')].map(e=>getComputedStyle(e).backgroundImage),shortWidth:short.getBoundingClientRect().width,contentWidth:before.getBoundingClientRect().width,shortOverflow:short.scrollWidth>short.clientWidth,wideOverflow:wide.scrollWidth>wide.clientWidth,scrollLeft:wide.scrollLeft,bodyOverflow:document.documentElement.scrollWidth>innerWidth,before:[before.offsetLeft,before.offsetWidth],after:[after.offsetLeft,after.offsetWidth],gist:getComputedStyle(document.querySelector('.gist td')).backgroundImage,color:getComputedStyle(short.querySelector('td')).color,background:getComputedStyle(short).backgroundColor};
+// Short headers fit four columns at 390px on both Linux and Windows fonts.
+const shortTable=(n,heading=i=>`C${i}`)=>`<table class="short" id="short${n}"><thead><tr>${Array.from({length:n},(_,i)=>`<th style="text-align:${i%2?'right':'left'}">${heading(i)}</th>`).join('')}</tr></thead><tbody><tr>${Array.from({length:n},(_,i)=>`<td style="text-align:${i%2?'right':'left'}">${i}</td>`).join('')}</tr><tr><td colspan="${n-1}">Merged</td><td>End</td></tr></tbody></table>`;
+const tableBody=`<main class="gh-outer"><article class="gh-inner"><div class="gh-content"><p id="before">Article</p>${[2,3,4].map(n=>shortTable(n)).join('')}${shortTable(4,i=>`Column ${i}`).replace('class="short" id="short4"','id="labelled"')}<table id="wide"><thead><tr>${Array.from({length:12},(_,i)=>`<th>Column ${i}</th>`).join('')}</tr></thead><tbody><tr>${Array.from({length:12},()=>'<td>Long content without wrapping</td>').join('')}</tr></tbody></table><p id="after">Article</p><div class="gist"><table><tr><td style="background-image:linear-gradient(red,blue)">Gist</td></tr></table></div></div></article></main><table id="outside"><tr><td>Outside</td><td>Table</td></tr></table>`;
+for(const theme of ['dark','light'])for(const width of [390,1440])test(`table ${theme} ${width}: actual cells fill width with colspan and isolated scroll`,async({page})=>{
+ await page.setViewportSize({width,height:844});
+ await page.setContent(`<html data-theme="${theme}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body class="post-template">${tableBody}</body></html>`);
+ const inspect=()=>page.evaluate(()=>{
+  const wide=document.querySelector('#wide');wide.scrollLeft=200;
+  return {short:[...document.querySelectorAll('.short')].map(t=>({width:t.clientWidth,content:document.querySelector('#before').clientWidth,overflow:t.scrollWidth>t.clientWidth,gaps:[...t.rows].map(r=>Math.abs(t.getBoundingClientRect().right-r.cells[r.cells.length-1].getBoundingClientRect().right)),align:[...t.rows[1].cells].map(c=>getComputedStyle(c).textAlign)})),fade:[...document.querySelectorAll('.short td,#wide td')].map(e=>getComputedStyle(e).backgroundImage),wideOverflow:wide.scrollWidth>wide.clientWidth,scroll:wide.scrollLeft,bodyOverflow:document.documentElement.scrollWidth>innerWidth,gist:getComputedStyle(document.querySelector('.gist td')).backgroundImage,excluded:['.gist td','#outside td'].map(sel=>{const c=document.querySelector(sel);return [getComputedStyle(c).width,c.getBoundingClientRect().width]}),before:document.querySelector('#before').getBoundingClientRect().width,after:document.querySelector('#after').getBoundingClientRect().width,color:getComputedStyle(document.querySelector('.short td')).color,bg:getComputedStyle(document.querySelector('.short')).backgroundColor};
  });
- expect(result.fade.every(x=>x==='none')).toBeTruthy();expect(Math.abs(result.shortWidth-result.contentWidth)).toBeLessThan(2);expect(result.shortOverflow).toBeFalsy();expect(result.wideOverflow).toBeTruthy();expect(result.scrollLeft).toBeGreaterThan(0);expect(result.bodyOverflow).toBeFalsy();expect(result.after).toEqual(result.before);expect(result.gist).toContain('linear-gradient');expect(result.color).not.toBe(result.background);
+ const r=await inspect();
+
+ for(const t of r.short){expect(t.gaps.every(g=>g<=2)).toBeTruthy();expect(Math.abs(t.width-t.content)).toBeLessThanOrEqual(2);expect(t.overflow).toBeFalsy();expect(t.align).toEqual(t.align.map((_,i)=>i%2?'right':'left'));}
+ // Longer headers can overflow on Linux mobile fonts: compare the last cell
+ // with the scroll box only after reaching its right edge, including colspan rows.
+ const labelled=await page.locator('#labelled').evaluate(t=>{
+  const before=t.scrollLeft;t.scrollLeft=t.scrollWidth;
+  return {clientWidth:t.clientWidth,scrollWidth:t.scrollWidth,before,after:t.scrollLeft,gaps:[...t.rows].map(row=>Math.abs(t.getBoundingClientRect().right-row.cells[row.cells.length-1].getBoundingClientRect().right))};
+ });
+ expect(labelled.gaps.every(g=>g<=2)).toBeTruthy();
+ expect(labelled.after).toBe(Math.max(0,labelled.scrollWidth-labelled.clientWidth));
+ expect(r.fade.every(x=>x==='none')).toBeTruthy();expect(r.wideOverflow).toBeTruthy();expect(r.scroll).toBeGreaterThan(0);expect(r.bodyOverflow).toBeFalsy();expect(r.gist).toContain('linear-gradient');expect(r.before).toBe(r.after);expect(r.color).not.toBe(r.bg);
  await page.screenshot({path:test.info().outputPath(`table-${theme}-${width}.png`)});
+ // Excluded tables must retain precisely their baseline computed cell sizing.
+ await page.addStyleTag({content:'.gh-content table:not(.gist table) :is(th,td){width:revert}'});
+ expect((await inspect()).excluded).toEqual(r.excluded);
+
 });
 const common=['dom-utils','taxonomy','content-api','hub-ui'].map(n=>read('assets/js/lib/'+n+'.js')).join('\n');
 for(const hub of ['categories','series'])for(const locale of ['ko','en'])for(const width of [390,1440])for(const mode of ['off','ok','failure'])test(`${hub} ${locale} ${width} ${mode}: classification badges survive`,async({browser})=>{
