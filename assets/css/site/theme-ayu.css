@@ -261,6 +261,23 @@ code[class*="language-"] {
     color: var(--text-primary);
 }
 
+/* Keep Ghost's native table scroll box, without its light-theme edge fades. */
+.gh-content table:not(.gist table) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Let intrinsic table columns fill the native inline-block scroll box. */
+.gh-content table:not(.gist table) :is(th, td) {
+    width: 1%;
+}
+
+.gh-content table:not(.gist table) td:first-child,
+.gh-content table:not(.gist table) td:last-child {
+    background-image: none;
+}
+
 figcaption,
 .gh-content figcaption {
     color: var(--text-muted);

@@ -1,7 +1,7 @@
 {
     "name": "signal-wave-ayu",
     "description": "Signal Wave Ayu Ghost theme",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "private": true,
     "engines": {
         "ghost": ">=5.0.0"
@@ -157,7 +157,7 @@
         "beeper": "2.1.0",
         "cssnano": "7.1.2",
         "gscan": "5.2.5",
-        "gulp": "5.0.1",
+        "gulp": "^5.0.1",
         "gulp-concat": "2.6.1",
         "gulp-livereload": "4.0.2",
         "gulp-postcss": "10.0.0",
@@ -168,5 +168,8 @@
         "postcss-easy-import": "4.0.0",
         "prismjs": "^1.30.0",
         "pump": "3.0.4"
+    },
+    "allowScripts": {
+        "gulp@5.0.1": true
     }
 }
